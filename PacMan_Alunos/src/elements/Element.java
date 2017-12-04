@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.Serializable;
 import javax.swing.ImageIcon;
+import utils.Sprite;
 
 /**
  * Projeto de POO 2017
@@ -18,6 +19,7 @@ import javax.swing.ImageIcon;
 public abstract class Element implements Serializable{
 
     protected ImageIcon imageIcon;
+    protected Sprite _sprite = null;
     protected Position pos;
     protected boolean isTransposable; // Pode passar por cima?
     protected boolean isMortal;       // Se encostar, morre?
@@ -38,6 +40,23 @@ public abstract class Element implements Serializable{
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
+    }
+    
+    protected Element(ImageIcon image) {
+        this.pos = new Position(1, 1);
+        this.isTransposable = true;
+        this.isMortal = false;
+        
+        imageIcon = image;
+    }
+    
+    protected Element(Sprite sprite, int defaultImage) {
+        this.pos = new Position(1, 1);
+        this.isTransposable = true;
+        this.isMortal = false;
+
+        _sprite = sprite;
+        imageIcon = sprite.getImage(defaultImage);
     }
     
     public boolean overlap(Element elem) {

@@ -16,6 +16,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import utils.Sprite;
 
 /**
  * Projeto de POO 2017
@@ -28,6 +29,7 @@ public class GameScreen extends javax.swing.JFrame implements KeyListener {
     private final Lolo lolo;
     private final ArrayList<Element> elemArray;
     private final GameController controller = new GameController();
+    private final Sprite sp;
 
     public GameScreen() {
         Drawing.setGameScreen(this);
@@ -40,9 +42,15 @@ public class GameScreen extends javax.swing.JFrame implements KeyListener {
                      Consts.NUM_CELLS * Consts.CELL_SIZE + getInsets().top + getInsets().bottom);
 
         elemArray = new ArrayList<Element>();
+        
+        sp = new Sprite("sprite.png");
+        sp.newImage(0, 0, 288, 96, 96, 0.5f*Consts.CELL_SIZE/48.0f);
+        sp.newImage(1, 96, 288, 96, 96, 0.5f*Consts.CELL_SIZE/48.0f);
+        sp.newImage(2, 384, 288, 96, 96, 0.5f*Consts.CELL_SIZE/48.0f);
+        sp.newImage(3, 480, 288, 96, 96, 0.5f*Consts.CELL_SIZE/48.0f);
 
         /*Cria e adiciona elementos*/
-        lolo = new Lolo("lolo.png");
+        lolo = new Lolo(sp, 2);
         lolo.setPosition(0, 0);
         this.addElement(lolo);
         

@@ -3,6 +3,8 @@ package elements;
 import utils.Drawing;
 import java.awt.Graphics;
 import java.io.Serializable;
+import javax.swing.ImageIcon;
+import utils.Sprite;
 
 /**
  * Projeto de POO 2017
@@ -24,6 +26,14 @@ public class Lolo extends Element  implements Serializable{
         super(imageName);
     }
     
+    public Lolo(ImageIcon image) {
+        super(image);
+    }
+    
+    public Lolo(Sprite sprite, int defaultImage) {
+        super(sprite, defaultImage);
+    }
+    
     @Override
     public void autoDraw(Graphics g){
         Drawing.draw(g, this.imageIcon, pos.getY(), pos.getX());
@@ -40,15 +50,19 @@ public class Lolo extends Element  implements Serializable{
     public void move() {
         switch (movDirection) {
             case MOVE_LEFT:
+                this.imageIcon = this._sprite.getImage(0);
                 this.moveLeft();
                 break;
             case MOVE_RIGHT:
+                this.imageIcon = this._sprite.getImage(2);
                 this.moveRight();
                 break;
             case MOVE_UP:
+                this.imageIcon = this._sprite.getImage(1);
                 this.moveUp();
                 break;
             case MOVE_DOWN:
+                this.imageIcon = this._sprite.getImage(3);
                 this.moveDown();
                 break;
             default:
