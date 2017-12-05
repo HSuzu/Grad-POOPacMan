@@ -30,6 +30,9 @@ public class PacMan extends Element  implements Serializable {
     public static final int MOVE_DOWN = 4;
     
     private int movDirection = STOP;
+    private int score = 0;
+    private int numLifes = 3;
+    private int lifeControl = 1;
     
     public PacMan(String imageName) {
         super(imageName);
@@ -49,6 +52,22 @@ public class PacMan extends Element  implements Serializable {
     
     public PacMan(ImageCollection collection, int defaultImage) {
         super(collection, defaultImage);
+    }
+
+    public int getScore() {
+        return this.score;
+    }
+    
+    public void winPoints(int value) {
+        this.score += value;
+        if(score/(10000*this.lifeControl) >= 1) {
+            this.numLifes += 1;
+            this.lifeControl += 1;
+        }
+    }
+    
+    public void die() {
+        this.numLifes -= 1;
     }
     
     @Override
