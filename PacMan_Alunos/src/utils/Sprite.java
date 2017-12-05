@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import javax.swing.ImageIcon;
 
 public class Sprite implements Serializable {

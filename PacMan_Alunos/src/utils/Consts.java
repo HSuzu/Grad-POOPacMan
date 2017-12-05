@@ -13,6 +13,7 @@ public class Consts {
     public static final int NUM_CELLS_X = 20;
     public static final int NUM_CELLS_Y = 20;
     public static final int HEADER_SIZE = 2;
+    public static final int SPRITE_CELL_SIZE = 48;
     
     public static final int WALK_STEP_DEC_PLACES = 1;
     public static final double WALK_STEP = 0.1;
@@ -23,6 +24,7 @@ public class Consts {
     public static final int TIMER_FOGO = 40;
     
     public static enum Sprite {
+        //Para a escolha das imagens do PacMan:
         PACMAN_CLOSE,
         PACMAN_LEFT_0,
         PACMAN_LEFT_1,
@@ -31,7 +33,18 @@ public class Consts {
         PACMAN_TOP_0,
         PACMAN_TOP_1,
         PACMAN_BOTTOM_0,
-        PACMAN_BOTTOM_1
+        PACMAN_BOTTOM_1,
+        
+        //Para as palavras do header
+        PACMAN_LETTER_C,
+        PACMAN_LETTER_E,
+        PACMAN_LETTER_I,
+        PACMAN_LETTER_N,
+        PACMAN_LETTER_O,
+        PACMAN_LETTER_P,
+        PACMAN_LETTER_R,
+        PACMAN_LETTER_S,
+        PACMAN_LETTER_T
     }
     
     public static enum Animation {

@@ -3,19 +3,28 @@ package control;
 import elements.Skull;
 import elements.PacMan;
 import elements.Element;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontFormatException;
 import utils.Consts;
 import utils.Drawing;
 import java.awt.Graphics;
+import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.font.TextAttribute;
+import java.io.File;
 import java.io.IOException;
+import java.text.AttributedString;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+import javax.swing.text.JTextComponent;
 import utils.Animation;
 import utils.ImageCollection;
 import utils.Sprite;
@@ -29,11 +38,22 @@ import utils.Sprite;
 public class GameScreen extends javax.swing.JFrame implements KeyListener {
     private final ArrayList<Element> elemArray;
     private final GameController controller = new GameController();
-    Stage stage;
+    private Stage stage;
+    private Font font;
 
-    public GameScreen() {
+    public GameScreen() throws FontFormatException {
         Drawing.setGameScreen(this);
         initComponents();
+        
+        try {
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            if(ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("emulogic.ttf"))))
+                System.out.println("Deu");
+                font = new Font("emulogic", Font.PLAIN, 18);
+                
+        } catch (IOException ex) {
+            Logger.getLogger(GameScreen.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         this.addKeyListener(this);   /*teclado*/
         
@@ -84,6 +104,14 @@ public class GameScreen extends javax.swing.JFrame implements KeyListener {
                 }
             }
         }
+        //Printa as palavras do header:
+        
+        g2.setFont(font);
+        g2.setColor(Color.GREEN);
+        AttributedString word = new AttributedString("Score: ");
+        word.addAttribute(TextAttribute.FONT, font);
+        g2.drawString(word.getIterator(), 1*Consts.CELL_SIZE, 1*Consts.CELL_SIZE);
+        
         //Printa o fundo do mapa
         for (int i = Consts.HEADER_SIZE; i < Consts.NUM_CELLS_X; i++) {
             for (int j = 0; j < Consts.NUM_CELLS_Y; j++) {

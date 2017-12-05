@@ -18,7 +18,7 @@ public class Stage {
     private final ArrayList<Items> powerPellets;
     private final ArrayList<Items> walls;
     
-    private Sprite sprite;
+    protected Sprite sprite;
     private HashMap<Consts.Animation, Animation> animations;
     private HashMap<Consts.ImgCollection, ImageCollection> imgCollections;
     
@@ -53,6 +53,7 @@ public class Stage {
         animations = new HashMap<>();
         imgCollections = new HashMap<>();
         
+        //Animação do PacMan:
         sprite.setDefaultParameters(96, 96, 0.5f*Consts.CELL_SIZE/48.0f);
         
         sprite.newImage(Consts.Sprite.PACMAN_LEFT_0, 192, 288);
@@ -64,6 +65,18 @@ public class Stage {
         sprite.newImage(Consts.Sprite.PACMAN_BOTTOM_0, 672, 288);
         sprite.newImage(Consts.Sprite.PACMAN_BOTTOM_1, 480, 288);
         sprite.newImage(Consts.Sprite.PACMAN_CLOSE, 0, 672);
+        
+        sprite.setDefaultParameters(48, 48, 0.5f*Consts.CELL_SIZE/48.0f);
+        
+        sprite.newImage(Consts.Sprite.PACMAN_LETTER_C, 3*Consts.SPRITE_CELL_SIZE, 2*Consts.SPRITE_CELL_SIZE);
+        sprite.newImage(Consts.Sprite.PACMAN_LETTER_E, 5*Consts.SPRITE_CELL_SIZE, 2*Consts.SPRITE_CELL_SIZE);
+        sprite.newImage(Consts.Sprite.PACMAN_LETTER_I, 9*Consts.SPRITE_CELL_SIZE, 2*Consts.SPRITE_CELL_SIZE);
+        sprite.newImage(Consts.Sprite.PACMAN_LETTER_N, 14*Consts.SPRITE_CELL_SIZE, 2*Consts.SPRITE_CELL_SIZE);
+        sprite.newImage(Consts.Sprite.PACMAN_LETTER_O, 15*Consts.SPRITE_CELL_SIZE, 2*Consts.SPRITE_CELL_SIZE);
+        sprite.newImage(Consts.Sprite.PACMAN_LETTER_P, 16*Consts.SPRITE_CELL_SIZE, 2*Consts.SPRITE_CELL_SIZE);
+        sprite.newImage(Consts.Sprite.PACMAN_LETTER_R, 18*Consts.SPRITE_CELL_SIZE, 2*Consts.SPRITE_CELL_SIZE);
+        sprite.newImage(Consts.Sprite.PACMAN_LETTER_S, 19*Consts.SPRITE_CELL_SIZE, 2*Consts.SPRITE_CELL_SIZE);
+        sprite.newImage(Consts.Sprite.PACMAN_LETTER_T, 20*Consts.SPRITE_CELL_SIZE, 2*Consts.SPRITE_CELL_SIZE);
         
         Animation anLeft = new Animation(125);
         anLeft.addImage(sprite.getImage(Consts.Sprite.PACMAN_LEFT_1));
