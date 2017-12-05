@@ -81,6 +81,7 @@ public abstract class Element implements Serializable{
         this.collection = collection;
         
         imageIcon = collection.getImage(defaultImage);
+        collection.startAnimation();
     }
     
     public boolean overlap(Element elem) {

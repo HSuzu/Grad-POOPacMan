@@ -22,17 +22,26 @@ public class Consts {
     public static final int DELAY = 20;
     public static final int TIMER_FOGO = 40;
     
-    public static class Animation {
-        public enum PacMan {
-            CLOSE,
-            LEFT_0,
-            LEFT_1,
-            RIGHT_0,
-            RIGHT_1,
-            TOP_0,
-            TOP_1,
-            BOTTOM_0,
-            BOTTOM_1
-        }
+    public static enum Sprite {
+        PACMAN_CLOSE,
+        PACMAN_LEFT_0,
+        PACMAN_LEFT_1,
+        PACMAN_RIGHT_0,
+        PACMAN_RIGHT_1,
+        PACMAN_TOP_0,
+        PACMAN_TOP_1,
+        PACMAN_BOTTOM_0,
+        PACMAN_BOTTOM_1
+    }
+    
+    public static enum Animation {
+        PACMAN_LEFT,
+        PACMAN_RIGHT,
+        PACMAN_UP,
+        PACMAN_DOWN
+    }
+    
+    public static enum ImgCollection {
+        PACMAN
     }
 }
