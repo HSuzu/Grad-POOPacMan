@@ -97,7 +97,7 @@ public class GameScreen extends javax.swing.JFrame implements KeyListener {
 
         /*Cria e adiciona elementos*/
         pacman = new PacMan(ic, 2);
-        pacman.setPosition(0, 0);
+        pacman.setPosition(Consts.HEADER_SIZE, 0);
         this.addElement(pacman);
         
         Skull skull = new Skull("caveira.png");
@@ -124,7 +124,22 @@ public class GameScreen extends javax.swing.JFrame implements KeyListener {
            Trocar essa parte por uma estrutura mais bem organizada
            Utilizando a classe Stage
         */
-        for (int i = 0; i < Consts.NUM_CELLS_X; i++) {
+        
+        //Printa o fundo do header
+        for (int i = 0; i < Consts.HEADER_SIZE; i++) {
+            for (int j = 0; j < Consts.NUM_CELLS_Y; j++){
+                try {
+                    Image newImage = Toolkit.getDefaultToolkit().getImage(new java.io.File(".").getCanonicalPath() + Consts.PATH + "header.png");
+                    g2.drawImage(newImage,
+                            j * Consts.CELL_SIZE, i * Consts.CELL_SIZE, Consts.CELL_SIZE, Consts.CELL_SIZE, null);
+
+                } catch (IOException ex) {
+                    Logger.getLogger(GameScreen.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        //Printa o fundo do mapa
+        for (int i = Consts.HEADER_SIZE; i < Consts.NUM_CELLS_X; i++) {
             for (int j = 0; j < Consts.NUM_CELLS_Y; j++) {
                 try {
                     Image newImage = Toolkit.getDefaultToolkit().getImage(new java.io.File(".").getCanonicalPath() + Consts.PATH + "bricks.png");

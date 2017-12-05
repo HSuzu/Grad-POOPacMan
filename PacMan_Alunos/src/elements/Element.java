@@ -55,7 +55,7 @@ public abstract class Element implements Serializable{
     }
     
     protected Element(Sprite sprite, int defaultImage) {
-        this.pos = new Position(1, 1);
+        this.pos = new Position(1, Consts.HEADER_SIZE);
         this.isTransposable = true;
         this.isMortal = false;
 
