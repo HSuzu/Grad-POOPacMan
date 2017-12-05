@@ -35,6 +35,7 @@ public class GameController {
             eTemp = e.get(i);
             if(pacman.overlap(eTemp))
                 if(eTemp.isTransposable()) {
+                    pacman.winPoints(eTemp.getScore());
                     e.remove(eTemp);
                     i--;
                 }

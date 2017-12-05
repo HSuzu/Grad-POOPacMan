@@ -16,28 +16,21 @@ import utils.Drawing;
  */
 public class Items extends Element implements Serializable {
     private String name;
-    private int score; 
     
-    public Items(String imageName, String name, int score) {
+    public Items(String imageName, String name, int value) {
         super(imageName);
         this.name = name;
-        this.score = score;
-        
+        this.setScore(value);
     }
     
-    public Items(ImageIcon image, String name, int score) {
+    public Items(ImageIcon image, String name, int value) {
         super(image);
-
+        this.setScore(value);
         this.name = name;
-        this.score = score;
     }
     
     public String getName() {
         return this.name;
-    }
-    
-    public int getScore() {
-        return this.score;
     }
     
     @Override

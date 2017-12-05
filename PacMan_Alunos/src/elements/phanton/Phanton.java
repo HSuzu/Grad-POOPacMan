@@ -7,13 +7,17 @@ import utils.Drawing;
 import utils.Position;
 
 public abstract class Phanton extends Element {
-
-    public Phanton(String imageName) {
+    
+    public Phanton(String imageName, int value) {
         super(imageName);
+        this.isMortal = true;
+        this.isTransposable = false;
+        this.setScore(value);
     }
     
-    public Phanton(ImageIcon image) {
+    public Phanton(ImageIcon image, int value) {
         super(image);
+        this.setScore(value);
     }
     
     abstract public String name();

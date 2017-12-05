@@ -46,6 +46,7 @@ public class Consts {
     }
     
     public static enum ImgCollection {
-        PACMAN
+        PACMAN,
+        FRUITS
     }
 }

@@ -27,7 +27,8 @@ public abstract class Element implements Serializable{
     protected Position pos;
     protected boolean isTransposable; // Pode passar por cima?
     protected boolean isMortal;       // Se encostar, morre?
-
+    protected int score = 0;
+    
     protected Element() {
         this.pos = new Position(1, 1);
         this.isTransposable = true;
@@ -90,6 +91,14 @@ public abstract class Element implements Serializable{
         
         imageIcon = collection.getImage(defaultImage);
         collection.startAnimation();
+    }
+    
+    public int getScore() {
+        return this.score;
+    }
+    
+    public void setScore(int value) {
+        this.score = value;
     }
     
     public boolean overlap(Element elem) {

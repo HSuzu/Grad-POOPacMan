@@ -24,6 +24,7 @@ import utils.Sprite;
 public class Stage {
     BackgroundElement bkElem;
     
+    private final Fruit cherry;
     private final PacMan pacman;
     private final ArrayList<Phanton> phantons;
     private final ArrayList<Fruit> fruits;
@@ -42,11 +43,14 @@ public class Stage {
         
         bkElem = new BackgroundElement();
         
+        cherry = new Fruit(sprite.getImage(Consts.Sprite.CHERRY), "Cherry", 2000, 5);
         pacman = new PacMan(imgCollections.get(Consts.ImgCollection.PACMAN), Consts.Animation.PACMAN_RIGHT.ordinal());
         pacman.setPosition(Consts.HEADER_SIZE +0.5, 0);
         
         phantons = new ArrayList<>();
         fruits = new ArrayList<>();
+        cherry.setPosition(8.0, 6.5);
+        fruits.add(cherry);
                         
         pacDots = new ArrayList<>();
         powerPellets = new ArrayList<>();
@@ -157,6 +161,7 @@ public class Stage {
         icPacman.addAnimation(Consts.Animation.PACMAN_DOWN, anBottom);
         
         imgCollections.put(Consts.ImgCollection.PACMAN, icPacman);
+        
     }
     
     public void keyPressed(KeyEvent e) {
