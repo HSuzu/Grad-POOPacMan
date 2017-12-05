@@ -1,51 +1,42 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package utils;
 
 import java.util.HashMap;
 import javax.swing.ImageIcon;
 
-/**
- *
- * @author suzukawa
- */
 public class ImageCollection {
-    private final HashMap<Integer, Animation> _animations;
-    private final HashMap<Integer, ImageIcon> _staticImages;
-    private int _lastKey;
+    private final HashMap<Integer, Animation> animations;
+    private final HashMap<Integer, ImageIcon> staticImages;
+    private int lastKey;
     
     public ImageCollection() {
-        _animations = new HashMap<>();
-        _staticImages = new HashMap<>();
-        _lastKey = -1;
+        animations = new HashMap<>();
+        staticImages = new HashMap<>();
+        lastKey = -1;
     }
     
     public void addImage(int key, ImageIcon image) {
-        _staticImages.put(key, image);
+        staticImages.put(key, image);
     }
     
     public void addAnimation(int key, Animation animation) {
-        _animations.put(key, animation);
+        animations.put(key, animation);
     }
     
     public ImageIcon getImage(int key) {
-        _lastKey = key;
+        lastKey = key;
         
         ImageIcon rtrn;
-        rtrn = _staticImages.get(key);
+        rtrn = staticImages.get(key);
         
         if(rtrn == null) {
-            rtrn = _animations.get(key).getAnimation();
+            rtrn = animations.get(key).getAnimation();
         }
         
         return rtrn;
     }
     
     public void stopAnimation() {
-        Animation curr = _animations.get(_lastKey);
+        Animation curr = animations.get(lastKey);
         
         if(curr != null) {
             curr.stop();
@@ -53,7 +44,7 @@ public class ImageCollection {
     }
     
     public void startAnimation() {
-        Animation curr = _animations.get(_lastKey);
+        Animation curr = animations.get(lastKey);
         
         if(curr != null) {
             curr.start();
