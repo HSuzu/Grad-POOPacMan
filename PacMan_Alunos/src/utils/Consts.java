@@ -34,17 +34,8 @@ public class Consts {
         PACMAN_TOP_1,
         PACMAN_BOTTOM_0,
         PACMAN_BOTTOM_1,
-        
-        //Para as palavras do header
-        PACMAN_LETTER_C,
-        PACMAN_LETTER_E,
-        PACMAN_LETTER_I,
-        PACMAN_LETTER_N,
-        PACMAN_LETTER_O,
-        PACMAN_LETTER_P,
-        PACMAN_LETTER_R,
-        PACMAN_LETTER_S,
-        PACMAN_LETTER_T
+
+        CHERRY
     }
     
     public static enum Animation {

@@ -2,37 +2,64 @@ package control;
 
 import elements.*;
 import elements.phanton.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.awt.Graphics;
+import java.awt.GraphicsEnvironment;
 import java.awt.event.KeyEvent;
+import java.awt.font.TextAttribute;
+import java.io.File;
+import java.io.IOException;
+import java.text.AttributedString;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import utils.Animation;
 import utils.Consts;
 import utils.ImageCollection;
 import utils.Sprite;
 
 public class Stage {
+    BackgroundElement bkElem;
+    
     private final PacMan pacman;
     private final ArrayList<Phanton> phantons;
     private final ArrayList<Fruit> fruits;
     private final ArrayList<Items> pacDots;
     private final ArrayList<Items> powerPellets;
-    private final ArrayList<Items> walls;
+    private final ArrayList<Element> walls;
     
     protected Sprite sprite;
     private HashMap<Consts.Animation, Animation> animations;
     private HashMap<Consts.ImgCollection, ImageCollection> imgCollections;
     
-    public Stage() {
+    private Font font;
+    
+    public Stage() throws FontFormatException {
         loadImages();
         
+        bkElem = new BackgroundElement();
+        
         pacman = new PacMan(imgCollections.get(Consts.ImgCollection.PACMAN), Consts.Animation.PACMAN_RIGHT.ordinal());
-        pacman.setPosition(Consts.HEADER_SIZE, 0);
+        pacman.setPosition(Consts.HEADER_SIZE +0.5, 0);
         
         phantons = new ArrayList<>();
         fruits = new ArrayList<>();
+                        
         pacDots = new ArrayList<>();
         powerPellets = new ArrayList<>();
         walls = new ArrayList<>();
+        
+        try {
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("emulogic.ttf")));
+            font = new Font("emulogic", Font.PLAIN, 18);
+                
+        } catch (IOException ex) {
+            Logger.getLogger(GameScreen.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public ArrayList<Element> getAllElements() {
@@ -48,6 +75,28 @@ public class Stage {
         return elem;
     }
     
+    public void drawStage(Graphics g) {
+        g.setColor(Color.BLACK);
+
+        int height = Consts.HEADER_SIZE;
+        int width = Consts.NUM_CELLS_X;
+        g.fillRect(0, 0, width * Consts.CELL_SIZE, height * Consts.CELL_SIZE);
+        
+        //Mostrar pontuação:
+        AttributedString word = new AttributedString("Score: "+pacman.getScore());
+        word.addAttribute(TextAttribute.FONT, font);
+        g.setColor(Color.green);
+        g.drawString(word.getIterator(), Consts.CELL_SIZE, Consts.CELL_SIZE);
+        //Mostrar vida:
+        word = new AttributedString("Lifes: "+pacman.getNumLifes());
+        word.addAttribute(TextAttribute.FONT, font);
+        g.setColor(Color.green);
+        g.drawString(word.getIterator(), 13*Consts.CELL_SIZE, Consts.CELL_SIZE);
+        
+        //Imprimir mapa:
+        bkElem.drawBackground(g);
+    }
+    
     private void loadImages() {
         sprite = new Sprite("sprite.png");
         animations = new HashMap<>();
@@ -56,27 +105,18 @@ public class Stage {
         //Animação do PacMan:
         sprite.setDefaultParameters(96, 96, 0.5f*Consts.CELL_SIZE/48.0f);
         
-        sprite.newImage(Consts.Sprite.PACMAN_LEFT_0, 192, 288);
-        sprite.newImage(Consts.Sprite.PACMAN_LEFT_1, 0, 288);
-        sprite.newImage(Consts.Sprite.PACMAN_TOP_0, 288, 288);
-        sprite.newImage(Consts.Sprite.PACMAN_TOP_1, 96, 288);
-        sprite.newImage(Consts.Sprite.PACMAN_RIGHT_0, 576, 288);
-        sprite.newImage(Consts.Sprite.PACMAN_RIGHT_1, 384, 288);
-        sprite.newImage(Consts.Sprite.PACMAN_BOTTOM_0, 672, 288);
-        sprite.newImage(Consts.Sprite.PACMAN_BOTTOM_1, 480, 288);
-        sprite.newImage(Consts.Sprite.PACMAN_CLOSE, 0, 672);
+        sprite.newImage(Consts.Sprite.PACMAN_LEFT_0, 2, 3);
+        sprite.newImage(Consts.Sprite.PACMAN_LEFT_1, 0, 3);
+        sprite.newImage(Consts.Sprite.PACMAN_TOP_0, 3, 3);
+        sprite.newImage(Consts.Sprite.PACMAN_TOP_1, 1, 3);
+        sprite.newImage(Consts.Sprite.PACMAN_RIGHT_0, 6, 3);
+        sprite.newImage(Consts.Sprite.PACMAN_RIGHT_1, 4, 3);
+        sprite.newImage(Consts.Sprite.PACMAN_BOTTOM_0, 7, 3);
+        sprite.newImage(Consts.Sprite.PACMAN_BOTTOM_1, 5, 3);
+        sprite.newImage(Consts.Sprite.PACMAN_CLOSE, 0, 7);
+        sprite.newImage(Consts.Sprite.CHERRY, 0, 5);
         
         sprite.setDefaultParameters(48, 48, 0.5f*Consts.CELL_SIZE/48.0f);
-        
-        sprite.newImage(Consts.Sprite.PACMAN_LETTER_C, 3*Consts.SPRITE_CELL_SIZE, 2*Consts.SPRITE_CELL_SIZE);
-        sprite.newImage(Consts.Sprite.PACMAN_LETTER_E, 5*Consts.SPRITE_CELL_SIZE, 2*Consts.SPRITE_CELL_SIZE);
-        sprite.newImage(Consts.Sprite.PACMAN_LETTER_I, 9*Consts.SPRITE_CELL_SIZE, 2*Consts.SPRITE_CELL_SIZE);
-        sprite.newImage(Consts.Sprite.PACMAN_LETTER_N, 14*Consts.SPRITE_CELL_SIZE, 2*Consts.SPRITE_CELL_SIZE);
-        sprite.newImage(Consts.Sprite.PACMAN_LETTER_O, 15*Consts.SPRITE_CELL_SIZE, 2*Consts.SPRITE_CELL_SIZE);
-        sprite.newImage(Consts.Sprite.PACMAN_LETTER_P, 16*Consts.SPRITE_CELL_SIZE, 2*Consts.SPRITE_CELL_SIZE);
-        sprite.newImage(Consts.Sprite.PACMAN_LETTER_R, 18*Consts.SPRITE_CELL_SIZE, 2*Consts.SPRITE_CELL_SIZE);
-        sprite.newImage(Consts.Sprite.PACMAN_LETTER_S, 19*Consts.SPRITE_CELL_SIZE, 2*Consts.SPRITE_CELL_SIZE);
-        sprite.newImage(Consts.Sprite.PACMAN_LETTER_T, 20*Consts.SPRITE_CELL_SIZE, 2*Consts.SPRITE_CELL_SIZE);
         
         Animation anLeft = new Animation(125);
         anLeft.addImage(sprite.getImage(Consts.Sprite.PACMAN_LEFT_1));

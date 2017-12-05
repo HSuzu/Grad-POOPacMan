@@ -43,6 +43,10 @@ public class PacMan extends Element  implements Serializable {
         return this.score;
     }
     
+    public int getNumLifes() {
+        return this.numLifes;
+    }
+    
     public void winPoints(int value) {
         this.score += value;
         if(score/(10000*this.lifeControl) >= 1) {

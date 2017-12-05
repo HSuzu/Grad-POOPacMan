@@ -39,13 +39,12 @@ public class GameScreen extends javax.swing.JFrame implements KeyListener {
     private final ArrayList<Element> elemArray;
     private final GameController controller = new GameController();
     private Stage stage;
-    private Font font;
 
     public GameScreen() throws FontFormatException {
         Drawing.setGameScreen(this);
         initComponents();
         
-        try {
+       /* try {
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             if(ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("emulogic.ttf"))))
                 System.out.println("Deu");
@@ -53,7 +52,7 @@ public class GameScreen extends javax.swing.JFrame implements KeyListener {
                 
         } catch (IOException ex) {
             Logger.getLogger(GameScreen.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
         
         this.addKeyListener(this);   /*teclado*/
         
@@ -65,10 +64,6 @@ public class GameScreen extends javax.swing.JFrame implements KeyListener {
         stage = new Stage();
         
         elemArray = stage.getAllElements();
-                
-        Skull skull = new Skull("caveira.png");
-        skull.setPosition(9, 1);
-        this.addElement(skull);  
     }
     
     public final void addElement(Element elem) {
@@ -86,45 +81,9 @@ public class GameScreen extends javax.swing.JFrame implements KeyListener {
         /*Criamos um contexto grafico*/
         Graphics g2 = g.create(getInsets().right, getInsets().top, getWidth() - getInsets().left, getHeight() - getInsets().bottom);
         
-        /* DESENHA CENARIO
-           Trocar essa parte por uma estrutura mais bem organizada
-           Utilizando a classe Stage
-        */
-        
-        //Printa o fundo do header
-        for (int i = 0; i < Consts.HEADER_SIZE; i++) {
-            for (int j = 0; j < Consts.NUM_CELLS_Y; j++){
-                try {
-                    Image newImage = Toolkit.getDefaultToolkit().getImage(new java.io.File(".").getCanonicalPath() + Consts.PATH + "header.png");
-                    g2.drawImage(newImage,
-                            j * Consts.CELL_SIZE, i * Consts.CELL_SIZE, Consts.CELL_SIZE, Consts.CELL_SIZE, null);
 
-                } catch (IOException ex) {
-                    Logger.getLogger(GameScreen.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
-        //Printa as palavras do header:
-        
-        g2.setFont(font);
-        g2.setColor(Color.GREEN);
-        AttributedString word = new AttributedString("Score: ");
-        word.addAttribute(TextAttribute.FONT, font);
-        g2.drawString(word.getIterator(), 1*Consts.CELL_SIZE, 1*Consts.CELL_SIZE);
-        
-        //Printa o fundo do mapa
-        for (int i = Consts.HEADER_SIZE; i < Consts.NUM_CELLS_X; i++) {
-            for (int j = 0; j < Consts.NUM_CELLS_Y; j++) {
-                try {
-                    Image newImage = Toolkit.getDefaultToolkit().getImage(new java.io.File(".").getCanonicalPath() + Consts.PATH + "bricks.png");
-                    g2.drawImage(newImage,
-                            j * Consts.CELL_SIZE, i * Consts.CELL_SIZE, Consts.CELL_SIZE, Consts.CELL_SIZE, null);
-                    
-                } catch (IOException ex) {
-                    Logger.getLogger(GameScreen.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
+        stage.drawStage(g2);
+
         
         this.controller.drawAllElements(elemArray, g2);
         this.controller.processAllElements(elemArray);
