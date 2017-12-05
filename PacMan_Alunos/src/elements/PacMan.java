@@ -5,11 +5,7 @@
  */
 package elements;
 
-import static elements.Lolo.MOVE_DOWN;
-import static elements.Lolo.MOVE_LEFT;
-import static elements.Lolo.MOVE_RIGHT;
-import static elements.Lolo.MOVE_UP;
-import static elements.Lolo.STOP;
+
 import java.awt.Graphics;
 import java.io.Serializable;
 import javax.swing.ImageIcon;
@@ -76,7 +72,7 @@ public class PacMan extends Element  implements Serializable {
     }
     
     public void backToLastPosition(){
-        _collection.stopAnimation();
+        this.collection.stopAnimation();
         
         this.pos.comeBack();
     }
@@ -88,26 +84,39 @@ public class PacMan extends Element  implements Serializable {
     public void move() {
         switch (movDirection) {
             case MOVE_LEFT:
-                imageIcon = _collection.getImage(0);
+                imageIcon = this.collection.getImage(0);
                 if(this.moveLeft() == false) {
-                    _collection.stopAnimation();
+                    this.collection.stopAnimation();
                 } else {
-                    _collection.startAnimation();
+                   this.collection.startAnimation();
                 }
                 break;
             case MOVE_RIGHT:
-                imageIcon = _collection.getImage(2);
-                this.moveRight();
+                imageIcon = this.collection.getImage(2);
+                if(this.moveRight() == false) {
+                    this.collection.stopAnimation();
+                } else {
+                    this.collection.startAnimation();
+                }
                 break;
             case MOVE_UP:
-                imageIcon = _collection.getImage(1);
-                this.moveUp();
+                imageIcon = this.collection.getImage(1);
+                if(this.moveUp() == false) {
+                    this.collection.stopAnimation();
+                } else {
+                    this.collection.startAnimation();
+                }
                 break;
             case MOVE_DOWN:
-                imageIcon = _collection.getImage(3);
-                this.moveDown();
+                imageIcon = this.collection.getImage(3);
+                if(this.moveDown() == false) {
+                    this.collection.stopAnimation();
+                } else {
+                    this.collection.startAnimation();
+                }
                 break;
             default:
+                this.collection.stopAnimation();
                 break;
         }
     }

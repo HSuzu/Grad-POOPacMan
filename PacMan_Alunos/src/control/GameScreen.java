@@ -32,7 +32,10 @@ public class GameScreen extends javax.swing.JFrame implements KeyListener {
     private final ArrayList<Element> elemArray;
     private final GameController controller = new GameController();
     private final Sprite sp;
-    private final Animation an;
+    private final Animation anLeft;
+    private final Animation anRight;
+    private final Animation anTop;
+    private final Animation anBottom;
     private final ImageCollection ic;
 
     public GameScreen() {
@@ -58,18 +61,39 @@ public class GameScreen extends javax.swing.JFrame implements KeyListener {
         sp.newImage(Consts.Animation.PacMan.BOTTOM_1.ordinal(), 480, 288, 96, 96, 0.5f*Consts.CELL_SIZE/48.0f);
         sp.newImage(Consts.Animation.PacMan.CLOSE.ordinal(), 0, 672, 96, 96, 0.5f*Consts.CELL_SIZE/48.0f);
         
-        an = new Animation(175);
-        an.addImage(sp.getImage(Consts.Animation.PacMan.LEFT_1.ordinal()));
-        an.addImage(sp.getImage(Consts.Animation.PacMan.LEFT_0.ordinal()));
-        an.addImage(sp.getImage(Consts.Animation.PacMan.CLOSE.ordinal()));
-        an.addImage(sp.getImage(Consts.Animation.PacMan.LEFT_0.ordinal()));
-        an.start();
+        anLeft = new Animation(175);
+        anLeft.addImage(sp.getImage(Consts.Animation.PacMan.LEFT_1.ordinal()));
+        anLeft.addImage(sp.getImage(Consts.Animation.PacMan.LEFT_0.ordinal()));
+        anLeft.addImage(sp.getImage(Consts.Animation.PacMan.CLOSE.ordinal()));
+        anLeft.addImage(sp.getImage(Consts.Animation.PacMan.LEFT_0.ordinal()));
+        anLeft.start();
+        
+        anRight = new Animation(175);
+        anRight.addImage(sp.getImage(Consts.Animation.PacMan.RIGHT_1.ordinal()));
+        anRight.addImage(sp.getImage(Consts.Animation.PacMan.RIGHT_0.ordinal()));
+        anRight.addImage(sp.getImage(Consts.Animation.PacMan.CLOSE.ordinal()));
+        anRight.addImage(sp.getImage(Consts.Animation.PacMan.RIGHT_0.ordinal()));
+        anRight.start();
+        
+        anTop = new Animation(175);
+        anTop.addImage(sp.getImage(Consts.Animation.PacMan.TOP_1.ordinal()));
+        anTop.addImage(sp.getImage(Consts.Animation.PacMan.TOP_0.ordinal()));
+        anTop.addImage(sp.getImage(Consts.Animation.PacMan.CLOSE.ordinal()));
+        anTop.addImage(sp.getImage(Consts.Animation.PacMan.TOP_0.ordinal()));
+        anTop.start();        
+        
+        anBottom = new Animation(175);
+        anBottom.addImage(sp.getImage(Consts.Animation.PacMan.BOTTOM_1.ordinal()));
+        anBottom.addImage(sp.getImage(Consts.Animation.PacMan.BOTTOM_0.ordinal()));
+        anBottom.addImage(sp.getImage(Consts.Animation.PacMan.CLOSE.ordinal()));
+        anBottom.addImage(sp.getImage(Consts.Animation.PacMan.BOTTOM_0.ordinal()));
+        anBottom.start();        
         
         ic = new ImageCollection();
-        ic.addAnimation(0, an);
-        ic.addImage(1, sp.getImage(Consts.Animation.PacMan.TOP_1.ordinal()));
-        ic.addImage(2, sp.getImage(Consts.Animation.PacMan.RIGHT_1.ordinal()));
-        ic.addImage(3, sp.getImage(Consts.Animation.PacMan.BOTTOM_1.ordinal()));
+        ic.addAnimation(0, anLeft);
+        ic.addAnimation(1, anTop);
+        ic.addAnimation(2, anRight);
+        ic.addAnimation(3, anBottom);
 
         /*Cria e adiciona elementos*/
         pacman = new PacMan(ic, 2);

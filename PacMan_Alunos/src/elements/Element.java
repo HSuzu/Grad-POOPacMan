@@ -21,9 +21,9 @@ import utils.Sprite;
 public abstract class Element implements Serializable{
 
     protected ImageIcon imageIcon;
-    protected Sprite _sprite = null;
-    protected Animation _animation = null;
-    protected ImageCollection _collection = null;
+    protected Sprite sprite = null;
+    protected Animation animation = null;
+    protected ImageCollection collection = null;
     protected Position pos;
     protected boolean isTransposable; // Pode passar por cima?
     protected boolean isMortal;       // Se encostar, morre?
@@ -59,7 +59,7 @@ public abstract class Element implements Serializable{
         this.isTransposable = true;
         this.isMortal = false;
 
-        _sprite = sprite;
+        this.sprite = sprite;
         imageIcon = sprite.getImage(defaultImage);
     }
     
@@ -68,7 +68,7 @@ public abstract class Element implements Serializable{
         this.isTransposable = true;
         this.isMortal = false;
         
-        _animation = animation;
+        this.animation = animation;
         
         imageIcon = animation.getAnimation();
     }
@@ -78,7 +78,7 @@ public abstract class Element implements Serializable{
         this.isTransposable = true;
         this.isMortal = false;
         
-        _collection = collection;
+        this.collection = collection;
         
         imageIcon = collection.getImage(defaultImage);
     }
@@ -87,10 +87,7 @@ public abstract class Element implements Serializable{
         double xDist = Math.abs(elem.pos.getX() - this.pos.getX());
         double yDist = Math.abs(elem.pos.getY() - this.pos.getY());
         
-        if (xDist < 1.0 && yDist < 1.0)
-            return true;
-        else
-            return false;
+        return xDist < 1.0 && yDist < 1.0;
     }
 
     public String getStringPosition() {
