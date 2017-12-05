@@ -8,6 +8,8 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.Serializable;
 import javax.swing.ImageIcon;
+import utils.Animation;
+import utils.ImageCollection;
 import utils.Sprite;
 
 /**
@@ -20,6 +22,8 @@ public abstract class Element implements Serializable{
 
     protected ImageIcon imageIcon;
     protected Sprite _sprite = null;
+    protected Animation _animation = null;
+    protected ImageCollection _collection = null;
     protected Position pos;
     protected boolean isTransposable; // Pode passar por cima?
     protected boolean isMortal;       // Se encostar, morre?
@@ -57,6 +61,26 @@ public abstract class Element implements Serializable{
 
         _sprite = sprite;
         imageIcon = sprite.getImage(defaultImage);
+    }
+    
+    protected Element(Animation animation) {
+        this.pos = new Position(1, 1);
+        this.isTransposable = true;
+        this.isMortal = false;
+        
+        _animation = animation;
+        
+        imageIcon = animation.getAnimation();
+    }
+    
+    protected Element(ImageCollection collection, int defaultImage) {
+        this.pos = new Position(1, 1);
+        this.isTransposable = true;
+        this.isMortal = false;
+        
+        _collection = collection;
+        
+        imageIcon = collection.getImage(defaultImage);
     }
     
     public boolean overlap(Element elem) {

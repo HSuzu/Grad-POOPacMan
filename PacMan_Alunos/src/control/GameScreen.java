@@ -16,6 +16,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import utils.Animation;
+import utils.ImageCollection;
 import utils.Sprite;
 
 /**
@@ -30,6 +32,8 @@ public class GameScreen extends javax.swing.JFrame implements KeyListener {
     private final ArrayList<Element> elemArray;
     private final GameController controller = new GameController();
     private final Sprite sp;
+    private final Animation an;
+    private final ImageCollection ic;
 
     public GameScreen() {
         Drawing.setGameScreen(this);
@@ -44,13 +48,31 @@ public class GameScreen extends javax.swing.JFrame implements KeyListener {
         elemArray = new ArrayList<Element>();
         
         sp = new Sprite("sprite.png");
-        sp.newImage(0, 0, 288, 96, 96, 0.5f*Consts.CELL_SIZE/48.0f);
-        sp.newImage(1, 96, 288, 96, 96, 0.5f*Consts.CELL_SIZE/48.0f);
-        sp.newImage(2, 384, 288, 96, 96, 0.5f*Consts.CELL_SIZE/48.0f);
-        sp.newImage(3, 480, 288, 96, 96, 0.5f*Consts.CELL_SIZE/48.0f);
+        sp.newImage(Consts.Animation.PacMan.LEFT_0.ordinal(), 192, 288, 96, 96, 0.5f*Consts.CELL_SIZE/48.0f);
+        sp.newImage(Consts.Animation.PacMan.LEFT_1.ordinal(), 0, 288, 96, 96, 0.5f*Consts.CELL_SIZE/48.0f);
+        sp.newImage(Consts.Animation.PacMan.TOP_0.ordinal(), 288, 288, 96, 96, 0.5f*Consts.CELL_SIZE/48.0f);
+        sp.newImage(Consts.Animation.PacMan.TOP_1.ordinal(), 96, 288, 96, 96, 0.5f*Consts.CELL_SIZE/48.0f);
+        sp.newImage(Consts.Animation.PacMan.RIGHT_0.ordinal(), 576, 288, 96, 96, 0.5f*Consts.CELL_SIZE/48.0f);
+        sp.newImage(Consts.Animation.PacMan.RIGHT_1.ordinal(), 384, 288, 96, 96, 0.5f*Consts.CELL_SIZE/48.0f);
+        sp.newImage(Consts.Animation.PacMan.BOTTOM_0.ordinal(), 672, 288, 96, 96, 0.5f*Consts.CELL_SIZE/48.0f);
+        sp.newImage(Consts.Animation.PacMan.BOTTOM_1.ordinal(), 480, 288, 96, 96, 0.5f*Consts.CELL_SIZE/48.0f);
+        sp.newImage(Consts.Animation.PacMan.CLOSE.ordinal(), 0, 672, 96, 96, 0.5f*Consts.CELL_SIZE/48.0f);
+        
+        an = new Animation(175);
+        an.addImage(sp.getImage(Consts.Animation.PacMan.LEFT_1.ordinal()));
+        an.addImage(sp.getImage(Consts.Animation.PacMan.LEFT_0.ordinal()));
+        an.addImage(sp.getImage(Consts.Animation.PacMan.CLOSE.ordinal()));
+        an.addImage(sp.getImage(Consts.Animation.PacMan.LEFT_0.ordinal()));
+        an.start();
+        
+        ic = new ImageCollection();
+        ic.addAnimation(0, an);
+        ic.addImage(1, sp.getImage(Consts.Animation.PacMan.TOP_1.ordinal()));
+        ic.addImage(2, sp.getImage(Consts.Animation.PacMan.RIGHT_1.ordinal()));
+        ic.addImage(3, sp.getImage(Consts.Animation.PacMan.BOTTOM_1.ordinal()));
 
         /*Cria e adiciona elementos*/
-        lolo = new Lolo(sp, 2);
+        lolo = new Lolo(ic, 2);
         lolo.setPosition(0, 0);
         this.addElement(lolo);
         

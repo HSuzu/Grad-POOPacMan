@@ -4,6 +4,9 @@ import utils.Drawing;
 import java.awt.Graphics;
 import java.io.Serializable;
 import javax.swing.ImageIcon;
+import utils.Animation;
+import utils.Consts;
+import utils.ImageCollection;
 import utils.Sprite;
 
 /**
@@ -34,12 +37,22 @@ public class Lolo extends Element  implements Serializable{
         super(sprite, defaultImage);
     }
     
+    public Lolo(Animation animation) {
+        super(animation);
+    }
+    
+    public Lolo(ImageCollection collection, int defaultImage) {
+        super(collection, defaultImage);
+    }
+    
     @Override
     public void autoDraw(Graphics g){
         Drawing.draw(g, this.imageIcon, pos.getY(), pos.getX());
     }
 
     public void backToLastPosition(){
+        _collection.stopAnimation();
+        
         this.pos.comeBack();
     }
     
@@ -50,19 +63,23 @@ public class Lolo extends Element  implements Serializable{
     public void move() {
         switch (movDirection) {
             case MOVE_LEFT:
-                this.imageIcon = this._sprite.getImage(0);
-                this.moveLeft();
+                imageIcon = _collection.getImage(0);
+                if(this.moveLeft() == false) {
+                    _collection.stopAnimation();
+                } else {
+                    _collection.startAnimation();
+                }
                 break;
             case MOVE_RIGHT:
-                this.imageIcon = this._sprite.getImage(2);
+                imageIcon = _collection.getImage(2);
                 this.moveRight();
                 break;
             case MOVE_UP:
-                this.imageIcon = this._sprite.getImage(1);
+                imageIcon = _collection.getImage(1);
                 this.moveUp();
                 break;
             case MOVE_DOWN:
-                this.imageIcon = this._sprite.getImage(3);
+                imageIcon = _collection.getImage(3);
                 this.moveDown();
                 break;
             default:
