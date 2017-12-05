@@ -10,6 +10,7 @@ import java.awt.Graphics;
 import java.io.Serializable;
 import javax.swing.ImageIcon;
 import utils.Animation;
+import utils.Consts;
 import utils.Drawing;
 import utils.ImageCollection;
 import utils.Sprite;
@@ -33,19 +34,7 @@ public class PacMan extends Element  implements Serializable {
     public PacMan(String imageName) {
         super(imageName);
     }
-    
-    public PacMan(ImageIcon image) {
-        super(image);
-    }
-    
-    public PacMan(Sprite sprite, int defaultImage) {
-        super(sprite, defaultImage);
-    }
-    
-    public PacMan(Animation animation) {
-        super(animation);
-    }
-    
+        
     public PacMan(ImageCollection collection, int defaultImage) {
         super(collection, defaultImage);
     }
@@ -84,7 +73,7 @@ public class PacMan extends Element  implements Serializable {
     public void move() {
         switch (movDirection) {
             case MOVE_LEFT:
-                imageIcon = this.collection.getImage(0);
+                imageIcon = this.collection.getImage(Consts.Animation.PACMAN_LEFT);
                 if(this.moveLeft() == false) {
                     this.collection.stopAnimation();
                 } else {
@@ -92,7 +81,7 @@ public class PacMan extends Element  implements Serializable {
                 }
                 break;
             case MOVE_RIGHT:
-                imageIcon = this.collection.getImage(2);
+                imageIcon = this.collection.getImage(Consts.Animation.PACMAN_RIGHT);
                 if(this.moveRight() == false) {
                     this.collection.stopAnimation();
                 } else {
@@ -100,7 +89,7 @@ public class PacMan extends Element  implements Serializable {
                 }
                 break;
             case MOVE_UP:
-                imageIcon = this.collection.getImage(1);
+                imageIcon = this.collection.getImage(Consts.Animation.PACMAN_UP);
                 if(this.moveUp() == false) {
                     this.collection.stopAnimation();
                 } else {
@@ -108,7 +97,7 @@ public class PacMan extends Element  implements Serializable {
                 }
                 break;
             case MOVE_DOWN:
-                imageIcon = this.collection.getImage(3);
+                imageIcon = this.collection.getImage(Consts.Animation.PACMAN_DOWN);
                 if(this.moveDown() == false) {
                     this.collection.stopAnimation();
                 } else {

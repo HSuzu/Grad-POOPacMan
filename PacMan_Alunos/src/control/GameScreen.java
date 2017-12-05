@@ -27,16 +27,9 @@ import utils.Sprite;
  * Baseado em material do Prof. Jose Fernando Junior
  */
 public class GameScreen extends javax.swing.JFrame implements KeyListener {
-    
-    private final PacMan pacman;
     private final ArrayList<Element> elemArray;
     private final GameController controller = new GameController();
-    private final Sprite sp;
-    private final Animation anLeft;
-    private final Animation anRight;
-    private final Animation anTop;
-    private final Animation anBottom;
-    private final ImageCollection ic;
+    Stage stage;
 
     public GameScreen() {
         Drawing.setGameScreen(this);
@@ -48,58 +41,10 @@ public class GameScreen extends javax.swing.JFrame implements KeyListener {
         this.setSize(Consts.NUM_CELLS_X * Consts.CELL_SIZE + getInsets().left + getInsets().right,
                      Consts.NUM_CELLS_Y * Consts.CELL_SIZE + getInsets().top + getInsets().bottom);
 
-        elemArray = new ArrayList<Element>();
+        stage = new Stage();
         
-        sp = new Sprite("sprite.png");
-        sp.newImage(Consts.Animation.PacMan.LEFT_0.ordinal(), 192, 288, 96, 96, 0.5f*Consts.CELL_SIZE/48.0f);
-        sp.newImage(Consts.Animation.PacMan.LEFT_1.ordinal(), 0, 288, 96, 96, 0.5f*Consts.CELL_SIZE/48.0f);
-        sp.newImage(Consts.Animation.PacMan.TOP_0.ordinal(), 288, 288, 96, 96, 0.5f*Consts.CELL_SIZE/48.0f);
-        sp.newImage(Consts.Animation.PacMan.TOP_1.ordinal(), 96, 288, 96, 96, 0.5f*Consts.CELL_SIZE/48.0f);
-        sp.newImage(Consts.Animation.PacMan.RIGHT_0.ordinal(), 576, 288, 96, 96, 0.5f*Consts.CELL_SIZE/48.0f);
-        sp.newImage(Consts.Animation.PacMan.RIGHT_1.ordinal(), 384, 288, 96, 96, 0.5f*Consts.CELL_SIZE/48.0f);
-        sp.newImage(Consts.Animation.PacMan.BOTTOM_0.ordinal(), 672, 288, 96, 96, 0.5f*Consts.CELL_SIZE/48.0f);
-        sp.newImage(Consts.Animation.PacMan.BOTTOM_1.ordinal(), 480, 288, 96, 96, 0.5f*Consts.CELL_SIZE/48.0f);
-        sp.newImage(Consts.Animation.PacMan.CLOSE.ordinal(), 0, 672, 96, 96, 0.5f*Consts.CELL_SIZE/48.0f);
-        
-        anLeft = new Animation(175);
-        anLeft.addImage(sp.getImage(Consts.Animation.PacMan.LEFT_1.ordinal()));
-        anLeft.addImage(sp.getImage(Consts.Animation.PacMan.LEFT_0.ordinal()));
-        anLeft.addImage(sp.getImage(Consts.Animation.PacMan.CLOSE.ordinal()));
-        anLeft.addImage(sp.getImage(Consts.Animation.PacMan.LEFT_0.ordinal()));
-        anLeft.start();
-        
-        anRight = new Animation(175);
-        anRight.addImage(sp.getImage(Consts.Animation.PacMan.RIGHT_1.ordinal()));
-        anRight.addImage(sp.getImage(Consts.Animation.PacMan.RIGHT_0.ordinal()));
-        anRight.addImage(sp.getImage(Consts.Animation.PacMan.CLOSE.ordinal()));
-        anRight.addImage(sp.getImage(Consts.Animation.PacMan.RIGHT_0.ordinal()));
-        anRight.start();
-        
-        anTop = new Animation(175);
-        anTop.addImage(sp.getImage(Consts.Animation.PacMan.TOP_1.ordinal()));
-        anTop.addImage(sp.getImage(Consts.Animation.PacMan.TOP_0.ordinal()));
-        anTop.addImage(sp.getImage(Consts.Animation.PacMan.CLOSE.ordinal()));
-        anTop.addImage(sp.getImage(Consts.Animation.PacMan.TOP_0.ordinal()));
-        anTop.start();        
-        
-        anBottom = new Animation(175);
-        anBottom.addImage(sp.getImage(Consts.Animation.PacMan.BOTTOM_1.ordinal()));
-        anBottom.addImage(sp.getImage(Consts.Animation.PacMan.BOTTOM_0.ordinal()));
-        anBottom.addImage(sp.getImage(Consts.Animation.PacMan.CLOSE.ordinal()));
-        anBottom.addImage(sp.getImage(Consts.Animation.PacMan.BOTTOM_0.ordinal()));
-        anBottom.start();        
-        
-        ic = new ImageCollection();
-        ic.addAnimation(0, anLeft);
-        ic.addAnimation(1, anTop);
-        ic.addAnimation(2, anRight);
-        ic.addAnimation(3, anBottom);
-
-        /*Cria e adiciona elementos*/
-        pacman = new PacMan(ic, 2);
-        pacman.setPosition(0, 0);
-        this.addElement(pacman);
-        
+        elemArray = stage.getAllElements();
+                
         Skull skull = new Skull("caveira.png");
         skull.setPosition(9, 1);
         this.addElement(skull);  
@@ -160,19 +105,7 @@ public class GameScreen extends javax.swing.JFrame implements KeyListener {
     }
     
     public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_UP) {
-            pacman.setMovDirection(PacMan.MOVE_UP);
-        } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            pacman.setMovDirection(PacMan.MOVE_DOWN);
-        } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            pacman.setMovDirection(PacMan.MOVE_LEFT);
-        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            pacman.setMovDirection(PacMan.MOVE_RIGHT);
-        } else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-            pacman.setMovDirection(PacMan.STOP);
-        }
-        
-        //repaint(); /*invoca o paint imediatamente, sem aguardar o refresh*/
+        stage.keyPressed(e);
     }
     
     /**

@@ -21,6 +21,10 @@ public class ImageCollection {
     public void addAnimation(int key, Animation animation) {
         animations.put(key, animation);
     }
+
+    public void addAnimation(Consts.Animation key, Animation animation) {
+        animations.put(key.ordinal(), animation);
+    }
     
     public ImageIcon getImage(int key) {
         lastKey = key;
@@ -33,6 +37,12 @@ public class ImageCollection {
         }
         
         return rtrn;
+    }
+    
+    public ImageIcon getImage(Consts.Animation key) {
+        lastKey = key.ordinal();
+        
+        return animations.get(key.ordinal()).getAnimation();
     }
     
     public void stopAnimation() {
