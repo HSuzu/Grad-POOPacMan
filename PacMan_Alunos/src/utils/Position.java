@@ -30,12 +30,12 @@ public class Position implements Serializable {
         x = (double)Math.round(x * factor) / factor;
         y = (double)Math.round(y * factor) / factor;
         
-        if(x < 0 || x > utils.Consts.NUM_CELLS-1)
+        if(x < 0 || x > utils.Consts.NUM_CELLS_X-1)
             return false;
         previousX = this.x;
         this.x = x;
         
-        if(y < 0 || y > utils.Consts.NUM_CELLS-1)
+        if(y < 0 || y > utils.Consts.NUM_CELLS_Y-1)
             return false;
         previousY = this.y;
         this.y = y;
