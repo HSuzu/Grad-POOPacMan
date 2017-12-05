@@ -1,7 +1,9 @@
 package control;
 
 import elements.Element;
+import elements.Items;
 import elements.PacMan;
+import elements.phanton.Phanton;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
@@ -34,9 +36,19 @@ public class GameController {
         for(int i = 1; i < e.size(); i++){
             eTemp = e.get(i);
             if(pacman.overlap(eTemp))
-                if(eTemp.isTransposable()) {
-                    e.remove(eTemp);
-                    i--;
+                if(eTemp instanceof Items) {
+                    // TODO
+                } else if(eTemp instanceof Phanton) {
+                    if(((Phanton) eTemp).state() == Phanton.State.DEADLY) {
+                        // TODO
+                    } else {
+                        // TODO
+                    }
+                } else {
+                    if(eTemp.isTransposable()) {
+                        e.remove(eTemp);
+                        i--;
+                    }
                 }
         }
     }

@@ -7,13 +7,31 @@ import utils.Drawing;
 import utils.Position;
 
 public abstract class Phanton extends Element {
+    public static enum State {
+        DEADLY,
+        EDIBLE
+    }
+    
+    private State state;
 
     public Phanton(String imageName) {
         super(imageName);
+        
+        state = State.DEADLY;
     }
     
     public Phanton(ImageIcon image) {
         super(image);
+        
+        state = State.DEADLY;
+    }
+    
+    public void setState(State state) {
+        this.state = state;
+    }
+    
+    public State state() {
+        return state;
     }
     
     abstract public String name();

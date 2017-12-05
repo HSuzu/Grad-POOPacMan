@@ -47,10 +47,16 @@ public class Stage {
         
         phantons = new ArrayList<>();
         fruits = new ArrayList<>();
+        
+        Fruit cherry = new Fruit(sprite.getImage(Consts.Sprite.CHERRY), "Cherry", 100, 20000);
+        cherry.setPosition(10.0, 10.0);
+        fruits.add(cherry);
                         
         pacDots = new ArrayList<>();
         powerPellets = new ArrayList<>();
         walls = new ArrayList<>();
+        
+        
         
         try {
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -102,9 +108,39 @@ public class Stage {
         animations = new HashMap<>();
         imgCollections = new HashMap<>();
         
-        //Animação do PacMan:
-        sprite.setDefaultParameters(96, 96, 0.5f*Consts.CELL_SIZE/48.0f);
+        sprite.setDefaultParameters(96, 96, Consts.CELL_SIZE/96.0f);
+
+        sprite.newImage(Consts.Sprite.CHERRY, 0, 5);
+        sprite.newImage(Consts.Sprite.STRAWBERRY, 1, 5);
         
+        ImageCollection icFruit = new ImageCollection();
+        icFruit.addImage(Consts.Sprite.CHERRY, sprite.getImage(Consts.Sprite.CHERRY));
+        icFruit.addImage(Consts.Sprite.STRAWBERRY, sprite.getImage(Consts.Sprite.STRAWBERRY));
+        
+        Fruit.addImages(icFruit);
+        
+        sprite.newImage(Consts.Sprite.WALL_HORIZONTAL, 0, 4);
+        sprite.newImage(Consts.Sprite.WALL_VERTICAL, 1, 4);
+        
+        ImageCollection icWall = new ImageCollection();
+        icWall.addImage(Consts.Sprite.WALL_HORIZONTAL, sprite.getImage(Consts.Sprite.WALL_HORIZONTAL));
+        icWall.addImage(Consts.Sprite.WALL_VERTICAL, sprite.getImage(Consts.Sprite.WALL_VERTICAL));
+
+        Wall.addImages(icWall);
+        
+        sprite.setDefaultParameters(48, 48, Consts.CELL_SIZE/48.0f);
+
+        sprite.newImage(Consts.Sprite.POWER_PELLETS, 20, 0);
+        sprite.newImage(Consts.Sprite.PACDOTS, 16, 0);
+        
+        ImageCollection icItems = new ImageCollection();
+        icItems.addImage(Consts.Sprite.POWER_PELLETS, sprite.getImage(Consts.Sprite.POWER_PELLETS));
+        icItems.addImage(Consts.Sprite.PACDOTS, sprite.getImage(Consts.Sprite.PACDOTS));
+        
+        Items.addImages(icItems);
+        
+        //Animação do PacMan:
+        sprite.setDefaultParameters(96, 96, Consts.CELL_SIZE/96.0f);
         sprite.newImage(Consts.Sprite.PACMAN_LEFT_0, 2, 3);
         sprite.newImage(Consts.Sprite.PACMAN_LEFT_1, 0, 3);
         sprite.newImage(Consts.Sprite.PACMAN_TOP_0, 3, 3);
@@ -114,9 +150,6 @@ public class Stage {
         sprite.newImage(Consts.Sprite.PACMAN_BOTTOM_0, 7, 3);
         sprite.newImage(Consts.Sprite.PACMAN_BOTTOM_1, 5, 3);
         sprite.newImage(Consts.Sprite.PACMAN_CLOSE, 0, 7);
-        sprite.newImage(Consts.Sprite.CHERRY, 0, 5);
-        
-        sprite.setDefaultParameters(48, 48, 0.5f*Consts.CELL_SIZE/48.0f);
         
         Animation anLeft = new Animation(125);
         anLeft.addImage(sprite.getImage(Consts.Sprite.PACMAN_LEFT_1));

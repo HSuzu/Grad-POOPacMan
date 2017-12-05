@@ -9,12 +9,18 @@ import java.awt.Graphics;
 import java.io.Serializable;
 import javax.swing.ImageIcon;
 import utils.Drawing;
+import utils.ImageCollection;
 
 /**
  *
  * @author aribeiro
  */
 public class Items extends Element implements Serializable {
+    private static ImageCollection items;
+    public static void addImages(ImageCollection imgs) {
+        items = imgs;
+    }
+
     private String name;
     private int score; 
     

@@ -35,7 +35,14 @@ public class Consts {
         PACMAN_BOTTOM_0,
         PACMAN_BOTTOM_1,
 
-        CHERRY
+        CHERRY,
+        STRAWBERRY,
+        
+        WALL_VERTICAL,
+        WALL_HORIZONTAL,
+        
+        POWER_PELLETS,
+        PACDOTS
     }
     
     public static enum Animation {
@@ -46,6 +53,8 @@ public class Consts {
     }
     
     public static enum ImgCollection {
-        PACMAN
+        PACMAN,
+        FRUIT,
+        WALL
     }
 }

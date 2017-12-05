@@ -2,10 +2,16 @@ package elements;
 
 import java.awt.Graphics;
 import javax.swing.ImageIcon;
+import utils.ImageCollection;
 
 public class Wall extends Element {
     public static enum Type {
         I
+    }
+    
+    private static ImageCollection walls;
+    public static void addImages(ImageCollection imgs) {
+        walls = imgs;
     }
     
     Type type;

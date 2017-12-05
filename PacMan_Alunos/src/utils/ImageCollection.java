@@ -17,6 +17,10 @@ public class ImageCollection {
     public void addImage(int key, ImageIcon image) {
         staticImages.put(key, image);
     }
+
+    public void addImage(Consts.Sprite key, ImageIcon image) {
+        staticImages.put(key.ordinal(), image);
+    }
     
     public void addAnimation(int key, Animation animation) {
         animations.put(key, animation);
