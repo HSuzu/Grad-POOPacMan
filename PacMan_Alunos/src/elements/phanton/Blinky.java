@@ -12,6 +12,11 @@ public class Blinky extends Phanton {
     public Blinky(ImageIcon image) {
         super(image);
     }
+    
+    @Override
+    public String name() {
+        return "Blinky";
+    }
 
     @Override
     protected void navigation(Position PacManPosition) {

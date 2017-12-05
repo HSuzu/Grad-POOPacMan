@@ -16,6 +16,8 @@ public abstract class Phanton extends Element {
         super(image);
     }
     
+    abstract public String name();
+    
     abstract protected void navigation(Position PacManPosition);
 
     @Override

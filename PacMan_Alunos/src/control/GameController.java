@@ -22,6 +22,8 @@ public class GameController {
             return;
         
         PacMan pacman = (PacMan)e.get(0);
+        pacman.move();
+
         if (!isValidPosition(e, pacman)) {
             pacman.backToLastPosition();
             pacman.setMovDirection(PacMan.STOP);
@@ -32,11 +34,11 @@ public class GameController {
         for(int i = 1; i < e.size(); i++){
             eTemp = e.get(i);
             if(pacman.overlap(eTemp))
-                if(eTemp.isTransposable())
+                if(eTemp.isTransposable()) {
                     e.remove(eTemp);
+                    i--;
+                }
         }
-        
-        pacman.move();
     }
     public boolean isValidPosition(ArrayList<Element> elemArray, Element elem){
         Element elemAux;

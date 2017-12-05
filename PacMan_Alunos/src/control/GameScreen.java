@@ -115,7 +115,7 @@ public class GameScreen extends javax.swing.JFrame implements KeyListener {
         
         this.controller.drawAllElements(elemArray, g2);
         this.controller.processAllElements(elemArray);
-        this.setTitle("-> Cell: " + pacman.getStringPosition());
+        this.setTitle("PacMan");
         
         g.dispose();
         g2.dispose();

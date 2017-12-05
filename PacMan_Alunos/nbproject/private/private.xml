@@ -3,11 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/suzukawa/Files/Grad/POO/Grad-POOPacMan/PacMan_Alunos/src/elements/Phanton.java</file>
             <file>file:/home/suzukawa/Files/Grad/POO/Grad-POOPacMan/PacMan_Alunos/src/elements/Element.java</file>
             <file>file:/home/suzukawa/Files/Grad/POO/Grad-POOPacMan/PacMan_Alunos/src/elements/Fire.java</file>
-            <file>file:/home/suzukawa/Files/Grad/POO/Grad-POOPacMan/PacMan_Alunos/src/elements/Skull.java</file>
-            <file>file:/home/suzukawa/Files/Grad/POO/Grad-POOPacMan/PacMan_Alunos/src/elements/Lolo.java</file>
+            <file>file:/home/suzukawa/Files/Grad/POO/Grad-POOPacMan/PacMan_Alunos/src/control/Main.java</file>
+            <file>file:/home/suzukawa/Files/Grad/POO/Grad-POOPacMan/PacMan_Alunos/src/control/GameScreen.java</file>
+            <file>file:/home/suzukawa/Files/Grad/POO/Grad-POOPacMan/PacMan_Alunos/src/control/GameController.java</file>
         </group>
     </open-files>
 </project-private>

@@ -75,7 +75,7 @@ public class PacMan extends Element  implements Serializable {
         Drawing.draw(g, this.imageIcon, pos.getY(), pos.getX());
     }
     
-       public void backToLastPosition(){
+    public void backToLastPosition(){
         _collection.stopAnimation();
         
         this.pos.comeBack();
