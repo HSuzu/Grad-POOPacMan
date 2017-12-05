@@ -37,15 +37,15 @@ public class Fruit extends Items implements Serializable{
             }, time);
     }
 
-    public Fruit(String imageName, String name, int score, int time) {
-      super(imageName, name, score);
+    public Fruit(String imageName, String name, int value, int time) {
+      super(imageName, name, value);
       this.time = time;
       
       setTimer();
     }
 
-    public Fruit(ImageIcon image, String name, int score, int time) {
-      super(image, name, score);
+    public Fruit(ImageIcon image, String name, int value, int time) {
+      super(image, name, value);
       this.time = time;
 
       setTimer();

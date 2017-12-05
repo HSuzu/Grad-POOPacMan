@@ -35,7 +35,7 @@ public class GameController {
         Element eTemp;
         for(int i = 1; i < e.size(); i++){
             eTemp = e.get(i);
-            if(pacman.overlap(eTemp))
+            if(pacman.overlap(eTemp)) {
                 if(eTemp instanceof Items) {
                     // TODO
                 } else if(eTemp instanceof Phanton) {
@@ -46,10 +46,12 @@ public class GameController {
                     }
                 } else {
                     if(eTemp.isTransposable()) {
+                        pacman.winPoints(eTemp.getScore());
                         e.remove(eTemp);
                         i--;
                     }
                 }
+            }
         }
     }
     public boolean isValidPosition(ArrayList<Element> elemArray, Element elem){

@@ -14,15 +14,18 @@ public abstract class Phanton extends Element {
     
     private State state;
 
-    public Phanton(String imageName) {
+    public Phanton(String imageName, int value) {
         super(imageName);
         
+        this.isTransposable = false;
+        this.setScore(value);
         state = State.DEADLY;
     }
     
-    public Phanton(ImageIcon image) {
+    public Phanton(ImageIcon image, int value) {
         super(image);
         
+        this.setScore(value);
         state = State.DEADLY;
     }
     

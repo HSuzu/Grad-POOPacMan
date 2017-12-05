@@ -47,7 +47,6 @@ public class Stage {
         
         phantons = new ArrayList<>();
         fruits = new ArrayList<>();
-        
         Fruit cherry = new Fruit(sprite.getImage(Consts.Sprite.CHERRY), "Cherry", 100, 20000);
         cherry.setPosition(10.0, 10.0);
         fruits.add(cherry);
@@ -190,6 +189,7 @@ public class Stage {
         icPacman.addAnimation(Consts.Animation.PACMAN_DOWN, anBottom);
         
         imgCollections.put(Consts.ImgCollection.PACMAN, icPacman);
+        
     }
     
     public void keyPressed(KeyEvent e) {
