@@ -42,8 +42,8 @@ public class GameScreen extends javax.swing.JFrame implements KeyListener {
         this.addKeyListener(this);   /*teclado*/
         
         /*Cria a janela do tamanho do tabuleiro + insets (bordas) da janela*/
-        this.setSize(Consts.NUM_CELLS * Consts.CELL_SIZE + getInsets().left + getInsets().right,
-                     Consts.NUM_CELLS * Consts.CELL_SIZE + getInsets().top + getInsets().bottom);
+        this.setSize(Consts.NUM_CELLS_X * Consts.CELL_SIZE + getInsets().left + getInsets().right,
+                     Consts.NUM_CELLS_Y * Consts.CELL_SIZE + getInsets().top + getInsets().bottom);
 
         elemArray = new ArrayList<Element>();
         
@@ -100,8 +100,8 @@ public class GameScreen extends javax.swing.JFrame implements KeyListener {
            Trocar essa parte por uma estrutura mais bem organizada
            Utilizando a classe Stage
         */
-        for (int i = 0; i < Consts.NUM_CELLS; i++) {
-            for (int j = 0; j < Consts.NUM_CELLS; j++) {
+        for (int i = 0; i < Consts.NUM_CELLS_X; i++) {
+            for (int j = 0; j < Consts.NUM_CELLS_Y; j++) {
                 try {
                     Image newImage = Toolkit.getDefaultToolkit().getImage(new java.io.File(".").getCanonicalPath() + Consts.PATH + "bricks.png");
                     g2.drawImage(newImage,
