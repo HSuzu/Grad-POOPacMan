@@ -37,7 +37,7 @@ public class Stage {
     
     private Font font;
     
-    public Stage() throws FontFormatException {
+    public Stage() {
         loadImages();
         
         bkElem = new BackgroundElement();
@@ -57,7 +57,7 @@ public class Stage {
             ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("emulogic.ttf")));
             font = new Font("emulogic", Font.PLAIN, 18);
                 
-        } catch (IOException ex) {
+        } catch (IOException | FontFormatException ex) {
             Logger.getLogger(GameScreen.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

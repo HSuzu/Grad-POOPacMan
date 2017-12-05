@@ -1,33 +1,14 @@
 package control;
 
-import elements.Skull;
-import elements.PacMan;
 import elements.Element;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontFormatException;
 import utils.Consts;
 import utils.Drawing;
 import java.awt.Graphics;
-import java.awt.GraphicsEnvironment;
-import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.font.TextAttribute;
-import java.io.File;
-import java.io.IOException;
-import java.text.AttributedString;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.ImageIcon;
-import javax.swing.text.JTextComponent;
-import utils.Animation;
-import utils.ImageCollection;
-import utils.Sprite;
 
 /**
  * Projeto de POO 2017
@@ -40,7 +21,7 @@ public class GameScreen extends javax.swing.JFrame implements KeyListener {
     private final GameController controller = new GameController();
     private Stage stage;
 
-    public GameScreen() throws FontFormatException {
+    public GameScreen() {
         Drawing.setGameScreen(this);
         initComponents();
         

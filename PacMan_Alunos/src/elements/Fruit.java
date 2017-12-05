@@ -5,7 +5,12 @@
  */
 package elements;
 
+import java.awt.Graphics;
 import java.io.Serializable;
+import java.util.Timer;
+import java.util.TimerTask;
+import javax.swing.ImageIcon;
+import utils.Drawing;
 
 /**
  *
@@ -13,13 +18,35 @@ import java.io.Serializable;
  */
 public class Fruit extends Items implements Serializable{
     private int time;
+    private Timer timer;
     
+    private void setTimer() {
+        Fruit self = this;
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    Drawing.getGameScreen().removeElement(self);
+                }
+            }, time);
+    }
+
     public Fruit(String imageName, String name, int score, int time) {
       super(imageName, name, score);
       this.time = time;
+      
+      setTimer();
+    }
+
+    public Fruit(ImageIcon image, String name, int score, int time) {
+      super(image, name, score);
+      this.time = time;
+
+      setTimer();
     }
     
     public int getTime() {
         return this.time;
     }
+    
 }
