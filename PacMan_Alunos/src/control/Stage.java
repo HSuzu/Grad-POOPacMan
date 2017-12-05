@@ -2,6 +2,8 @@ package control;
 
 import elements.*;
 import elements.phanton.*;
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,12 +13,14 @@ import utils.ImageCollection;
 import utils.Sprite;
 
 public class Stage {
+    BackgroundElement bkElem;
+    
     private final PacMan pacman;
     private final ArrayList<Phanton> phantons;
     private final ArrayList<Fruit> fruits;
     private final ArrayList<Items> pacDots;
     private final ArrayList<Items> powerPellets;
-    private final ArrayList<Items> walls;
+    private final ArrayList<Element> walls;
     
     private Sprite sprite;
     private HashMap<Consts.Animation, Animation> animations;
@@ -25,11 +29,14 @@ public class Stage {
     public Stage() {
         loadImages();
         
+        bkElem = new BackgroundElement();
+        
         pacman = new PacMan(imgCollections.get(Consts.ImgCollection.PACMAN), Consts.Animation.PACMAN_RIGHT.ordinal());
-        pacman.setPosition(Consts.HEADER_SIZE, 0);
+        pacman.setPosition(Consts.HEADER_SIZE +0.5, 0);
         
         phantons = new ArrayList<>();
         fruits = new ArrayList<>();
+                        
         pacDots = new ArrayList<>();
         powerPellets = new ArrayList<>();
         walls = new ArrayList<>();
@@ -48,6 +55,16 @@ public class Stage {
         return elem;
     }
     
+    public void drawStage(Graphics g) {
+        g.setColor(Color.BLACK);
+
+        int height = Consts.HEADER_SIZE;
+        int width = Consts.NUM_CELLS_X;
+        g.fillRect(0, 0, width * Consts.CELL_SIZE, height * Consts.CELL_SIZE);
+        
+        bkElem.drawBackground(g);
+    }
+    
     private void loadImages() {
         sprite = new Sprite("sprite.png");
         animations = new HashMap<>();
@@ -55,15 +72,16 @@ public class Stage {
         
         sprite.setDefaultParameters(96, 96, 0.5f*Consts.CELL_SIZE/48.0f);
         
-        sprite.newImage(Consts.Sprite.PACMAN_LEFT_0, 192, 288);
-        sprite.newImage(Consts.Sprite.PACMAN_LEFT_1, 0, 288);
-        sprite.newImage(Consts.Sprite.PACMAN_TOP_0, 288, 288);
-        sprite.newImage(Consts.Sprite.PACMAN_TOP_1, 96, 288);
-        sprite.newImage(Consts.Sprite.PACMAN_RIGHT_0, 576, 288);
-        sprite.newImage(Consts.Sprite.PACMAN_RIGHT_1, 384, 288);
-        sprite.newImage(Consts.Sprite.PACMAN_BOTTOM_0, 672, 288);
-        sprite.newImage(Consts.Sprite.PACMAN_BOTTOM_1, 480, 288);
-        sprite.newImage(Consts.Sprite.PACMAN_CLOSE, 0, 672);
+        sprite.newImage(Consts.Sprite.PACMAN_LEFT_0, 2, 3);
+        sprite.newImage(Consts.Sprite.PACMAN_LEFT_1, 0, 3);
+        sprite.newImage(Consts.Sprite.PACMAN_TOP_0, 3, 3);
+        sprite.newImage(Consts.Sprite.PACMAN_TOP_1, 1, 3);
+        sprite.newImage(Consts.Sprite.PACMAN_RIGHT_0, 6, 3);
+        sprite.newImage(Consts.Sprite.PACMAN_RIGHT_1, 4, 3);
+        sprite.newImage(Consts.Sprite.PACMAN_BOTTOM_0, 7, 3);
+        sprite.newImage(Consts.Sprite.PACMAN_BOTTOM_1, 5, 3);
+        sprite.newImage(Consts.Sprite.PACMAN_CLOSE, 0, 7);
+        sprite.newImage(Consts.Sprite.CHERRY, 0, 5);
         
         Animation anLeft = new Animation(125);
         anLeft.addImage(sprite.getImage(Consts.Sprite.PACMAN_LEFT_1));

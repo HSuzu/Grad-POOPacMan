@@ -62,7 +62,7 @@ public class Sprite implements Serializable {
     }
     
     public void newImage(Consts.Sprite key, int x, int y) {
-        newImage(key.ordinal(), x, y, iconWidth, iconHeight, defaultResizeFactor);
+        newImage(key.ordinal(), x*iconWidth, y*iconHeight, iconWidth, iconHeight, defaultResizeFactor);
     }
     
     public ImageIcon getImage(int key) {

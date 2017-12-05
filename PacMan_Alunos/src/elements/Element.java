@@ -28,6 +28,14 @@ public abstract class Element implements Serializable{
     protected boolean isTransposable; // Pode passar por cima?
     protected boolean isMortal;       // Se encostar, morre?
 
+    protected Element() {
+        this.pos = new Position(1, 1);
+        this.isTransposable = true;
+        this.isMortal = false;
+        
+        imageIcon = new ImageIcon();
+    }
+    
     protected Element(String imageName) {
         this.pos = new Position(1, 1);
         this.isTransposable = true;

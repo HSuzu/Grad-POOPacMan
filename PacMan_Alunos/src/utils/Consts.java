@@ -31,7 +31,8 @@ public class Consts {
         PACMAN_TOP_0,
         PACMAN_TOP_1,
         PACMAN_BOTTOM_0,
-        PACMAN_BOTTOM_1
+        PACMAN_BOTTOM_1,
+        CHERRY
     }
     
     public static enum Animation {

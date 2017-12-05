@@ -7,6 +7,7 @@ package elements;
 
 import java.awt.Graphics;
 import java.io.Serializable;
+import javax.swing.ImageIcon;
 import utils.Drawing;
 
 /**
@@ -22,6 +23,13 @@ public class Items extends Element implements Serializable {
         this.name = name;
         this.score = score;
         
+    }
+    
+    public Items(ImageIcon image, String name, int score) {
+        super(image);
+
+        this.name = name;
+        this.score = score;
     }
     
     public String getName() {
