@@ -3,6 +3,7 @@ package control;
 import elements.Element;
 import elements.Items;
 import elements.PacMan;
+import elements.Wall;
 import elements.phanton.Phanton;
 import java.awt.Graphics;
 import java.util.ArrayList;
@@ -15,8 +16,14 @@ import java.util.Iterator;
  * Baseado em material do Prof. Jose Fernando Junior
  */
 public class GameController {
+    private Stage stage;
+    
+    public void addStage(Stage stage) {
+        this.stage = stage;
+    }
+    
     public void drawAllElements(ArrayList<Element> elemArray, Graphics g){
-        for(int i=0; i<elemArray.size(); i++){
+        for(int i=elemArray.size()-1; i >= 0; i--){
             elemArray.get(i).autoDraw(g);
         }
     }
@@ -40,7 +47,13 @@ public class GameController {
         while(it.hasNext()) {
             eTemp = it.next();
             
-            if(pacman.overlap(eTemp)) {
+            float err = 0.3f;
+            if(eTemp instanceof Wall) {
+                err = 1.0f;
+            }
+            
+            if(pacman.overlap(eTemp, err)) {
+                stage.overlapListener(eTemp);
                 if(eTemp instanceof Phanton) {
                     if(((Phanton) eTemp).state() == Phanton.State.DEADLY) {
                         // TODO
@@ -62,7 +75,7 @@ public class GameController {
         for(int i = 1; i < elemArray.size(); i++){
             elemAux = elemArray.get(i);            
             if(!elemAux.isTransposable())
-                if(elemAux.overlap(elem))
+                if(elemAux.overlap(elem, 1.0f))
                     return false;
         }        
         return true;

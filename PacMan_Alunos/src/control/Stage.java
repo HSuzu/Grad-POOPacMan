@@ -11,7 +11,12 @@ import java.io.IOException;
 import java.text.AttributedString;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import utils.Animation;
+import utils.AudioControl;
 import utils.Consts;
 import utils.ImageCollection;
 import utils.Sprite;
@@ -19,6 +24,7 @@ import utils.Sprite;
 public class Stage extends KeyAdapter {
     private BackgroundElement bkElem;
     
+    AudioControl audio;
     
     private final PacMan pacman;
     private final ArrayList<Phanton> phantons;
@@ -36,6 +42,12 @@ public class Stage extends KeyAdapter {
     public Stage() {
         loadImages();
         
+        try {
+            audio = new AudioControl();
+        } catch (LineUnavailableException ex) {
+            System.out.println(ex.getMessage());
+        }
+
         
         bkElem = new BackgroundElement();
         
@@ -62,12 +74,12 @@ public class Stage extends KeyAdapter {
                         pacman.setPosition(i, j);
                     } break;
                     case 'o': {
-                        Items powerPellet = new Items(sprite.getImage(Consts.Sprite.POWER_PELLETS), "Power Pellets", 100);
+                        Items powerPellet = new Items(sprite.getImage(Consts.Sprite.POWER_PELLETS), "Dots", 100);
                         powerPellet.setPosition(i, j);
                         powerPellets.add(powerPellet);
                     } break;
                     case '.': {
-                        Items pacDot = new Items(sprite.getImage(Consts.Sprite.PACDOTS), "PacDots", 100);
+                        Items pacDot = new Items(sprite.getImage(Consts.Sprite.PACDOTS), "Dots", 100);
                         pacDot.setPosition(i,j);
                         pacDots.add(pacDot);
                     } break;
@@ -160,7 +172,7 @@ public class Stage extends KeyAdapter {
         sprite.newImage(Consts.Sprite.PACMAN_BOTTOM_1, 0, 3);
         sprite.newImage(Consts.Sprite.PACMAN_CLOSE, 2, 0);
         
-        Animation anLeft = new Animation(125);
+        Animation anLeft = new Animation(50);
         anLeft.addImage(sprite.getImage(Consts.Sprite.PACMAN_LEFT_1));
         anLeft.addImage(sprite.getImage(Consts.Sprite.PACMAN_LEFT_0));
         anLeft.addImage(sprite.getImage(Consts.Sprite.PACMAN_CLOSE));
@@ -168,7 +180,7 @@ public class Stage extends KeyAdapter {
 
         animations.put(Consts.Animation.PACMAN_LEFT, anLeft);
         
-        Animation anRight = new Animation(125);
+        Animation anRight = new Animation(50);
         anRight.addImage(sprite.getImage(Consts.Sprite.PACMAN_RIGHT_1));
         anRight.addImage(sprite.getImage(Consts.Sprite.PACMAN_RIGHT_0));
         anRight.addImage(sprite.getImage(Consts.Sprite.PACMAN_CLOSE));
@@ -176,7 +188,7 @@ public class Stage extends KeyAdapter {
 
         animations.put(Consts.Animation.PACMAN_RIGHT, anRight);
         
-        Animation anTop = new Animation(125);
+        Animation anTop = new Animation(50);
         anTop.addImage(sprite.getImage(Consts.Sprite.PACMAN_TOP_1));
         anTop.addImage(sprite.getImage(Consts.Sprite.PACMAN_TOP_0));
         anTop.addImage(sprite.getImage(Consts.Sprite.PACMAN_CLOSE));
@@ -184,7 +196,7 @@ public class Stage extends KeyAdapter {
 
         animations.put(Consts.Animation.PACMAN_UP, anTop);
         
-        Animation anBottom = new Animation(125);
+        Animation anBottom = new Animation(50);
         anBottom.addImage(sprite.getImage(Consts.Sprite.PACMAN_BOTTOM_1));
         anBottom.addImage(sprite.getImage(Consts.Sprite.PACMAN_BOTTOM_0));
         anBottom.addImage(sprite.getImage(Consts.Sprite.PACMAN_CLOSE));
@@ -225,30 +237,16 @@ public class Stage extends KeyAdapter {
         }
     }
 
-    @Override
-    public void keyReleased(KeyEvent e) {
-        switch(e.getKeyCode()) {
-            case KeyEvent.VK_UP:
-                if(pacman.getMovimentDirection() == PacMan.MOVE_UP) {
-                    pacman.resetMovDirection();
-                }
-            break;
-            case KeyEvent.VK_DOWN:
-                if(pacman.getMovimentDirection() == PacMan.MOVE_DOWN) {
-                    pacman.resetMovDirection();
-                }
-            break;
-            case KeyEvent.VK_LEFT:
-                if(pacman.getMovimentDirection() == PacMan.MOVE_LEFT) {
-                    pacman.resetMovDirection();
-                }
-            break;
-            case KeyEvent.VK_RIGHT:
-                if(pacman.getMovimentDirection() == PacMan.MOVE_RIGHT) {
-                    pacman.resetMovDirection();
-                }
-            break;
+    public void overlapListener(Element e) {
+        if(e instanceof Items) {
+            if(((Items) e).getName().compareTo("Dots") != 0) {
+                audio.setNext("sound/pacman_eatfruit.wav");
+                audio.start(false, false);
+            }
         }
     }
-
+    
+    public void iterationListener() {
+        
+    }
 }

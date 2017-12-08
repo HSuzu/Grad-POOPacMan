@@ -7,6 +7,8 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
+import javax.swing.JButton;
+import javax.swing.JPanel;
 
 /**
  * Projeto de POO 2017
@@ -15,9 +17,9 @@ import java.util.TimerTask;
  * Baseado em material do Prof. Jose Fernando Junior
  */
 public class GameScreen extends javax.swing.JFrame {
-    private final ArrayList<Element> elemArray;
-    private final GameController controller = new GameController();
-    private final Stage stage;
+    private ArrayList<Element> elemArray;
+    private GameController controller = new GameController();
+    private Stage stage;
 
     public GameScreen() {
         Drawing.setGameScreen(this);
@@ -30,6 +32,8 @@ public class GameScreen extends javax.swing.JFrame {
 
         stage = new Stage();
         this.addKeyListener(stage);
+        
+        controller.addStage(stage);
         
         elemArray = stage.getAllElements();
     }
@@ -45,10 +49,11 @@ public class GameScreen extends javax.swing.JFrame {
     @Override
     public void paint(Graphics gOld) {
         Graphics g = getBufferStrategy().getDrawGraphics();
-        
+
         /*Criamos um contexto grafico*/
         Graphics g2 = g.create(getInsets().right, getInsets().top, getWidth() - getInsets().left, getHeight() - getInsets().bottom);
-        
+
+        stage.iterationListener();
         stage.drawMap(g2);
 
         this.controller.processAllElements(elemArray);
@@ -56,13 +61,14 @@ public class GameScreen extends javax.swing.JFrame {
 
         stage.drawHeader(g2);
 
-        this.setTitle("PacMan" + elemArray.get(0).getStringPosition());
-        
         g.dispose();
         g2.dispose();
         if (!getBufferStrategy().contentsLost()) {
             getBufferStrategy().show();
         }
+
+        this.setTitle("PacMan" + elemArray.get(0).getStringPosition());
+        
     }
     
     public void go() {

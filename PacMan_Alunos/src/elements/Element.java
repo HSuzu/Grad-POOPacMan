@@ -80,11 +80,11 @@ public abstract class Element implements Serializable{
         this.score = value;
     }
     
-    public boolean overlap(Element elem) {
+    public boolean overlap(Element elem, float err) {
         double xDist = Math.abs(elem.pos.getX() - this.pos.getX());
         double yDist = Math.abs(elem.pos.getY() - this.pos.getY());
         
-        return xDist < 1.0 && yDist < 1.0;
+        return xDist < err && yDist < err;
     }
 
     public String getStringPosition() {
