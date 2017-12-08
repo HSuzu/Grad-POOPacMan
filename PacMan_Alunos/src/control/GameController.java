@@ -36,6 +36,7 @@ public class GameController {
         pacman.move();
 
         wm.setPacManPosition(pacman.getPosition());
+        wm.setPacManDirection(pacman.getMovimentDirection());
         
         if (!isValidPosition(e, pacman)) {
             pacman.backToLastPosition();
