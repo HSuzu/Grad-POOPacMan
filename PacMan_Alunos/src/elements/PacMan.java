@@ -30,10 +30,12 @@ public class PacMan extends Element  implements Serializable {
     
     public PacMan(String imageName) {
         super(imageName);
+        this.isTransposable = false;
     }
         
     public PacMan(ImageCollection collection, int defaultImage) {
         super(collection, defaultImage);
+        this.isTransposable = false;
     }
 
     public int getNumLifes() {

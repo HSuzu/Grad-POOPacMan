@@ -120,4 +120,8 @@ public abstract class Element implements Serializable{
     public boolean moveLeft() {
         return this.pos.moveLeft();
     }
+    
+    public Position getPosition() {
+        return this.pos;
+    }
 }

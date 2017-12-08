@@ -1,16 +1,22 @@
 package elements.phanton;
 
+import control.WorldMap;
+import java.util.ArrayList;
 import utils.Position;
 import javax.swing.ImageIcon;
+import utils.Consts;
 
-public class Blinky extends Phanton {
-
+public class Blinky extends Phantom {
+    private float hysteresisCoef;
+    
     public Blinky(String imageName, int value) {
         super(imageName, value);
+        hysteresisCoef = 1.0f;
     }
     
     public Blinky(ImageIcon image, int value) {
         super(image, value);
+        hysteresisCoef = 1.0f;
     }
     
     @Override
@@ -19,9 +25,69 @@ public class Blinky extends Phanton {
     }
 
     @Override
-    protected void navigation(Position PacManPosition) {
+    public void navigation() {
+       Position desiredPos = wm.getPacManPosition();
         
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       System.out.println("DesiredPos: "+desiredPos.toString());
+       
+       if(this.pos == desiredPos) {
+           System.out.println("Peguei");
+           return;
+       }
+       
+       byte direction = wm.freePath((int)Math.round(this.pos.getX()), (int)Math.round(this.pos.getY()));
+       
+       //Tomada de decisão:
+       if(Math.random()*100 <= 98.0f*hysteresisCoef) {
+            hysteresisCoef = 1.0f;
+            if(desiredPos.getX() > this.pos.getX() && ((direction & WorldMap.RIGHT) == WorldMap.RIGHT)) {
+               this.setNextMovDirection(MOVE_RIGHT);
+               System.out.println("r");
+            }
+            else if(desiredPos.getX() < this.pos.getX() && ((direction & WorldMap.LEFT) == WorldMap.LEFT)) {
+                this.setNextMovDirection(MOVE_LEFT);
+                System.out.println("l");
+            }
+            else if(desiredPos.getY() > this.pos.getY() && ((direction & WorldMap.DOWN) == WorldMap.DOWN)) {
+                this.setNextMovDirection(MOVE_DOWN);
+                System.out.println("d");
+            }
+            else if(desiredPos.getY() < this.pos.getY() && ((direction & WorldMap.UP) == WorldMap.UP)) {
+                this.setNextMovDirection(MOVE_UP);
+                System.out.println("u");
+            }
+       }
+       //Aleatório:
+       else {
+           double aux = (this.pos.getX()*desiredPos.getY())%3;
+           byte possibleDirection = (byte)Math.pow(2.0d, aux);
+           hysteresisCoef = 0.20f;
+           
+           if((possibleDirection & direction) == WorldMap.DOWN) {
+               this.setNextMovDirection(MOVE_DOWN);
+               System.out.println("D");
+           } else if((possibleDirection & direction) == WorldMap.LEFT) {
+               this.setNextMovDirection(MOVE_LEFT);
+               System.out.println("L");
+           } else if((possibleDirection & direction) == WorldMap.RIGHT) {
+               this.setNextMovDirection(MOVE_RIGHT);
+               System.out.println("R");
+           } else if((possibleDirection & direction) == WorldMap.UP) {
+               this.setNextMovDirection(MOVE_UP);;
+               System.out.println("U");
+           } else {
+               this.setNextMovDirection(MOVE_UP);
+               System.out.println("ELSE");
+           }
+       }
+       
+ 
+    }
+    
+    protected void navigationAlgorithm(Position bPos, char map[][]) {
+        //Condição de erro:
+        
+    
     }
     
 }

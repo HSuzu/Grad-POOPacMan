@@ -27,7 +27,7 @@ public class Stage extends KeyAdapter {
     AudioControl audio;
     
     private final PacMan pacman;
-    private final ArrayList<Phanton> phantons;
+    private final ArrayList<Phantom> phantons;
     private final ArrayList<Fruit> fruits;
     private final ArrayList<Items> pacDots;
     private final ArrayList<Items> powerPellets;
@@ -55,6 +55,9 @@ public class Stage extends KeyAdapter {
         pacman.setPosition(0, 0);
         
         phantons = new ArrayList<>();
+        Blinky blinky = new Blinky(sprite.getImage(Consts.Sprite.CHERRY), 100);
+        blinky.setPosition(11.0, 8.0);
+        phantons.add(blinky);
         fruits = new ArrayList<>();
         Fruit cherry = new Fruit(sprite.getImage(Consts.Sprite.CHERRY), "Cherry", 100, 20000);
         cherry.setPosition(10.0, 10.0);
@@ -112,10 +115,10 @@ public class Stage extends KeyAdapter {
         ArrayList<Element> elem = new ArrayList<>();
         
         elem.add(pacman);
-        elem.addAll(phantons);
-        elem.addAll(fruits);
         elem.addAll(pacDots);
         elem.addAll(powerPellets);
+        elem.addAll(phantons);
+        elem.addAll(fruits);
         elem.addAll(walls);
         
         return elem;

@@ -61,10 +61,9 @@ public class Position implements Serializable {
                 double dx = x - (long)x;
                 double dy = y - (long)y;
 
-                return (dx < 0.5*error || dx > 1-0.5*error) && (dy < 0.5*error || dy > 1-0.5*error);
+                return (dx <= 0.5*error || dx >= 1-0.5*error) && (dy <= 0.5*error || dy >= 1-0.5*error);
             }
         }
-        
         return false;
     }
     
