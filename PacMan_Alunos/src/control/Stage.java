@@ -115,9 +115,9 @@ public class Stage extends KeyAdapter {
         ArrayList<Element> elem = new ArrayList<>();
         
         elem.add(pacman);
+        elem.addAll(phantons);
         elem.addAll(pacDots);
         elem.addAll(powerPellets);
-        elem.addAll(phantons);
         elem.addAll(fruits);
         elem.addAll(walls);
         
