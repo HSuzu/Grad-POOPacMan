@@ -17,7 +17,8 @@ import utils.ImageCollection;
 import utils.Sprite;
 
 public class Stage extends KeyAdapter {
-    BackgroundElement bkElem;
+    private BackgroundElement bkElem;
+    
     
     private final PacMan pacman;
     private final ArrayList<Phanton> phantons;
@@ -34,6 +35,7 @@ public class Stage extends KeyAdapter {
         
     public Stage() {
         loadImages();
+        
         
         bkElem = new BackgroundElement();
         
@@ -132,7 +134,7 @@ public class Stage extends KeyAdapter {
     }
     
     private void loadImages() {
-        sprite = new Sprite("sprite2.png");
+        sprite = new Sprite("sprite3.png");
         animations = new HashMap<>();
         imgCollections = new HashMap<>();
         
@@ -141,8 +143,8 @@ public class Stage extends KeyAdapter {
         sprite.newImage(Consts.Sprite.CHERRY, 2, 3);
         sprite.newImage(Consts.Sprite.STRAWBERRY, 3, 3);
         
-        sprite.newImage(Consts.Sprite.WALL_HORIZONTAL, 9, 3);
-        sprite.newImage(Consts.Sprite.WALL_VERTICAL, 9, 3);
+        sprite.newImage(Consts.Sprite.WALL_HORIZONTAL, 10, 3);
+        sprite.newImage(Consts.Sprite.WALL_VERTICAL, 10, 3);
                 
         sprite.newImage(Consts.Sprite.POWER_PELLETS, 11, 3);
         sprite.newImage(Consts.Sprite.PACDOTS, 11, 2);
