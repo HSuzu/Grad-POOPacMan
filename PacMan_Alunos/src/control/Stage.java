@@ -2,11 +2,8 @@ package control;
 
 import elements.*;
 import elements.phanton.*;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontFormatException;
-import java.awt.Graphics;
-import java.awt.GraphicsEnvironment;
+import java.awt.*;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.font.TextAttribute;
 import java.io.File;
@@ -14,14 +11,12 @@ import java.io.IOException;
 import java.text.AttributedString;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import utils.Animation;
 import utils.Consts;
 import utils.ImageCollection;
 import utils.Sprite;
 
-public class Stage {
+public class Stage extends KeyAdapter {
     BackgroundElement bkElem;
     
     private final PacMan pacman;
@@ -29,21 +24,21 @@ public class Stage {
     private final ArrayList<Fruit> fruits;
     private final ArrayList<Items> pacDots;
     private final ArrayList<Items> powerPellets;
-    private final ArrayList<Element> walls;
+    private final ArrayList<Wall> walls;
     
     protected Sprite sprite;
     private HashMap<Consts.Animation, Animation> animations;
     private HashMap<Consts.ImgCollection, ImageCollection> imgCollections;
     
     private Font font;
-    
+        
     public Stage() {
         loadImages();
         
         bkElem = new BackgroundElement();
         
         pacman = new PacMan(imgCollections.get(Consts.ImgCollection.PACMAN), Consts.Animation.PACMAN_RIGHT.ordinal());
-        pacman.setPosition(Consts.HEADER_SIZE +0.5, 0);
+        pacman.setPosition(0, 0);
         
         phantons = new ArrayList<>();
         fruits = new ArrayList<>();
@@ -55,15 +50,52 @@ public class Stage {
         powerPellets = new ArrayList<>();
         walls = new ArrayList<>();
         
+        char[][] map = WorldMap.getInstance().getMap();
         
+        int i, j;
+        for(i = 0; i < Consts.NUM_CELLS_X; i++) {
+            for(j = 0; j < Consts.NUM_CELLS_Y; j++) {
+                switch(map[i][j]) {
+                    case 'p': {
+                        System.out.println("Pacman");
+                        pacman.setPosition(i, j);
+                    } break;
+                    case 'o': {
+                        System.out.println("PowerPellet");
+                        Items powerPellet = new Items(sprite.getImage(Consts.Sprite.POWER_PELLETS), "Power Pellets", 100);
+                        powerPellet.setPosition(i, j);
+                        powerPellets.add(powerPellet);
+                    } break;
+                    case '.': {
+                        System.out.println("Pacdot");
+                        Items pacDot = new Items(sprite.getImage(Consts.Sprite.PACDOTS), "PacDots", 100);
+                        pacDot.setPosition(i,j);
+                        pacDots.add(pacDot);
+                    } break;
+                    case '|': {
+                        System.out.println("Vertical Wall" + i + ", " + j);
+                        Wall hwall = new Wall(sprite.getImage(Consts.Sprite.WALL_VERTICAL));
+                        hwall.setPosition(i, j);
+                        walls.add(hwall);
+                    } break;
+                    case '-': {
+                        System.out.println("Horizontal Wall");
+                        Wall vwall = new Wall(sprite.getImage(Consts.Sprite.WALL_HORIZONTAL));
+                        vwall.setPosition(i, j);
+                        walls.add(vwall);
+                    } break;
+                    default:
+                    break;
+                }
+            }
+        }
         
         try {
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("emulogic.ttf")));
+            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("fonts/emulogic.ttf")));
             font = new Font("emulogic", Font.PLAIN, 18);
-                
         } catch (IOException | FontFormatException ex) {
-            Logger.getLogger(GameScreen.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.getMessage());
         }
     }
     
@@ -80,8 +112,13 @@ public class Stage {
         return elem;
     }
     
-    public void drawStage(Graphics g) {
-        g.setColor(Color.BLACK);
+    public void drawMap(Graphics g) {
+        //Imprimir mapa:
+        bkElem.drawBackground(g);
+    }
+    
+    public void drawHeader(Graphics g) {
+        g.setColor(Color.decode("#333333"));
 
         int height = Consts.HEADER_SIZE;
         int width = Consts.NUM_CELLS_X;
@@ -96,10 +133,7 @@ public class Stage {
         word = new AttributedString("Lifes: "+pacman.getNumLifes());
         word.addAttribute(TextAttribute.FONT, font);
         g.setColor(Color.green);
-        g.drawString(word.getIterator(), 13*Consts.CELL_SIZE, Consts.CELL_SIZE);
-        
-        //Imprimir mapa:
-        bkElem.drawBackground(g);
+        g.drawString(word.getIterator(), (Consts.NUM_CELLS_X - 7)*Consts.CELL_SIZE, Consts.CELL_SIZE);
     }
     
     private void loadImages() {
@@ -116,16 +150,12 @@ public class Stage {
         icFruit.addImage(Consts.Sprite.CHERRY, sprite.getImage(Consts.Sprite.CHERRY));
         icFruit.addImage(Consts.Sprite.STRAWBERRY, sprite.getImage(Consts.Sprite.STRAWBERRY));
         
-        Fruit.addImages(icFruit);
-        
         sprite.newImage(Consts.Sprite.WALL_HORIZONTAL, 0, 4);
         sprite.newImage(Consts.Sprite.WALL_VERTICAL, 1, 4);
         
         ImageCollection icWall = new ImageCollection();
         icWall.addImage(Consts.Sprite.WALL_HORIZONTAL, sprite.getImage(Consts.Sprite.WALL_HORIZONTAL));
         icWall.addImage(Consts.Sprite.WALL_VERTICAL, sprite.getImage(Consts.Sprite.WALL_VERTICAL));
-
-        Wall.addImages(icWall);
         
         sprite.setDefaultParameters(48, 48, Consts.CELL_SIZE/48.0f);
 
@@ -135,8 +165,6 @@ public class Stage {
         ImageCollection icItems = new ImageCollection();
         icItems.addImage(Consts.Sprite.POWER_PELLETS, sprite.getImage(Consts.Sprite.POWER_PELLETS));
         icItems.addImage(Consts.Sprite.PACDOTS, sprite.getImage(Consts.Sprite.PACDOTS));
-        
-        Items.addImages(icItems);
         
         //Animação do PacMan:
         sprite.setDefaultParameters(96, 96, Consts.CELL_SIZE/96.0f);
@@ -192,17 +220,52 @@ public class Stage {
         
     }
     
+    @Override
     public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_UP) {
-            pacman.setMovDirection(PacMan.MOVE_UP);
-        } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            pacman.setMovDirection(PacMan.MOVE_DOWN);
-        } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            pacman.setMovDirection(PacMan.MOVE_LEFT);
-        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            pacman.setMovDirection(PacMan.MOVE_RIGHT);
-        } else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-            pacman.setMovDirection(PacMan.STOP);
+        switch (e.getKeyCode()) {
+            case KeyEvent.VK_UP:
+                pacman.setMovDirection(PacMan.MOVE_UP);
+            break;
+            case KeyEvent.VK_DOWN:
+                pacman.setMovDirection(PacMan.MOVE_DOWN);
+            break;
+            case KeyEvent.VK_LEFT:
+                pacman.setMovDirection(PacMan.MOVE_LEFT);
+            break;
+            case KeyEvent.VK_RIGHT:
+                pacman.setMovDirection(PacMan.MOVE_RIGHT);
+            break;
+            case KeyEvent.VK_SPACE:
+                pacman.setMovDirection(PacMan.STOP);
+            break;
+            default:
+            break;
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        switch(e.getKeyCode()) {
+            case KeyEvent.VK_UP:
+                if(pacman.getMovimentDirection() == PacMan.MOVE_UP) {
+                    pacman.resetMovDirection();
+                }
+            break;
+            case KeyEvent.VK_DOWN:
+                if(pacman.getMovimentDirection() == PacMan.MOVE_DOWN) {
+                    pacman.resetMovDirection();
+                }
+            break;
+            case KeyEvent.VK_LEFT:
+                if(pacman.getMovimentDirection() == PacMan.MOVE_LEFT) {
+                    pacman.resetMovDirection();
+                }
+            break;
+            case KeyEvent.VK_RIGHT:
+                if(pacman.getMovimentDirection() == PacMan.MOVE_RIGHT) {
+                    pacman.resetMovDirection();
+                }
+            break;
         }
     }
 

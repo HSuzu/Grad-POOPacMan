@@ -6,6 +6,7 @@ import elements.PacMan;
 import elements.phanton.Phanton;
 import java.awt.Graphics;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Projeto de POO 2017
@@ -33,22 +34,24 @@ public class GameController {
         }
         
         Element eTemp;
-        for(int i = 1; i < e.size(); i++){
-            eTemp = e.get(i);
+        Iterator<Element> it = e.iterator();
+        it.next(); // remove pacman
+        
+        while(it.hasNext()) {
+            eTemp = it.next();
+            
             if(pacman.overlap(eTemp)) {
-                if(eTemp instanceof Items) {
-                    // TODO
-                } else if(eTemp instanceof Phanton) {
+                if(eTemp instanceof Phanton) {
                     if(((Phanton) eTemp).state() == Phanton.State.DEADLY) {
                         // TODO
                     } else {
-                        // TODO
+                        pacman.winPoints(eTemp.getScore());
+                        it.remove();
                     }
                 } else {
                     if(eTemp.isTransposable()) {
                         pacman.winPoints(eTemp.getScore());
-                        e.remove(eTemp);
-                        i--;
+                        it.remove();
                     }
                 }
             }

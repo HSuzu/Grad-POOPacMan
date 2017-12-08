@@ -20,8 +20,8 @@ public class Drawing {
     public static void setGameScreen(GameScreen newScreen) {
         screen = newScreen;
     }    
-    public static void draw(Graphics g, ImageIcon imageIcon, double y, double x) {
+    public static void draw(Graphics g, ImageIcon imageIcon, double x, double y) {
         //System.out.println("y="+(y * Consts.CELL_SIZE)+", x="+(x * Consts.CELL_SIZE));
-        imageIcon.paintIcon(screen, g, (int)Math.round(y * Consts.CELL_SIZE),(int)Math.round(x * Consts.CELL_SIZE));
+        imageIcon.paintIcon(screen, g, (int)Math.round(x * Consts.CELL_SIZE), (int)Math.round((Consts.HEADER_SIZE + y) * Consts.CELL_SIZE));
     }
 }

@@ -30,16 +30,46 @@ public class Position implements Serializable {
         x = (double)Math.round(x * factor) / factor;
         y = (double)Math.round(y * factor) / factor;
         
-        if(x < Consts.HEADER_SIZE || x > utils.Consts.NUM_CELLS_X-1)
-            return false;
         previousX = this.x;
-        this.x = x;
+        if(x < -1) {
+            this.x = utils.Consts.NUM_CELLS_X + x;
+        } else if(x >= utils.Consts.NUM_CELLS_X) {
+            this.x = x - utils.Consts.NUM_CELLS_X-1;
+        } else {
+            this.x = x;
+        }
         
-        if(y < 0 || y > utils.Consts.NUM_CELLS_Y-1)
-            return false;
         previousY = this.y;
-        this.y = y;
+        if(y < -1) {
+            this.y = utils.Consts.NUM_CELLS_Y + y;
+        } else if(y >= utils.Consts.NUM_CELLS_Y ) {
+            this.y = y-utils.Consts.NUM_CELLS_Y-1;
+        } else {
+            this.y = y;
+        }
         return true;
+    }
+    
+    public final void roundPosition() {
+        x = Math.round(x);
+        y = Math.round(y);
+    }
+    
+    public final boolean isRoundPosition(double error) {
+        if(x >= 0 && x <= utils.Consts.NUM_CELLS_X-1) { 
+            if(y >= 0 && y <= utils.Consts.NUM_CELLS_Y-1) { 
+                double dx = x - (long)x;
+                double dy = y - (long)y;
+
+                return (dx < 0.5*error || dx > 1-0.5*error) && (dy < 0.5*error || dy > 1-0.5*error);
+            }
+        }
+        
+        return false;
+    }
+    
+    public final String toString() {
+        return "(" + x + ", " + y + ")";
     }
     
     public double getX(){
@@ -55,15 +85,15 @@ public class Position implements Serializable {
     }
     
     public boolean moveUp(){
-        return this.setPosition(this.getX()-Consts.WALK_STEP, this.getY());
+        return this.setPosition(this.getX(), this.getY()-Consts.WALK_STEP);
     }
     public boolean moveDown(){
-        return this.setPosition(this.getX()+Consts.WALK_STEP, this.getY());
-    }
-    public boolean moveRight(){
         return this.setPosition(this.getX(), this.getY()+Consts.WALK_STEP);
     }
+    public boolean moveRight(){
+        return this.setPosition(this.getX()+Consts.WALK_STEP, this.getY());
+    }
     public boolean moveLeft(){
-        return this.setPosition(this.getX(), this.getY()-Consts.WALK_STEP);        
+        return this.setPosition(this.getX()-Consts.WALK_STEP, this.getY());        
     }
 }

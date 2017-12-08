@@ -8,12 +8,9 @@ package elements;
 
 import java.awt.Graphics;
 import java.io.Serializable;
-import javax.swing.ImageIcon;
-import utils.Animation;
 import utils.Consts;
 import utils.Drawing;
 import utils.ImageCollection;
-import utils.Sprite;
 
 /**
  *
@@ -26,6 +23,7 @@ public class PacMan extends Element  implements Serializable {
     public static final int MOVE_UP = 3;
     public static final int MOVE_DOWN = 4;
     
+    private int nextMovDirection = STOP;
     private int movDirection = STOP;
     private int numLifes = 3;
     private int lifeControl = 1;
@@ -56,7 +54,7 @@ public class PacMan extends Element  implements Serializable {
     
     @Override
     public void autoDraw(Graphics g){
-        Drawing.draw(g, this.imageIcon, pos.getY(), pos.getX());
+        Drawing.draw(g, this.imageIcon, pos.getX(), pos.getY());
     }
     
     public void backToLastPosition(){
@@ -66,10 +64,27 @@ public class PacMan extends Element  implements Serializable {
     }
     
     public void setMovDirection(int direction) {
-        movDirection = direction;
+        nextMovDirection = direction;
+    }
+    
+    public void resetMovDirection() {
+        nextMovDirection = movDirection;
+    }
+    
+    public int getMovimentDirection() {
+        return nextMovDirection;
     }
     
     public void move() {
+        if(nextMovDirection == STOP) {
+            movDirection = STOP;
+        } else if(pos.isRoundPosition(3.0*Consts.WALK_STEP)) {
+            if(movDirection != nextMovDirection) {
+                pos.roundPosition();
+                movDirection = nextMovDirection;
+            }
+        }
+        
         switch (movDirection) {
             case MOVE_LEFT:
                 imageIcon = this.collection.getImage(Consts.Animation.PACMAN_LEFT);

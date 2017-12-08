@@ -9,28 +9,24 @@ import java.awt.Graphics;
 import java.io.Serializable;
 import javax.swing.ImageIcon;
 import utils.Drawing;
-import utils.ImageCollection;
 
 /**
  *
  * @author aribeiro
  */
 public class Items extends Element implements Serializable {
-    private static ImageCollection items;
-    public static void addImages(ImageCollection imgs) {
-        items = imgs;
-    }
-
-    private String name;
+    private final String name;
     
     public Items(String imageName, String name, int value) {
         super(imageName);
         this.name = name;
+        
         this.setScore(value);
     }
     
     public Items(ImageIcon image, String name, int value) {
         super(image);
+        
         this.setScore(value);
         this.name = name;
     }
@@ -41,7 +37,7 @@ public class Items extends Element implements Serializable {
     
     @Override
     public void autoDraw(Graphics g) {
-        Drawing.draw(g, this.imageIcon, pos.getY(), pos.getX());
+        Drawing.draw(g, this.imageIcon, pos.getX(), pos.getY());
     }
     
 }

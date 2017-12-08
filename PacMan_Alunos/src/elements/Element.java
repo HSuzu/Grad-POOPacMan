@@ -21,8 +21,6 @@ import utils.Sprite;
 public abstract class Element implements Serializable{
 
     protected ImageIcon imageIcon;
-    protected Sprite sprite = null;
-    protected Animation animation = null;
     protected ImageCollection collection = null;
     protected Position pos;
     protected boolean isTransposable; // Pode passar por cima?
@@ -62,26 +60,7 @@ public abstract class Element implements Serializable{
         
         imageIcon = image;
     }
-    
-    protected Element(Sprite sprite, int defaultImage) {
-        this.pos = new Position(1, Consts.HEADER_SIZE);
-        this.isTransposable = true;
-        this.isMortal = false;
-
-        this.sprite = sprite;
-        imageIcon = sprite.getImage(defaultImage);
-    }
-    
-    protected Element(Animation animation) {
-        this.pos = new Position(1, 1);
-        this.isTransposable = true;
-        this.isMortal = false;
         
-        this.animation = animation;
-        
-        imageIcon = animation.getAnimation();
-    }
-    
     protected Element(ImageCollection collection, int defaultImage) {
         this.pos = new Position(1, 1);
         this.isTransposable = true;

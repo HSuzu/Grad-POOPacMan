@@ -4,8 +4,6 @@ import elements.Element;
 import utils.Consts;
 import utils.Drawing;
 import java.awt.Graphics;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -16,33 +14,22 @@ import java.util.TimerTask;
  * @author Luiz Eduardo
  * Baseado em material do Prof. Jose Fernando Junior
  */
-public class GameScreen extends javax.swing.JFrame implements KeyListener {
+public class GameScreen extends javax.swing.JFrame {
     private final ArrayList<Element> elemArray;
     private final GameController controller = new GameController();
-    private Stage stage;
+    private final Stage stage;
 
     public GameScreen() {
         Drawing.setGameScreen(this);
         initComponents();
         
-       /* try {
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            if(ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("emulogic.ttf"))))
-                System.out.println("Deu");
-                font = new Font("emulogic", Font.PLAIN, 18);
-                
-        } catch (IOException ex) {
-            Logger.getLogger(GameScreen.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
-        
-        this.addKeyListener(this);   /*teclado*/
-        
         /*Cria a janela do tamanho do tabuleiro + insets (bordas) da janela*/
         this.setSize(Consts.NUM_CELLS_X * Consts.CELL_SIZE + getInsets().left + getInsets().right,
-                     Consts.NUM_CELLS_Y * Consts.CELL_SIZE + getInsets().top + getInsets().bottom);
+                     (Consts.HEADER_SIZE + Consts.NUM_CELLS_Y) * Consts.CELL_SIZE + getInsets().top + getInsets().bottom);
 
 
         stage = new Stage();
+        this.addKeyListener(stage);
         
         elemArray = stage.getAllElements();
     }
@@ -62,13 +49,14 @@ public class GameScreen extends javax.swing.JFrame implements KeyListener {
         /*Criamos um contexto grafico*/
         Graphics g2 = g.create(getInsets().right, getInsets().top, getWidth() - getInsets().left, getHeight() - getInsets().bottom);
         
+        stage.drawMap(g2);
 
-        stage.drawStage(g2);
-
-        
-        this.controller.drawAllElements(elemArray, g2);
         this.controller.processAllElements(elemArray);
-        this.setTitle("PacMan");
+        this.controller.drawAllElements(elemArray, g2);
+
+        stage.drawHeader(g2);
+
+        this.setTitle("PacMan" + elemArray.get(0).getStringPosition());
         
         g.dispose();
         g2.dispose();
@@ -80,6 +68,7 @@ public class GameScreen extends javax.swing.JFrame implements KeyListener {
     public void go() {
         TimerTask task = new TimerTask() {
             
+            @Override
             public void run() {
                 repaint();
             }
@@ -87,11 +76,7 @@ public class GameScreen extends javax.swing.JFrame implements KeyListener {
         Timer timer = new Timer();
         timer.schedule(task, 0, Consts.DELAY);
     }
-    
-    public void keyPressed(KeyEvent e) {
-        stage.keyPressed(e);
-    }
-    
+        
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -122,12 +107,4 @@ public class GameScreen extends javax.swing.JFrame implements KeyListener {
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
-    
-    @Override
-    public void keyTyped(KeyEvent e) {
-    }
-    
-    @Override
-    public void keyReleased(KeyEvent e) {
-    }
 }

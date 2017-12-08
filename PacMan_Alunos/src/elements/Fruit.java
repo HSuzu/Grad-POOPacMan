@@ -5,7 +5,6 @@
  */
 package elements;
 
-import java.awt.Graphics;
 import java.io.Serializable;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -18,11 +17,6 @@ import utils.ImageCollection;
  * @author aribeiro
  */
 public class Fruit extends Items implements Serializable{
-    private static ImageCollection fruits;
-    public static void addImages(ImageCollection imgs) {
-        fruits = imgs;
-    }
-
     private int time;
     private Timer timer;
     

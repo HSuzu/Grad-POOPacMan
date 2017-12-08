@@ -5,7 +5,6 @@
  */
 package control;
 
-import elements.Element;
 import elements.Items;
 import elements.Wall;
 import java.io.BufferedReader;
@@ -21,19 +20,12 @@ public class WorldMap {
     final static public char UP    = 0x04;
     final static public char DOWN  = 0x08;
     
-    char[][] map;
-    private final ArrayList<Items> pacDots;
-    private final ArrayList<Items> powerPellets;
-    private final ArrayList<Wall> walls;
-    
+    private char[][] map;
+
     private static WorldMap worldMap = null;
     
     private WorldMap() {
-        pacDots = new ArrayList<>();
-        powerPellets = new ArrayList<>();
-        walls = new ArrayList<>();
-        
-        map = new char[Consts.NUM_CELLS_X - Consts.HEADER_SIZE][Consts.NUM_CELLS_Y];
+        map = new char[Consts.NUM_CELLS_X][Consts.NUM_CELLS_Y];
     }
     
     public void loadFile(String file) {
@@ -48,11 +40,18 @@ public class WorldMap {
             int y = 0;
             int c;
             while((c = buff.read()) != -1) {
-                if(x >= Consts.NUM_CELLS_X - Consts.HEADER_SIZE) {
+                if(x >= Consts.NUM_CELLS_X && (char)c != '\n') {
+                    buff.readLine();
+                }
+                if((char)c == '\n' || x >= Consts.NUM_CELLS_X) {
                     x = 0;
                     y++;
                     
-                    continue;
+                    if(y >= Consts.NUM_CELLS_Y) {
+                        break;
+                    } else {
+                        continue;
+                    }
                 }
                 
                 map[x][y] = (char) c;
@@ -89,18 +88,19 @@ public class WorldMap {
     }
     
     private boolean isValidPosition(char c) {
-        if(c == ' ' || c == '.' || c == 'o') { // free-space, pacDots, powerPallets
-            return true;
-        }
-        
-        return false;
+        // free-space, pacDots, powerPallets
+        return c == ' ' || c == '.' || c == 'o';
     }
     
-    public static WorldMap map() {
+    public static WorldMap getInstance() {
         if(WorldMap.worldMap == null) {
             worldMap = new WorldMap();
         }
         
         return worldMap;
+    }
+    
+    public char[][] getMap() {
+        return map;
     }
 }

@@ -10,7 +10,7 @@ import java.io.File;
  */
 public class Consts {
     public static final int CELL_SIZE = 30;
-    public static final int NUM_CELLS_X = 20;
+    public static final int NUM_CELLS_X = 15;
     public static final int NUM_CELLS_Y = 20;
     public static final int HEADER_SIZE = 2;
     public static final int SPRITE_CELL_SIZE = 48;
