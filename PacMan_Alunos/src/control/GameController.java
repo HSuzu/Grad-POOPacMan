@@ -3,7 +3,8 @@ package control;
 import elements.Element;
 import elements.Items;
 import elements.PacMan;
-import elements.phanton.Phanton;
+import elements.phanton.Blinky;
+import elements.phanton.Phantom;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -15,6 +16,8 @@ import java.util.Iterator;
  * Baseado em material do Prof. Jose Fernando Junior
  */
 public class GameController {
+    private static final  WorldMap wm = WorldMap.getInstance();
+    
     public void drawAllElements(ArrayList<Element> elemArray, Graphics g){
         for(int i=0; i<elemArray.size(); i++){
             elemArray.get(i).autoDraw(g);
@@ -27,6 +30,8 @@ public class GameController {
         PacMan pacman = (PacMan)e.get(0);
         pacman.move();
 
+        wm.setPacManPosition(pacman.getPosition());
+        
         if (!isValidPosition(e, pacman)) {
             pacman.backToLastPosition();
             pacman.setMovDirection(PacMan.STOP);
@@ -40,10 +45,18 @@ public class GameController {
         while(it.hasNext()) {
             eTemp = it.next();
             
+            if(eTemp instanceof Phantom) {
+                ((Phantom) eTemp).move();
+            }
+            
             if(pacman.overlap(eTemp)) {
-                if(eTemp instanceof Phanton) {
-                    if(((Phanton) eTemp).state() == Phanton.State.DEADLY) {
+                if(eTemp instanceof Phantom) {
+
+                    if(((Phantom) eTemp).state() == Phantom.State.DEADLY) {
                         // TODO
+                        pacman.die();
+                        pacman.setPosition(7.0, 3.0);
+                        eTemp.setPosition(1.0, 1.0);
                     } else {
                         pacman.winPoints(eTemp.getScore());
                         it.remove();

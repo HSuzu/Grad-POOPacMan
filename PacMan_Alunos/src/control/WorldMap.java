@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 import java.io.FileReader;
 import java.io.IOException;
+import utils.Position;
 
 public class WorldMap {
     final static public char LEFT  = 0x01;
@@ -23,6 +24,8 @@ public class WorldMap {
     private char[][] map;
 
     private static WorldMap worldMap = null;
+    
+    protected Position PacManPosition;
     
     private WorldMap() {
         map = new char[Consts.NUM_CELLS_X][Consts.NUM_CELLS_Y];
@@ -66,6 +69,10 @@ public class WorldMap {
     }
     
     public byte freePath(int x, int y) {
+        if(y <= 0 || x <= 0) {
+            return -1;
+        }
+        
         byte rtrn = 0;
         
         if(x > 0 && isValidPosition(map[x-1][y])) {
@@ -89,7 +96,7 @@ public class WorldMap {
     
     private boolean isValidPosition(char c) {
         // free-space, pacDots, powerPallets
-        return c == ' ' || c == '.' || c == 'o';
+        return (c == ' ' || c == '.' || c == 'o');
     }
     
     public static WorldMap getInstance() {
@@ -102,5 +109,13 @@ public class WorldMap {
     
     public char[][] getMap() {
         return map;
+    }
+
+    public void setPacManPosition(Position pos) {
+        this.PacManPosition = pos;
+    }
+    
+    public Position getPacManPosition() {
+        return this.PacManPosition;
     }
 }
