@@ -2,14 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="2">
         <file>
-            <url>src/elements/Element.java</url>
-            <bookmark id="2">
-                <name/>
-                <line>20</line>
-                <key/>
-            </bookmark>
-        </file>
-        <file>
             <url>src/control/Stage.java</url>
             <bookmark id="1">
                 <name/>
@@ -17,8 +9,17 @@
                 <key/>
             </bookmark>
         </file>
+        <file>
+            <url>src/elements/Element.java</url>
+            <bookmark id="2">
+                <name/>
+                <line>20</line>
+                <key/>
+            </bookmark>
+        </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+<<<<<<< HEAD
         <group>
             <file>file:/home/aribeiro/USP/PacMan/PacMan_Alunos/src/control/GameController.java</file>
             <file>file:/home/aribeiro/USP/PacMan/PacMan_Alunos/src/control/Stage.java</file>
@@ -27,5 +28,8 @@
             <file>file:/home/aribeiro/USP/PacMan/PacMan_Alunos/src/utils/Consts.java</file>
             <file>file:/home/aribeiro/USP/PacMan/PacMan_Alunos/src/elements/phanton/Blinky.java</file>
         </group>
+=======
+        <group/>
+>>>>>>> 9a8712c6932d64eef39ad755ad2d574d9c312f80
     </open-files>
 </project-private>

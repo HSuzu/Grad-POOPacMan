@@ -9,7 +9,7 @@ import java.io.File;
  * Baseado em material do Prof. Jose Fernando Junior
  */
 public class Consts {
-    public static final int CELL_SIZE = 30;
+    public static final int CELL_SIZE = 32;
     public static final int NUM_CELLS_X = 15;
     public static final int NUM_CELLS_Y = 20;
     public static final int HEADER_SIZE = 2;

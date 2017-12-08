@@ -78,10 +78,7 @@ public class PacMan extends Element  implements Serializable {
     }
     
     public void move() {
-        System.out.println("PacMan: "+this.pos.toString());
-        if(nextMovDirection == STOP) {
-            movDirection = STOP;
-        } else if(pos.isRoundPosition(3.0*Consts.WALK_STEP)) {
+        if(pos.isRoundPosition(3.0*Consts.WALK_STEP)) {
             if(movDirection != nextMovDirection) {
                 pos.roundPosition();
                 movDirection = nextMovDirection;

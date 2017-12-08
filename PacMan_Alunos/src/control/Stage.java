@@ -17,7 +17,8 @@ import utils.ImageCollection;
 import utils.Sprite;
 
 public class Stage extends KeyAdapter {
-    BackgroundElement bkElem;
+    private BackgroundElement bkElem;
+    
     
     private final PacMan pacman;
     private final ArrayList<Phantom> phantons;
@@ -34,6 +35,7 @@ public class Stage extends KeyAdapter {
         
     public Stage() {
         loadImages();
+        
         
         bkElem = new BackgroundElement();
         
@@ -60,29 +62,24 @@ public class Stage extends KeyAdapter {
             for(j = 0; j < Consts.NUM_CELLS_Y; j++) {
                 switch(map[i][j]) {
                     case 'p': {
-                        System.out.println("Pacman");
                         pacman.setPosition(i, j);
                     } break;
                     case 'o': {
-                        System.out.println("PowerPellet");
                         Items powerPellet = new Items(sprite.getImage(Consts.Sprite.POWER_PELLETS), "Power Pellets", 100);
                         powerPellet.setPosition(i, j);
                         powerPellets.add(powerPellet);
                     } break;
                     case '.': {
-                        System.out.println("Pacdot");
                         Items pacDot = new Items(sprite.getImage(Consts.Sprite.PACDOTS), "PacDots", 100);
                         pacDot.setPosition(i,j);
                         pacDots.add(pacDot);
                     } break;
                     case '|': {
-                        System.out.println("Vertical Wall" + i + ", " + j);
                         Wall hwall = new Wall(sprite.getImage(Consts.Sprite.WALL_VERTICAL));
                         hwall.setPosition(i, j);
                         walls.add(hwall);
                     } break;
                     case '-': {
-                        System.out.println("Horizontal Wall");
                         Wall vwall = new Wall(sprite.getImage(Consts.Sprite.WALL_HORIZONTAL));
                         vwall.setPosition(i, j);
                         walls.add(vwall);
@@ -140,46 +137,31 @@ public class Stage extends KeyAdapter {
     }
     
     private void loadImages() {
-        sprite = new Sprite("sprite.png");
+        sprite = new Sprite("sprite3.png");
         animations = new HashMap<>();
         imgCollections = new HashMap<>();
         
-        sprite.setDefaultParameters(96, 96, Consts.CELL_SIZE/96.0f);
+        sprite.setDefaultParameters(16, 16, Consts.CELL_SIZE/16.0f);
 
-        sprite.newImage(Consts.Sprite.CHERRY, 0, 5);
-        sprite.newImage(Consts.Sprite.STRAWBERRY, 1, 5);
+        sprite.newImage(Consts.Sprite.CHERRY, 2, 3);
+        sprite.newImage(Consts.Sprite.STRAWBERRY, 3, 3);
         
-        ImageCollection icFruit = new ImageCollection();
-        icFruit.addImage(Consts.Sprite.CHERRY, sprite.getImage(Consts.Sprite.CHERRY));
-        icFruit.addImage(Consts.Sprite.STRAWBERRY, sprite.getImage(Consts.Sprite.STRAWBERRY));
-        
-        sprite.newImage(Consts.Sprite.WALL_HORIZONTAL, 0, 4);
-        sprite.newImage(Consts.Sprite.WALL_VERTICAL, 1, 4);
-        
-        ImageCollection icWall = new ImageCollection();
-        icWall.addImage(Consts.Sprite.WALL_HORIZONTAL, sprite.getImage(Consts.Sprite.WALL_HORIZONTAL));
-        icWall.addImage(Consts.Sprite.WALL_VERTICAL, sprite.getImage(Consts.Sprite.WALL_VERTICAL));
-        
-        sprite.setDefaultParameters(48, 48, Consts.CELL_SIZE/48.0f);
-
-        sprite.newImage(Consts.Sprite.POWER_PELLETS, 20, 0);
-        sprite.newImage(Consts.Sprite.PACDOTS, 16, 0);
-        
-        ImageCollection icItems = new ImageCollection();
-        icItems.addImage(Consts.Sprite.POWER_PELLETS, sprite.getImage(Consts.Sprite.POWER_PELLETS));
-        icItems.addImage(Consts.Sprite.PACDOTS, sprite.getImage(Consts.Sprite.PACDOTS));
+        sprite.newImage(Consts.Sprite.WALL_HORIZONTAL, 10, 3);
+        sprite.newImage(Consts.Sprite.WALL_VERTICAL, 10, 3);
+                
+        sprite.newImage(Consts.Sprite.POWER_PELLETS, 11, 3);
+        sprite.newImage(Consts.Sprite.PACDOTS, 11, 2);
         
         //Animação do PacMan:
-        sprite.setDefaultParameters(96, 96, Consts.CELL_SIZE/96.0f);
-        sprite.newImage(Consts.Sprite.PACMAN_LEFT_0, 2, 3);
-        sprite.newImage(Consts.Sprite.PACMAN_LEFT_1, 0, 3);
-        sprite.newImage(Consts.Sprite.PACMAN_TOP_0, 3, 3);
-        sprite.newImage(Consts.Sprite.PACMAN_TOP_1, 1, 3);
-        sprite.newImage(Consts.Sprite.PACMAN_RIGHT_0, 6, 3);
-        sprite.newImage(Consts.Sprite.PACMAN_RIGHT_1, 4, 3);
-        sprite.newImage(Consts.Sprite.PACMAN_BOTTOM_0, 7, 3);
-        sprite.newImage(Consts.Sprite.PACMAN_BOTTOM_1, 5, 3);
-        sprite.newImage(Consts.Sprite.PACMAN_CLOSE, 0, 7);
+        sprite.newImage(Consts.Sprite.PACMAN_LEFT_0, 1, 1);
+        sprite.newImage(Consts.Sprite.PACMAN_LEFT_1, 0, 1);
+        sprite.newImage(Consts.Sprite.PACMAN_TOP_0, 1, 2);
+        sprite.newImage(Consts.Sprite.PACMAN_TOP_1, 0, 2);
+        sprite.newImage(Consts.Sprite.PACMAN_RIGHT_0, 1, 0);
+        sprite.newImage(Consts.Sprite.PACMAN_RIGHT_1, 0, 0);
+        sprite.newImage(Consts.Sprite.PACMAN_BOTTOM_0, 1, 3);
+        sprite.newImage(Consts.Sprite.PACMAN_BOTTOM_1, 0, 3);
+        sprite.newImage(Consts.Sprite.PACMAN_CLOSE, 2, 0);
         
         Animation anLeft = new Animation(125);
         anLeft.addImage(sprite.getImage(Consts.Sprite.PACMAN_LEFT_1));
