@@ -75,6 +75,7 @@ public class WorldMap implements Serializable {
     }
     
     public byte freePath(int x, int y) {
+        byte rtrn = 0;
         if(y < 0) {
             y += Consts.NUM_CELLS_Y;
         } else if(y >= Consts.NUM_CELLS_Y) {
@@ -86,8 +87,6 @@ public class WorldMap implements Serializable {
         } else if(x >= Consts.NUM_CELLS_X) {
             x -= Consts.NUM_CELLS_X;
         }
-        
-        byte rtrn = 0;
         
         if(x > 0 && isValidPosition(map[x-1][y])) {
             rtrn |= LEFT;
