@@ -39,47 +39,41 @@ public class Blinky extends Phantom implements Serializable {
            return;
        }
        
-       byte direction = wm.freePath((int)Math.round(this.pos.getX()), (int)Math.round(this.pos.getY()));
+        byte freeSides = wm.freePath((int)Math.round(this.pos.getX()), (int)Math.round(this.pos.getY()));
+       
        
        //Tomada de decisão:
        if(Math.random()*100 <= 98.0f*hysteresisCoef) {
             hysteresisCoef = 1.0f;
-            if(desiredPos.getX() > this.pos.getX() && ((direction & WorldMap.RIGHT) == WorldMap.RIGHT)) {
+            if(desiredPos.getX() > this.pos.getX() && ((freeSides & WorldMap.RIGHT) == WorldMap.RIGHT)) {
                this.setNextMovDirection(MOVE_RIGHT);
             }
-            else if(desiredPos.getX() < this.pos.getX() && ((direction & WorldMap.LEFT) == WorldMap.LEFT)) {
+            else if(desiredPos.getX() < this.pos.getX() && ((freeSides & WorldMap.LEFT) == WorldMap.LEFT)) {
                 this.setNextMovDirection(MOVE_LEFT);
             }
-            else if(desiredPos.getY() > this.pos.getY() && ((direction & WorldMap.DOWN) == WorldMap.DOWN)) {
+            else if(desiredPos.getY() > this.pos.getY() && ((freeSides & WorldMap.DOWN) == WorldMap.DOWN)) {
                 this.setNextMovDirection(MOVE_DOWN);
             }
-            else if(desiredPos.getY() < this.pos.getY() && ((direction & WorldMap.UP) == WorldMap.UP)) {
+            else if(desiredPos.getY() < this.pos.getY() && ((freeSides & WorldMap.UP) == WorldMap.UP)) {
                 this.setNextMovDirection(MOVE_UP);
             }
        }
        //Aleatório:
        else {
-           double aux = (this.pos.getX()*desiredPos.getY())%3;
-           byte possibleDirection = (byte)Math.pow(2.0d, aux);
-           hysteresisCoef = 0.20f;
-           
-           switch (possibleDirection & direction) {
-               case WorldMap.DOWN:
-                   this.setNextMovDirection(MOVE_DOWN);
-                   break;
-               case WorldMap.LEFT:
-                   this.setNextMovDirection(MOVE_LEFT);
-                   break;
-               case WorldMap.RIGHT:
-                   this.setNextMovDirection(MOVE_RIGHT);
-                   break;
-               case WorldMap.UP:
-                   this.setNextMovDirection(MOVE_UP);
-                   break;
-               default:
-                   this.setNextMovDirection(MOVE_UP);
-                   break;
-           }
+            byte direction = (byte) ((byte)(Math.random()*16) & freeSides);
+            while(direction == 0) {
+                direction = (byte) ((byte)(16*Math.random()) & freeSides);
+            }
+            
+            if((direction & WorldMap.DOWN) != 0) {
+                this.setNextMovDirection(MOVE_DOWN);
+            } else if((direction & WorldMap.LEFT) != 0) {
+                this.setNextMovDirection(MOVE_LEFT);
+            } else if((direction & WorldMap.RIGHT) != 0) {
+                this.setNextMovDirection(MOVE_RIGHT);                
+            } else if((direction & WorldMap.UP) != 0) {
+                this.setNextMovDirection(MOVE_UP);  
+            }
        }
        
     }
