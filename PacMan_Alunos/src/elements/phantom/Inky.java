@@ -3,10 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package elements.phanton;
+package elements.phantom;
 
 import control.WorldMap;
-import static elements.phanton.Phantom.wm;
+import static elements.phantom.Phantom.MOVE_DOWN;
+import static elements.phantom.Phantom.MOVE_LEFT;
+import static elements.phantom.Phantom.MOVE_RIGHT;
+import static elements.phantom.Phantom.MOVE_UP;
 import javax.swing.ImageIcon;
 import utils.Consts;
 import utils.ImageCollection;
@@ -16,31 +19,29 @@ import utils.Position;
  *
  * @author aribeiro
  */
-public class Clyde extends Phantom {
+public class Inky extends Phantom {
     private float hysteresisCoef;
     private byte freeSides;
     private int direction;
     
-    public Clyde(String imageName, int value) {
+    public Inky(String imageName, int value) {
         super(imageName, value);
         hysteresisCoef = 1.0f;
     }
-
-    public Clyde(ImageCollection collection, int defaultImage, int value) {
+    
+    public Inky(ImageCollection collection, int defaultImage, int value) {
         super(collection, defaultImage, value);
         hysteresisCoef = 1.0f;
     }
     
     @Override
     public String name() {
-        return "Clyde";
+        return "Inky";
     }
 
     private void followPos(Position desiredPos) {
-       System.out.println("DesiredPos: "+desiredPos.toString());
        
        if(this.pos == desiredPos) {
-           System.out.println("Peguei");
            return;
        }
        
@@ -51,19 +52,15 @@ public class Clyde extends Phantom {
             hysteresisCoef = 1.0f;
             if(desiredPos.getX() > this.pos.getX() && ((freeSides & WorldMap.RIGHT) == WorldMap.RIGHT)) {
                this.setNextMovDirection(MOVE_RIGHT);
-               System.out.println("r");
             }
             else if(desiredPos.getX() < this.pos.getX() && ((freeSides & WorldMap.LEFT) == WorldMap.LEFT)) {
                 this.setNextMovDirection(MOVE_LEFT);
-                System.out.println("l");
             }
             else if(desiredPos.getY() > this.pos.getY() && ((freeSides & WorldMap.DOWN) == WorldMap.DOWN)) {
                 this.setNextMovDirection(MOVE_DOWN);
-                System.out.println("d");
             }
             else if(desiredPos.getY() < this.pos.getY() && ((freeSides & WorldMap.UP) == WorldMap.UP)) {
                 this.setNextMovDirection(MOVE_UP);
-                System.out.println("u");
             }
        }
        //Aleatório:
@@ -75,32 +72,27 @@ public class Clyde extends Phantom {
            switch (possibleDirection & freeSides) {
                case WorldMap.DOWN:
                    this.setNextMovDirection(MOVE_DOWN);
-                   System.out.println("D");
                    break;
                case WorldMap.LEFT:
                    this.setNextMovDirection(MOVE_LEFT);
-                   System.out.println("L");
                    break;
                case WorldMap.RIGHT:
                    this.setNextMovDirection(MOVE_RIGHT);
-                   System.out.println("R");
                    break;
                case WorldMap.UP:
                    this.setNextMovDirection(MOVE_UP);
-                   System.out.println("U");
                    break;
                default:
                    this.setNextMovDirection(MOVE_UP);
-                   System.out.println("ELSE");
                    break;
            }
        }
     }
- 
+    
     @Override
     protected void navigation() {
         Position desiredPos = wm.getPacManPosition();
-        if(this.pos.getDistanceTo(desiredPos) < 8.0d) {
+        if(this.pos.getDistanceTo(desiredPos) > 8.0d) {
             followPos(desiredPos);
         }
         else {
@@ -135,14 +127,14 @@ public class Clyde extends Phantom {
     protected ImageIcon getImage(int movDirection) {
         switch(movDirection) {
             case Phantom.MOVE_LEFT:
-                return this.collection.getImage(Consts.Animation.CLYDE_LEFT);
+                return this.collection.getImage(Consts.Animation.INKY_LEFT);
             case Phantom.MOVE_RIGHT:
-                return this.collection.getImage(Consts.Animation.CLYDE_RIGHT);
+                return this.collection.getImage(Consts.Animation.INKY_RIGHT);
             case Phantom.MOVE_UP:
-                return this.collection.getImage(Consts.Animation.CLYDE_UP);
+                return this.collection.getImage(Consts.Animation.INKY_UP);
             case Phantom.MOVE_DOWN:
-                return this.collection.getImage(Consts.Animation.CLYDE_DOWN);
+                return this.collection.getImage(Consts.Animation.INKY_DOWN);
         }
-        return this.collection.getImage(Consts.Animation.CLYDE_UP);
+        return this.collection.getImage(Consts.Animation.INKY_UP);
     }
 }

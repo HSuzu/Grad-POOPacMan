@@ -1,7 +1,11 @@
 package control;
 
+import elements.phantom.Blinky;
+import elements.phantom.Pinky;
+import elements.phantom.Phantom;
+import elements.phantom.Inky;
+import elements.phantom.Clyde;
 import elements.*;
-import elements.phanton.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;

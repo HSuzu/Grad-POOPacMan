@@ -1,9 +1,8 @@
-package elements.phanton;
+package elements.phantom;
 
 import control.WorldMap;
 import elements.Element;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.io.Serializable;
 import javax.swing.ImageIcon;
 import utils.Consts;
@@ -32,20 +31,20 @@ public abstract class Phantom extends Element implements Serializable {
         super(imageName);
         
         this.isTransposable = false;
-        this.setScore(value);
+        this.score = value;
         state = State.DEADLY;
         
-        this.wm = WorldMap.getInstance();
+        Phantom.wm = WorldMap.getInstance();
         
     }
     
     public Phantom(ImageCollection collection, int defaultImage, int value) {
         super(collection, defaultImage);
         
-        this.setScore(value);
+        this.score = value;
         state = State.DEADLY;
         
-        this.wm = WorldMap.getInstance();
+        Phantom.wm = WorldMap.getInstance();
         
     }
     

@@ -1,9 +1,7 @@
-package elements.phanton;
+package elements.phantom;
 
 import control.WorldMap;
-import java.awt.Image;
 import java.io.Serializable;
-import java.util.ArrayList;
 import utils.Position;
 import javax.swing.ImageIcon;
 import utils.Consts;

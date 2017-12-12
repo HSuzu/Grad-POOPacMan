@@ -4,7 +4,7 @@ import elements.Element;
 import elements.Items;
 import elements.PacMan;
 import elements.Wall;
-import elements.phanton.Phantom;
+import elements.phantom.Phantom;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Iterator;
