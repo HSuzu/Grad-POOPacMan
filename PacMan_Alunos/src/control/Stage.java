@@ -21,8 +21,6 @@ import java.io.ObjectOutputStream;
 import java.text.AttributedString;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Timer;
-import java.util.TimerTask;
 import javax.sound.sampled.LineUnavailableException;
 import utils.Animation;
 import utils.AudioControl;
@@ -32,7 +30,6 @@ import utils.Position;
 import utils.Sprite;
 import java.util.Timer;
 import java.util.TimerTask;
-import utils.Drawing;
 
 public class Stage extends KeyAdapter {
     private BackgroundElement bkElem;
@@ -157,6 +154,13 @@ public class Stage extends KeyAdapter {
         } catch (IOException | FontFormatException ex) {
             System.out.println(ex.getMessage());
         }
+        
+        timerStrawberry.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                createStrawberry();
+            }
+        }, Consts.STRAWBERRY_TIME);
     }
     
     private void updateMapElements() {
@@ -806,16 +810,13 @@ public class Stage extends KeyAdapter {
         
     public void createCherry() {
         Fruit cherry = new Fruit(sprite.getImage(Consts.Sprite.CHERRY), "Cherry", 100, Consts.FRUIT_LIFE);
-        cherry.setPosition(3.0, 6.0);
         fruits.add(cherry);
         elem.add(cherry);
         setTimer(timerCherry, Consts.CHERRY_TIME, "Cherry");
-        System.out.println("Cereja");
     }
     
     public void createStrawberry() {
-        Fruit strawberry = new Fruit(sprite.getImage(Consts.Sprite.CHERRY), "Strawberry", 300, Consts.FRUIT_LIFE);
-        strawberry.setPosition(5.0, 8.0);
+        Fruit strawberry = new Fruit(sprite.getImage(Consts.Sprite.STRAWBERRY), "Strawberry", 300, Consts.FRUIT_LIFE);
         fruits.add(strawberry);
         elem.add(strawberry);
         setTimer(timerStrawberry, Consts.STRAWBERRY_TIME, "Strawberry");

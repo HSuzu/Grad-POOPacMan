@@ -149,4 +149,8 @@ public class WorldMap implements Serializable {
     public Position getBlinkyPosition() {
         return this.BlinkyPosition;
     }
+    
+    public char getElement(int posx, int posy) {
+        return map[posx][posy];
+    }
 }
