@@ -71,7 +71,7 @@ public abstract class Phantom extends Element implements Serializable {
         if(null != state)
             switch (state) {
             case DEADLY:
-                this.isTransposable = false;
+                this.isTransposable = true;
                 break;
             case EDIBLE:
                 this.isTransposable = true;
