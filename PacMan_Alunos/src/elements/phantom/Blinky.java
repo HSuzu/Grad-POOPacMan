@@ -60,11 +60,7 @@ public class Blinky extends Phantom implements Serializable {
        }
        //Aleatório:
        else {
-            byte newPath = wm.freePath((int)Math.round(this.pos.getX()), (int)Math.round(this.pos.getY()));
-            if(freeSides != newPath) {
-                freeSides = newPath;
-            }
-           byte direction = (byte) ((byte)(Math.random()*16) & freeSides);
+            byte direction = (byte) ((byte)(Math.random()*16) & freeSides);
             while(direction == 0) {
                 direction = (byte) ((byte)(16*Math.random()) & freeSides);
             }
