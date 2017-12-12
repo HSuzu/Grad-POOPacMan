@@ -2,6 +2,7 @@ package control;
 
 import control.Stage.State;
 import elements.Element;
+import java.awt.Color;
 import utils.Consts;
 import utils.Drawing;
 import java.awt.Graphics;
@@ -60,7 +61,11 @@ public class GameScreen extends javax.swing.JFrame implements KeyListener {
 
         stage.iterationListener();
         elemArray = stage.getAllElements();
-        if(stage.getState() != State.GAME_OVER) {
+        if(stage.getState() == State.GAME_OVER) {
+            stage.drawGameOver(g2);
+        } else if(stage.getState() == State.TRANSITION) {
+            stage.drawString(g2, stage.getTransitionTxt(), Color.WHITE);
+        } else {
             stage.drawMap(g2);
 
             if(stage.getState() == State.GAME_ON) {
@@ -69,8 +74,6 @@ public class GameScreen extends javax.swing.JFrame implements KeyListener {
             this.controller.drawAllElements(elemArray, g2);
 
             stage.drawHeader(g2);
-        } else {
-            stage.drawGameOver(g2);
         }
 
         g.dispose();

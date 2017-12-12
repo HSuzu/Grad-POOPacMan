@@ -44,6 +44,18 @@ public class Consts {
         PACMAN_TOP_1,
         PACMAN_BOTTOM_0,
         PACMAN_BOTTOM_1,
+        
+        PACMAN_DYING_1,
+        PACMAN_DYING_2,
+        PACMAN_DYING_3,
+        PACMAN_DYING_4,
+        PACMAN_DYING_5,
+        PACMAN_DYING_6,
+        PACMAN_DYING_7,
+        PACMAN_DYING_8,
+        PACMAN_DYING_9,
+        PACMAN_DYING_10,
+        PACMAN_DYING_11,
 
         CHERRY,
         STRAWBERRY,
@@ -101,6 +113,8 @@ public class Consts {
         PACMAN_RIGHT,
         PACMAN_UP,
         PACMAN_DOWN,
+        
+        PACMAN_DYING,
 
         EDIBLE,
         EDIBLE_ENDING,

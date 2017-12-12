@@ -38,6 +38,8 @@ public class Stage extends KeyAdapter {
     private BackgroundElement bkElem;
     private Timer timerCherry;
     private Timer timerStrawberry;
+    private Timer timerTransition;
+    private String transitionTxt = "";
     
     AudioControl audio;
     AudioControl audioBackground;
@@ -61,7 +63,8 @@ public class Stage extends KeyAdapter {
     public enum State {
         GAME_ON,
         GAME_OVER,
-        DYING_PAUSE
+        DYING_PAUSE,
+        TRANSITION
     }
     
     private State state = State.GAME_ON;
@@ -77,6 +80,7 @@ public class Stage extends KeyAdapter {
         if(state == State.DYING_PAUSE) {
             audioBackground.setNext("sound" + File.separator + "pacman_death.wav");
             audioBackground.start(false, false);
+            
 
             bkAudioTimer = new Timer();
             bkAudioTimer.schedule(new TimerTask() {
@@ -340,16 +344,29 @@ public class Stage extends KeyAdapter {
     }
     
     public void drawGameOver(Graphics g) {
-        g.setColor(Color.decode("#333333"));
-
-        int height = Consts.HEADER_SIZE + Consts.NUM_CELLS_Y;
-        int width = Consts.NUM_CELLS_X;
-        g.fillRect(0, 0, width * Consts.CELL_SIZE, height * Consts.CELL_SIZE);
-
-        AttributedString word = new AttributedString("GAME OVER");
-        word.addAttribute(TextAttribute.FONT, font);
-        g.setColor(Color.RED);
-        g.drawString(word.getIterator(), (int)(0.33*Consts.NUM_CELLS_X*Consts.CELL_SIZE), (int)(0.5*Consts.NUM_CELLS_Y*Consts.CELL_SIZE));
+        drawString(g, "GAME OVER", Color.RED);
+    }
+        
+    public void drawString(Graphics g, String txt, Color color) {
+        FontMetrics metrics = g.getFontMetrics(font);
+        
+        int height = metrics.getHeight();
+        int width = metrics.stringWidth(txt);
+        
+        int x = (Consts.NUM_CELLS_X*Consts.CELL_SIZE - width)/2;
+        int y = (Consts.NUM_CELLS_Y*Consts.CELL_SIZE - height)/2;
+        
+        g.setColor(Color.decode("#222222"));
+        g.fillRect(x - 10, y - height - 10, width + 20, height + 30);
+        
+        g.setFont(font);
+        g.setColor(color);
+        
+        g.drawString(txt, x, y);
+    }
+    
+    public String getTransitionTxt() {
+        return transitionTxt;
     }
     
     private void resetAnimation() {
@@ -439,6 +456,34 @@ public class Stage extends KeyAdapter {
         sprite.newImage(Consts.Sprite.PACDOTS, 11, 2);
         
         //Animação do PacMan:
+        
+        sprite.newImage(Consts.Sprite.PACMAN_DYING_1, 3, 0);
+        sprite.newImage(Consts.Sprite.PACMAN_DYING_2, 4, 0);
+        sprite.newImage(Consts.Sprite.PACMAN_DYING_3, 5, 0);
+        sprite.newImage(Consts.Sprite.PACMAN_DYING_4, 6, 0);
+        sprite.newImage(Consts.Sprite.PACMAN_DYING_5, 7, 0);
+        sprite.newImage(Consts.Sprite.PACMAN_DYING_6, 8, 0);
+        sprite.newImage(Consts.Sprite.PACMAN_DYING_7, 9, 0);
+        sprite.newImage(Consts.Sprite.PACMAN_DYING_8, 10, 0);
+        sprite.newImage(Consts.Sprite.PACMAN_DYING_9, 11, 0);
+        sprite.newImage(Consts.Sprite.PACMAN_DYING_10, 12, 0);
+        sprite.newImage(Consts.Sprite.PACMAN_DYING_11, 13, 0);
+        
+        Animation dying = new Animation(Consts.ANIMATION_DELAY);
+        dying.addImage(sprite.getImage(Consts.Sprite.PACMAN_DYING_1));
+        dying.addImage(sprite.getImage(Consts.Sprite.PACMAN_DYING_2));
+        dying.addImage(sprite.getImage(Consts.Sprite.PACMAN_DYING_3));
+        dying.addImage(sprite.getImage(Consts.Sprite.PACMAN_DYING_4));
+        dying.addImage(sprite.getImage(Consts.Sprite.PACMAN_DYING_5));
+        dying.addImage(sprite.getImage(Consts.Sprite.PACMAN_DYING_6));
+        dying.addImage(sprite.getImage(Consts.Sprite.PACMAN_DYING_7));
+        dying.addImage(sprite.getImage(Consts.Sprite.PACMAN_DYING_8));
+        dying.addImage(sprite.getImage(Consts.Sprite.PACMAN_DYING_9));
+        dying.addImage(sprite.getImage(Consts.Sprite.PACMAN_DYING_10));
+        dying.addImage(sprite.getImage(Consts.Sprite.PACMAN_DYING_11));
+        
+        animations.put(Consts.Animation.PACMAN_DYING, dying);
+        
         sprite.newImage(Consts.Sprite.PACMAN_LEFT_0, 1, 1);
         sprite.newImage(Consts.Sprite.PACMAN_LEFT_1, 0, 1);
         sprite.newImage(Consts.Sprite.PACMAN_TOP_0, 1, 2);
@@ -482,6 +527,7 @@ public class Stage extends KeyAdapter {
         animations.put(Consts.Animation.PACMAN_DOWN, anBottom);
         
         ImageCollection icPacman = new ImageCollection();
+        icPacman.addAnimation(Consts.Animation.PACMAN_DYING, dying);
         icPacman.addAnimation(Consts.Animation.PACMAN_LEFT, anLeft);
         icPacman.addAnimation(Consts.Animation.PACMAN_UP, anTop);
         icPacman.addAnimation(Consts.Animation.PACMAN_RIGHT, anRight);
@@ -734,8 +780,24 @@ public class Stage extends KeyAdapter {
                     for(Phantom p : phantoms) {
                         p.setState(Phantom.State.DEADLY);
                     }
+                    
+                    state = State.TRANSITION;
+                    transitionTxt = "Phase " + stage;
+                    
+                    timerTransition = new Timer();
+            
+                    timerTransition.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            state = State.GAME_ON;
+                        }
+                    }, 4000);
+
 
                 } catch(IOException ex) {
+                    state = State.TRANSITION;
+                    transitionTxt = "You Win";
+
                     System.out.println(ex.getMessage());
                 }
             }
