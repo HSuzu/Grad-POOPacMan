@@ -86,7 +86,7 @@ public class Pinky extends Phantom {
     }
 
     @Override
-    protected ImageIcon getImage(int movDirection) {
+    public ImageIcon getImage(int movDirection) {
         if(this.state == State.EDIBLE) {
             return collection.getImage(Consts.Animation.EDIBLE);
         } else if(this.state == State.ENDING_EDIBLE) {

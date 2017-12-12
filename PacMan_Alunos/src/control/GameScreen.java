@@ -1,5 +1,6 @@
 package control;
 
+import control.Stage.State;
 import elements.Element;
 import utils.Consts;
 import utils.Drawing;
@@ -57,13 +58,18 @@ public class GameScreen extends javax.swing.JFrame implements KeyListener {
         /*Criamos um contexto grafico*/
         Graphics g2 = g.create(getInsets().right, getInsets().top, getWidth() - getInsets().left, getHeight() - getInsets().bottom);
 
-        stage.iterationListener();
-        stage.drawMap(g2);
+        if(stage.getState() != State.GAME_OVER) {
+            stage.drawMap(g2);
 
-        this.controller.processAllElements(elemArray);
-        this.controller.drawAllElements(elemArray, g2);
+            if(stage.getState() == State.GAME_ON) {
+                this.controller.processAllElements(elemArray);
+            }
+            this.controller.drawAllElements(elemArray, g2);
 
-        stage.drawHeader(g2);
+            stage.drawHeader(g2);
+        } else {
+            stage.drawGameOver(g2);
+        }
 
         g.dispose();
         g2.dispose();

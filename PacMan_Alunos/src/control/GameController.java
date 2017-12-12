@@ -89,7 +89,7 @@ public class GameController {
     public boolean isValidPosition(ArrayList<Element> elemArray, Element elem){
         Element elemAux;
         for(int i = 1; i < elemArray.size(); i++){
-            elemAux = elemArray.get(i);  
+            elemAux = elemArray.get(i);
             if(!elemAux.isTransposable())
                 if(elemAux.overlap(elem, 1.0f))
                     return false;

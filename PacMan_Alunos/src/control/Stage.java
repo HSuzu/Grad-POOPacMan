@@ -20,6 +20,8 @@ import java.io.ObjectOutputStream;
 import java.text.AttributedString;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 import javax.sound.sampled.LineUnavailableException;
 import utils.Animation;
 import utils.AudioControl;
@@ -37,6 +39,7 @@ public class Stage extends KeyAdapter {
     
     AudioControl audio;
     AudioControl audioBackground;
+    Timer bkAudioTimer;
     
     private PacMan pacman;
     private ArrayList<Phantom> phantoms;
@@ -52,6 +55,18 @@ public class Stage extends KeyAdapter {
     private HashMap<Consts.ImgCollection, ImageCollection> imgCollections;
     
     private Font font;
+    
+    public enum State {
+        GAME_ON,
+        GAME_OVER,
+        PAUSE
+    }
+    
+    private State state = State.GAME_ON;
+    
+    public State getState() {
+        return state;
+    }
         
     public Stage() {
         loadImages();
@@ -274,6 +289,19 @@ public class Stage extends KeyAdapter {
         g.drawString(word.getIterator(), (Consts.NUM_CELLS_X - 7)*Consts.CELL_SIZE, Consts.CELL_SIZE);
     }
     
+    public void drawGameOver(Graphics g) {
+        g.setColor(Color.decode("#333333"));
+
+        int height = Consts.HEADER_SIZE + Consts.NUM_CELLS_Y;
+        int width = Consts.NUM_CELLS_X;
+        g.fillRect(0, 0, width * Consts.CELL_SIZE, height * Consts.CELL_SIZE);
+
+        AttributedString word = new AttributedString("GAME OVER");
+        word.addAttribute(TextAttribute.FONT, font);
+        g.setColor(Color.RED);
+        g.drawString(word.getIterator(), (int)(0.33*Consts.NUM_CELLS_X*Consts.CELL_SIZE), (int)(0.5*Consts.NUM_CELLS_Y*Consts.CELL_SIZE));
+    }
+    
     private void resetAnimation() {
         ImageCollection icPacMan = imgCollections.get(Consts.ImgCollection.PACMAN);
         pacman.setImageCollection(icPacMan);
@@ -296,24 +324,28 @@ public class Stage extends KeyAdapter {
             break;
         }
         
+        ImageCollection icPhanton;
         for(Phantom p : phantoms) {
             switch(p.name()) {
                 case "Clyde":
-                    p.setImage(sprite.getImage(Consts.Sprite.CHERRY));
+                    icPhanton = imgCollections.get(Consts.ImgCollection.CLYDE);
                 break;
                 case "Pinky":
-                    p.setImage(sprite.getImage(Consts.Sprite.CHERRY));
+                    icPhanton = imgCollections.get(Consts.ImgCollection.PINKY);
                 break;
                 case "Inky":
-                    p.setImage(sprite.getImage(Consts.Sprite.CHERRY));
+                    icPhanton = imgCollections.get(Consts.ImgCollection.INKY);
                 break;
                 case "Blinky":
+                    icPhanton = imgCollections.get(Consts.ImgCollection.BLINKY);
                     p.setImage(sprite.getImage(Consts.Sprite.CHERRY));
                 break;
                 default:
-                    p.setImage(sprite.getImage(Consts.Sprite.CHERRY));
+                    icPhanton = imgCollections.get(Consts.ImgCollection.BLINKY);
                 break;
             }
+            p.setImageCollection(icPhanton);
+            p.setImage(p.getImage(p.getMovDirection()));
         }
         
         for(Fruit f : fruits) {
@@ -618,6 +650,14 @@ public class Stage extends KeyAdapter {
                     }
                     audioBackground.setNext("sound"+ File.separator + "pacman_intermission.wav");
                     audioBackground.start(false, true);
+                    
+                    bkAudioTimer = new Timer();
+                    bkAudioTimer.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            audioBackground.stop();
+                        }
+                    }, Consts.Timer.POWERPELLET_EFFECT + Consts.Timer.POWERPELLET_EFFECT_ENDIND);
                 break;
                 default:
                     audio.setNext("sound"+ File.separator + "pacman_eatfruit.wav");
@@ -628,6 +668,8 @@ public class Stage extends KeyAdapter {
             Phantom p = (Phantom) e;
             if(p.getState() != Phantom.State.DEADLY) {
                 Phantom.increasePhantonCounter();
+            } else if(pacman.getNumLifes() == 0) {
+                state = State.GAME_OVER;
             }
         }
     }

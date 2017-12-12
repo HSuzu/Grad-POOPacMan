@@ -69,6 +69,10 @@ public abstract class Phantom extends Element implements Serializable {
         return state;
     }
     
+    public int getMovDirection() {
+        return movDirection;
+    }
+    
     public void setState(State state) {
         if(null != state)
             switch (state) {
@@ -94,7 +98,7 @@ public abstract class Phantom extends Element implements Serializable {
                             }
                         }
                         
-                    }, 5000, 3000);
+                    }, Consts.Timer.POWERPELLET_EFFECT, Consts.Timer.POWERPELLET_EFFECT_ENDIND);
                 }   break;
             case ENDING_EDIBLE:
                 this.isTransposable = true;
@@ -114,7 +118,7 @@ public abstract class Phantom extends Element implements Serializable {
     
     abstract protected void navigation();
 
-    abstract protected ImageIcon getImage(int movDirection);
+    abstract public ImageIcon getImage(int movDirection);
     
     protected void runAway() {
         int desiredDirection = wm.getPacManDirection();
@@ -167,11 +171,12 @@ public abstract class Phantom extends Element implements Serializable {
     }
     
     public void move() {
-        if(state != State.DEADLY && movDirection == nextMovDirection) {
-            runAway();
-        }
-        else if(movDirection == nextMovDirection) {
-            navigation();
+        if(movDirection == nextMovDirection) {
+            if(state != State.DEADLY) {
+                runAway();
+            } else {
+                navigation();
+            }
         }
         else {
             if(pos.isRoundPosition(3.0*Consts.WALK_STEP)) {
