@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package elements;
+package elements.phanton;
 
 import control.WorldMap;
 import elements.phanton.Phantom;
@@ -38,8 +38,6 @@ public class Inky extends Phantom {
     }
 
     private void followPos(Position desiredPos) {
-
-        
        System.out.println("DesiredPos: "+desiredPos.toString());
        
        if(this.pos == desiredPos) {
