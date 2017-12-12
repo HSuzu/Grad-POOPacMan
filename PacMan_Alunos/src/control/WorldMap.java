@@ -101,7 +101,7 @@ public class WorldMap implements Serializable {
             rtrn |= DOWN;
         }
         
-        if(x < Consts.NUM_CELLS_X - Consts.HEADER_SIZE - 1 && isValidPosition(map[x+1][y])) {
+        if(x < Consts.NUM_CELLS_X - 1 && isValidPosition(map[x+1][y])) {
             rtrn |= RIGHT;
         }
         
