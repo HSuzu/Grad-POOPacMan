@@ -90,7 +90,7 @@ public class Inky extends Phantom {
     @Override
     protected void navigation() {
         Position desiredPos = wm.getPacManPosition();
-        if(this.pos.getDistanceTo(desiredPos) > 8.0d) {
+        if(this.pos.getDistanceTo(desiredPos) < 8.0d) {
             followPos(desiredPos);
         }
         else {
