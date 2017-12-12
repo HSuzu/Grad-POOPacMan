@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import javax.swing.ImageIcon;
 
-public class ImageCollection implements Serializable {
+public class ImageCollection {
     private final HashMap<Integer, Animation> animations;
     private final HashMap<Integer, ImageIcon> staticImages;
     private int lastKey;
@@ -63,6 +63,14 @@ public class ImageCollection implements Serializable {
         
         if(curr != null) {
             curr.start();
+        }
+    }
+    
+    public void reset() {
+        for(Animation a : animations.values()) {
+            if(a.isRunning()) {
+                a.forceStart();
+            }
         }
     }
 }

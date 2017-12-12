@@ -69,11 +69,13 @@ public class GameController {
                     } else {
                         pacman.winPoints(eTemp.getScore());
                         it.remove();
+                        stage.removeElement(eTemp);
                     }
                 } else {
                     if(eTemp.isTransposable()) {
                         pacman.winPoints(eTemp.getScore());
                         it.remove();
+                        stage.removeElement(eTemp);
                     }
                 }
             }

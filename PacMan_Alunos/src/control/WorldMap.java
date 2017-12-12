@@ -5,25 +5,24 @@
  */
 package control;
 
-import elements.Items;
-import elements.Wall;
 import java.io.BufferedReader;
 import utils.Consts;
-import java.util.ArrayList;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Serializable;
 import utils.Position;
 
-public class WorldMap {
+public class WorldMap implements Serializable {
     final static public char LEFT  = 0x01;
     final static public char RIGHT = 0x02;
     final static public char UP    = 0x04;
     final static public char DOWN  = 0x08;
     
-    private char[][] map;
+    transient private char[][] map;
+    private String saveFile = null;
 
-    private static WorldMap worldMap = null;
+    transient private static WorldMap worldMap = null;
     
     protected Position PacManPosition;
     protected int PacManMovDirection;
@@ -32,7 +31,13 @@ public class WorldMap {
         map = new char[Consts.NUM_CELLS_X][Consts.NUM_CELLS_Y];
     }
     
+    public void loadWorldMap(WorldMap map) {
+        this.saveFile = map.saveFile;
+        loadFile(saveFile);
+    }
+    
     public void loadFile(String file) {
+        saveFile = file;
         FileReader reader = null;
         BufferedReader buff = null;
         
@@ -70,8 +75,16 @@ public class WorldMap {
     }
     
     public byte freePath(int x, int y) {
-        if(y <= 0 || x <= 0) {
-            return -1;
+        if(y < 0) {
+            y += Consts.NUM_CELLS_Y;
+        } else if(y >= Consts.NUM_CELLS_Y) {
+            y -= Consts.NUM_CELLS_Y;
+        }
+        
+        if(x < 0) {
+            x += Consts.NUM_CELLS_X;
+        } else if(x >= Consts.NUM_CELLS_X) {
+            x -= Consts.NUM_CELLS_X;
         }
         
         byte rtrn = 0;

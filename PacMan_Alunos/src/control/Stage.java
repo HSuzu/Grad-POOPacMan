@@ -35,6 +35,8 @@ public class Stage extends KeyAdapter {
     private ArrayList<Items> powerPellets;
     private ArrayList<Wall> walls;
     
+    ArrayList<Element> elem;
+    
     protected Sprite sprite;
     private HashMap<Consts.Animation, Animation> animations;
     private HashMap<Consts.ImgCollection, ImageCollection> imgCollections;
@@ -68,6 +70,14 @@ public class Stage extends KeyAdapter {
         pacDots = new ArrayList<>();
         powerPellets = new ArrayList<>();
         walls = new ArrayList<>();
+        
+        elem = new ArrayList<>();
+        elem.add(pacman);
+        elem.addAll(phantoms);
+        elem.addAll(pacDots);
+        elem.addAll(powerPellets);
+        elem.addAll(fruits);
+        elem.addAll(walls);
         
         char[][] map = WorldMap.getInstance().getMap();
         
@@ -114,16 +124,28 @@ public class Stage extends KeyAdapter {
     }
     
     public ArrayList<Element> getAllElements() {
-        ArrayList<Element> elem = new ArrayList<>();
-        
+        elem.clear();
         elem.add(pacman);
         elem.addAll(phantoms);
         elem.addAll(pacDots);
         elem.addAll(powerPellets);
         elem.addAll(fruits);
         elem.addAll(walls);
-        
         return elem;
+    }
+    
+    public void removeElement(Element e) {
+        if(e instanceof Phantom) {
+            phantoms.remove(e);
+        } else if(e instanceof Fruit) {
+            fruits.remove(e);
+        } else if(e instanceof Items) {
+            if(!pacDots.remove(e)) {
+                powerPellets.remove(e);
+            }
+        } else if(e instanceof Wall) {
+            walls.remove(e);
+        }
     }
     
     public void saveStage(String file) {
@@ -138,6 +160,7 @@ public class Stage extends KeyAdapter {
             try {
                 stream = new ObjectOutputStream(f);
 
+                stream.writeObject(WorldMap.getInstance());
                 stream.writeObject(pacman);
                 stream.writeObject(phantoms);
                 stream.writeObject(fruits);
@@ -162,6 +185,7 @@ public class Stage extends KeyAdapter {
             powerPellets.clear();
             walls.clear();
             
+            WorldMap.getInstance().loadWorldMap((WorldMap) stream.readObject());
             pacman = (PacMan) stream.readObject();
             phantoms = (ArrayList) stream.readObject();
             fruits = (ArrayList) stream.readObject();
@@ -170,6 +194,15 @@ public class Stage extends KeyAdapter {
             walls = (ArrayList) stream.readObject();
         } catch (IOException | ClassNotFoundException ex) {
             System.out.println(ex.getMessage());
+        } finally {
+            resetAnimation();
+            elem.clear();
+            elem.add(pacman);
+            elem.addAll(phantoms);
+            elem.addAll(pacDots);
+            elem.addAll(powerPellets);
+            elem.addAll(fruits);
+            elem.addAll(walls);
         }
     }
     
@@ -195,6 +228,72 @@ public class Stage extends KeyAdapter {
         word.addAttribute(TextAttribute.FONT, font);
         g.setColor(Color.green);
         g.drawString(word.getIterator(), (Consts.NUM_CELLS_X - 7)*Consts.CELL_SIZE, Consts.CELL_SIZE);
+    }
+    
+    private void resetAnimation() {
+        ImageCollection icPacMan = imgCollections.get(Consts.ImgCollection.PACMAN);
+        pacman.setImageCollection(icPacMan);
+        pacman.resetMovDirection();
+        switch(pacman.getMovimentDirection()) {
+            case PacMan.MOVE_DOWN:
+                pacman.setImage(icPacMan.getImage(Consts.Animation.PACMAN_DOWN));
+            break;
+            case PacMan.MOVE_UP:
+                pacman.setImage(icPacMan.getImage(Consts.Animation.PACMAN_UP));
+            break;
+            case PacMan.MOVE_LEFT:
+                pacman.setImage(icPacMan.getImage(Consts.Animation.PACMAN_LEFT));
+            break;
+            case PacMan.MOVE_RIGHT:
+                pacman.setImage(icPacMan.getImage(Consts.Animation.PACMAN_RIGHT));
+            break;
+            default:
+                pacman.setImage(sprite.getImage(Consts.Sprite.PACMAN_CLOSE));
+            break;
+        }
+        
+        for(Phantom p : phantoms) {
+            switch(p.name()) {
+                case "Clyde":
+                    p.setImage(sprite.getImage(Consts.Sprite.CHERRY));
+                break;
+                case "Pinky":
+                    p.setImage(sprite.getImage(Consts.Sprite.CHERRY));
+                break;
+                case "Inky":
+                    p.setImage(sprite.getImage(Consts.Sprite.CHERRY));
+                break;
+                case "Blinky":
+                    p.setImage(sprite.getImage(Consts.Sprite.CHERRY));
+                break;
+                default:
+                    p.setImage(sprite.getImage(Consts.Sprite.CHERRY));
+                break;
+            }
+        }
+        
+        for(Fruit f : fruits) {
+            switch(f.getName()) {
+                case "Cherry":
+                    f.setImage(sprite.getImage(Consts.Sprite.CHERRY));
+                break;
+                default:
+                    f.setImage(sprite.getImage(Consts.Sprite.CHERRY));
+                break;
+            }
+        }
+        
+        for(Items p : pacDots) {
+            p.setImage(sprite.getImage(Consts.Sprite.PACDOTS));
+        }
+        
+        for(Items p : powerPellets) {
+            p.setImage(sprite.getImage(Consts.Sprite.POWER_PELLETS));
+        }
+        
+        for(Wall w : walls) {
+            w.setImage(sprite.getImage(Consts.Sprite.WALL_HORIZONTAL));
+        }
     }
     
     private void loadImages() {

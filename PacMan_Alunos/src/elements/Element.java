@@ -20,8 +20,8 @@ import utils.Sprite;
  */
 public abstract class Element implements Serializable{
 
-    protected ImageIcon imageIcon;
-    protected ImageCollection collection = null;
+    transient protected ImageIcon imageIcon;
+    transient protected ImageCollection collection = null;
     protected Position pos;
     protected boolean isTransposable; // Pode passar por cima?
     protected boolean isMortal;       // Se encostar, morre?
@@ -70,6 +70,14 @@ public abstract class Element implements Serializable{
         
         imageIcon = collection.getImage(defaultImage);
         collection.startAnimation();
+    }
+    
+    public void setImage(ImageIcon image) {
+        this.imageIcon = image;
+    }
+    
+    public void setImageCollection(ImageCollection collection) {
+        this.collection = collection;
     }
     
     public int getScore() {

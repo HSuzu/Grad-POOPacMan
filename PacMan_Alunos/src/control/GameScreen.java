@@ -46,6 +46,7 @@ public class GameScreen extends javax.swing.JFrame implements KeyListener {
     
     public void removeElement(Element elem) {
         elemArray.remove(elem);
+        stage.removeElement(elem);
     }
     
     @Override
@@ -122,13 +123,11 @@ public class GameScreen extends javax.swing.JFrame implements KeyListener {
     public void keyPressed(KeyEvent ke) {
         switch(ke.getKeyCode()) {
             case KeyEvent.VK_S:
-                System.out.println("adhjhdsjhdsaa");
                 if(ke.isControlDown()) {
                     stage.saveStage("savefile.sav");
                 }
             break;
             case KeyEvent.VK_L:
-                System.out.println("adhjhdsjhdsaa");
                 if(ke.isControlDown()) {
                     try {
                         stage.loadStage("savefile.sav");
