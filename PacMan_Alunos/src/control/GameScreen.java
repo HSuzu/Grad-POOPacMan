@@ -51,6 +51,7 @@ public class GameScreen extends javax.swing.JFrame implements KeyListener {
     
     @Override
     public void paint(Graphics gOld) {
+        elemArray = stage.getAllElements();
         Graphics g = getBufferStrategy().getDrawGraphics();
 
         /*Criamos um contexto grafico*/

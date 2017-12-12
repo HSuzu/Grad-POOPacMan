@@ -36,7 +36,7 @@ public class GameController {
         
         PacMan pacman = (PacMan)e.get(0);
         pacman.move();
-
+        
         wm.setPacManPosition(pacman.getPosition());
         wm.setPacManDirection(pacman.getMovimentDirection());
         

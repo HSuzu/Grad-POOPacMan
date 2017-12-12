@@ -23,6 +23,10 @@ public class Consts {
     public static final int DELAY = 20;
     public static final int ANIMATION_DELAY = 50;
     
+    public static final int CHERRY_TIME = 50000;
+    public static final int STRAWBERRY_TIME = 75000;
+    public static final int FRUIT_LIFE = 15000;
+    
     public static enum Sprite {
         //Para a escolha das imagens do PacMan:
         PACMAN_CLOSE,
