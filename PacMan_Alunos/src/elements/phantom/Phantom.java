@@ -8,6 +8,7 @@ import javax.swing.ImageIcon;
 import utils.Consts;
 import utils.Drawing;
 import utils.ImageCollection;
+import utils.Position;
 
 public abstract class Phantom extends Element implements Serializable {
     public static enum State {
@@ -62,6 +63,26 @@ public abstract class Phantom extends Element implements Serializable {
 
     abstract protected ImageIcon getImage(int movDirection);
     
+    protected void runAway() {
+        Position avoidPos = wm.getPacManPosition();
+        
+        byte freeSides = wm.freePath((int)Math.round(this.pos.getX()), (int)Math.round(this.pos.getY()));
+        
+        if(avoidPos.getX() > this.pos.getX() && ((freeSides & WorldMap.RIGHT) == WorldMap.RIGHT)) {
+           this.setNextMovDirection(MOVE_RIGHT);
+        }
+        else if(avoidPos.getX() < this.pos.getX() && ((freeSides & WorldMap.LEFT) == WorldMap.LEFT)) {
+            this.setNextMovDirection(MOVE_LEFT);
+        }
+        else if(avoidPos.getY() > this.pos.getY() && ((freeSides & WorldMap.DOWN) == WorldMap.DOWN)) {
+            this.setNextMovDirection(MOVE_DOWN);
+        }
+        else if(avoidPos.getY() < this.pos.getY() && ((freeSides & WorldMap.UP) == WorldMap.UP)) {
+            this.setNextMovDirection(MOVE_UP);
+        }
+    }
+
+    
     @Override
     public void autoDraw(Graphics g) {
         Drawing.draw(g, this.imageIcon, pos.getX(), pos.getY());
@@ -72,42 +93,44 @@ public abstract class Phantom extends Element implements Serializable {
     }
     
     public void move() {
-       // System.out.println("Next move direction: "+this.nextMovDirection);
-       // System.out.println("Move direction: "+this.movDirection);
-        if(movDirection == nextMovDirection) {
-            navigation();
+        if(state == State.EDIBLE) {
+            runAway();
         }
         else {
-            if(pos.isRoundPosition(3.0*Consts.WALK_STEP)) {
-                pos.roundPosition();
-                movDirection = nextMovDirection;
+            if(movDirection == nextMovDirection) {
+                navigation();
             }
-        } 
-        
-        switch (movDirection) {
-            case MOVE_LEFT:
-                imageIcon = getImage(MOVE_LEFT);
-                this.moveLeft();
-                this.collection.startAnimation();
-                break;
-            case MOVE_RIGHT:
-                imageIcon = getImage(MOVE_RIGHT);
-                this.moveRight();
-                this.collection.startAnimation();
-                break;
-            case MOVE_UP:
-                imageIcon = getImage(MOVE_UP);
-                this.moveUp();
-                this.collection.startAnimation();
-                break;
-            case MOVE_DOWN:
-                imageIcon = getImage(MOVE_DOWN);
-                this.moveDown();
-                this.collection.startAnimation();
-                break;
-            default:
-                break;
-        }        
-        
+            else {
+                if(pos.isRoundPosition(3.0*Consts.WALK_STEP)) {
+                    pos.roundPosition();
+                    movDirection = nextMovDirection;
+                }
+            } 
+
+            switch (movDirection) {
+                case MOVE_LEFT:
+                    imageIcon = getImage(MOVE_LEFT);
+                    this.moveLeft();
+                    this.collection.startAnimation();
+                    break;
+                case MOVE_RIGHT:
+                    imageIcon = getImage(MOVE_RIGHT);
+                    this.moveRight();
+                    this.collection.startAnimation();
+                    break;
+                case MOVE_UP:
+                    imageIcon = getImage(MOVE_UP);
+                    this.moveUp();
+                    this.collection.startAnimation();
+                    break;
+                case MOVE_DOWN:
+                    imageIcon = getImage(MOVE_DOWN);
+                    this.moveDown();
+                    this.collection.startAnimation();
+                    break;
+                default:
+                    break;
+            } 
+        }    
     }
 }
