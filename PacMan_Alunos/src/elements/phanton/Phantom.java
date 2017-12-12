@@ -3,11 +3,12 @@ package elements.phanton;
 import control.WorldMap;
 import elements.Element;
 import java.awt.Graphics;
+import java.io.Serializable;
 import javax.swing.ImageIcon;
 import utils.Consts;
 import utils.Drawing;
 
-public abstract class Phantom extends Element {
+public abstract class Phantom extends Element implements Serializable {
     public static enum State {
         DEADLY,
         EDIBLE
@@ -70,7 +71,6 @@ public abstract class Phantom extends Element {
     public void move() {
        // System.out.println("Next move direction: "+this.nextMovDirection);
        // System.out.println("Move direction: "+this.movDirection);
-        System.out.println("Phantom: "+this.pos.toString());
         if(movDirection == nextMovDirection) {
             navigation();
         }

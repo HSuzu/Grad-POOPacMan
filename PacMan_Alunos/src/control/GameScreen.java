@@ -4,11 +4,12 @@ import elements.Element;
 import utils.Consts;
 import utils.Drawing;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
-import javax.swing.JButton;
-import javax.swing.JPanel;
 
 /**
  * Projeto de POO 2017
@@ -16,7 +17,7 @@ import javax.swing.JPanel;
  * @author Luiz Eduardo
  * Baseado em material do Prof. Jose Fernando Junior
  */
-public class GameScreen extends javax.swing.JFrame {
+public class GameScreen extends javax.swing.JFrame implements KeyListener {
     private ArrayList<Element> elemArray;
     private GameController controller = new GameController();
     private Stage stage;
@@ -32,6 +33,7 @@ public class GameScreen extends javax.swing.JFrame {
 
         stage = new Stage();
         this.addKeyListener(stage);
+        this.addKeyListener(this);
         
         controller.addStage(stage);
         
@@ -111,6 +113,38 @@ public class GameScreen extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    @Override
+    public void keyTyped(KeyEvent ke) {
+    }
+
+    @Override
+    public void keyPressed(KeyEvent ke) {
+        switch(ke.getKeyCode()) {
+            case KeyEvent.VK_S:
+                System.out.println("adhjhdsjhdsaa");
+                if(ke.isControlDown()) {
+                    stage.saveStage("savefile.sav");
+                }
+            break;
+            case KeyEvent.VK_L:
+                System.out.println("adhjhdsjhdsaa");
+                if(ke.isControlDown()) {
+                    try {
+                        stage.loadStage("savefile.sav");
+                    } catch(FileNotFoundException ex) {
+                        System.out.println(ex.getMessage());
+                    }
+                }
+            break;
+            default:
+            break;
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent ke) {
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
 }

@@ -7,14 +7,16 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.font.TextAttribute;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.text.AttributedString;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Timer;
-import java.util.TimerTask;
 import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
 import utils.Animation;
 import utils.AudioControl;
 import utils.Consts;
@@ -26,12 +28,12 @@ public class Stage extends KeyAdapter {
     
     AudioControl audio;
     
-    private final PacMan pacman;
-    private final ArrayList<Phantom> phantons;
-    private final ArrayList<Fruit> fruits;
-    private final ArrayList<Items> pacDots;
-    private final ArrayList<Items> powerPellets;
-    private final ArrayList<Wall> walls;
+    private PacMan pacman;
+    private ArrayList<Phantom> phantoms;
+    private ArrayList<Fruit> fruits;
+    private ArrayList<Items> pacDots;
+    private ArrayList<Items> powerPellets;
+    private ArrayList<Wall> walls;
     
     protected Sprite sprite;
     private HashMap<Consts.Animation, Animation> animations;
@@ -54,10 +56,10 @@ public class Stage extends KeyAdapter {
         pacman = new PacMan(imgCollections.get(Consts.ImgCollection.PACMAN), Consts.Animation.PACMAN_RIGHT.ordinal());
         pacman.setPosition(0, 0);
         
-        phantons = new ArrayList<>();
+        phantoms = new ArrayList<>();
         Pinky blinky = new Pinky(sprite.getImage(Consts.Sprite.CHERRY), 100);
         blinky.setPosition(11.0, 8.0);
-        phantons.add(blinky);
+        phantoms.add(blinky);
         fruits = new ArrayList<>();
         Fruit cherry = new Fruit(sprite.getImage(Consts.Sprite.CHERRY), "Cherry", 100, 20000);
         cherry.setPosition(10.0, 10.0);
@@ -115,13 +117,60 @@ public class Stage extends KeyAdapter {
         ArrayList<Element> elem = new ArrayList<>();
         
         elem.add(pacman);
-        elem.addAll(phantons);
+        elem.addAll(phantoms);
         elem.addAll(pacDots);
         elem.addAll(powerPellets);
         elem.addAll(fruits);
         elem.addAll(walls);
         
         return elem;
+    }
+    
+    public void saveStage(String file) {
+        ObjectOutputStream stream = null;
+        
+        FileOutputStream f = null;
+        try {
+            f = new FileOutputStream(file);
+        } catch(FileNotFoundException e) {
+            System.out.println("Creating new save file.");
+        } finally {
+            try {
+                stream = new ObjectOutputStream(f);
+
+                stream.writeObject(pacman);
+                stream.writeObject(phantoms);
+                stream.writeObject(fruits);
+                stream.writeObject(pacDots);
+                stream.writeObject(powerPellets);
+                stream.writeObject(walls);
+            } catch (IOException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+    }
+    
+    public void loadStage(String file) throws FileNotFoundException {
+        ObjectInputStream stream = null;
+        
+        try {
+            stream = new ObjectInputStream(new FileInputStream(file));
+
+            phantoms.clear();
+            fruits.clear();
+            pacDots.clear();
+            powerPellets.clear();
+            walls.clear();
+            
+            pacman = (PacMan) stream.readObject();
+            phantoms = (ArrayList) stream.readObject();
+            fruits = (ArrayList) stream.readObject();
+            pacDots = (ArrayList) stream.readObject();
+            powerPellets = (ArrayList) stream.readObject();
+            walls = (ArrayList) stream.readObject();
+        } catch (IOException | ClassNotFoundException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
     
     public void drawMap(Graphics g) {

@@ -1,9 +1,10 @@
 package utils;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import javax.swing.ImageIcon;
 
-public class ImageCollection {
+public class ImageCollection implements Serializable {
     private final HashMap<Integer, Animation> animations;
     private final HashMap<Integer, ImageIcon> staticImages;
     private int lastKey;

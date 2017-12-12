@@ -18,7 +18,7 @@ import utils.ImageCollection;
  */
 public class Fruit extends Items implements Serializable{
     private int time;
-    private Timer timer;
+    transient private Timer timer;
     
     private void setTimer() {
         Fruit self = this;
