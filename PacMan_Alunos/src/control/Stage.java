@@ -20,6 +20,7 @@ import java.io.ObjectOutputStream;
 import java.text.AttributedString;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Timer;
 import javax.sound.sampled.LineUnavailableException;
 import utils.Animation;
 import utils.AudioControl;
@@ -31,6 +32,7 @@ public class Stage extends KeyAdapter {
     private BackgroundElement bkElem;
     
     AudioControl audio;
+    AudioControl audioBackground;
     
     private PacMan pacman;
     private ArrayList<Phantom> phantoms;
@@ -56,6 +58,11 @@ public class Stage extends KeyAdapter {
             System.out.println(ex.getMessage());
         }
 
+        try {
+            audioBackground = new AudioControl();
+        } catch (LineUnavailableException ex) {
+            System.out.println(ex.getMessage());
+        }
         
         bkElem = new BackgroundElement();
         
@@ -106,12 +113,12 @@ public class Stage extends KeyAdapter {
                         pacman.setPosition(i, j);
                     } break;
                     case 'o': {
-                        Items powerPellet = new Items(sprite.getImage(Consts.Sprite.POWER_PELLETS), "Dots", 100);
+                        Items powerPellet = new Items(sprite.getImage(Consts.Sprite.POWER_PELLETS), "PowerPellet", 100);
                         powerPellet.setPosition(i, j);
                         powerPellets.add(powerPellet);
                     } break;
                     case '.': {
-                        Items pacDot = new Items(sprite.getImage(Consts.Sprite.PACDOTS), "Dots", 100);
+                        Items pacDot = new Items(sprite.getImage(Consts.Sprite.PACDOTS), "PacDot", 100);
                         pacDot.setPosition(i,j);
                         pacDots.add(pacDot);
                     } break;
@@ -212,6 +219,10 @@ public class Stage extends KeyAdapter {
         } catch (IOException | ClassNotFoundException ex) {
             System.out.println(ex.getMessage());
         } finally {
+            for(Phantom p : phantoms) {
+                p.setState(Phantom.State.DEADLY);
+            }
+            
             resetAnimation();
             elem.clear();
             elem.add(pacman);
@@ -380,6 +391,24 @@ public class Stage extends KeyAdapter {
         
         imgCollections.put(Consts.ImgCollection.PACMAN, icPacman);
         
+        //Animação fantasma comestível:
+        sprite.newImage(Consts.Sprite.PHANTOM_BLUE_0, 8, 4);
+        sprite.newImage(Consts.Sprite.PHANTOM_BLUE_1, 9, 4);
+        sprite.newImage(Consts.Sprite.PHANTOM_WHITE_0, 10, 4);
+        sprite.newImage(Consts.Sprite.PHANTOM_WHITE_1, 11, 4);
+        
+        Animation phantomEdible = new Animation(Consts.ANIMATION_DELAY);
+        phantomEdible.addImage(sprite.getImage(Consts.Sprite.PHANTOM_BLUE_0));
+        phantomEdible.addImage(sprite.getImage(Consts.Sprite.PHANTOM_BLUE_1));
+        animations.put(Consts.Animation.EDIBLE, phantomEdible);
+        
+        Animation edibleEnding = new Animation(3*Consts.ANIMATION_DELAY);
+        edibleEnding.addImage(sprite.getImage(Consts.Sprite.PHANTOM_BLUE_0));
+        edibleEnding.addImage(sprite.getImage(Consts.Sprite.PHANTOM_WHITE_1));
+        edibleEnding.addImage(sprite.getImage(Consts.Sprite.PHANTOM_BLUE_1));
+        edibleEnding.addImage(sprite.getImage(Consts.Sprite.PHANTOM_WHITE_0));
+        animations.put(Consts.Animation.EDIBLE_ENDING, edibleEnding);
+        
         //Animação Blinky:
         sprite.newImage(Consts.Sprite.BLINKY_BOTTOM_0, 6, 4);
         sprite.newImage(Consts.Sprite.BLINKY_BOTTOM_1, 7, 4);
@@ -415,6 +444,8 @@ public class Stage extends KeyAdapter {
         icBlinky.addAnimation(Consts.Animation.BLINKY_LEFT, blinkyLeft);
         icBlinky.addAnimation(Consts.Animation.BLINKY_RIGHT, blinkyRight);
         icBlinky.addAnimation(Consts.Animation.BLINKY_UP, blinkyTop);
+        icBlinky.addAnimation(Consts.Animation.EDIBLE, phantomEdible);
+        icBlinky.addAnimation(Consts.Animation.EDIBLE_ENDING, edibleEnding);
         imgCollections.put(Consts.ImgCollection.BLINKY, icBlinky);
 
         //Animação Pinky:
@@ -452,6 +483,8 @@ public class Stage extends KeyAdapter {
         icPinky.addAnimation(Consts.Animation.PINKY_LEFT, pinkyLeft);
         icPinky.addAnimation(Consts.Animation.PINKY_RIGHT, pinkyRight);
         icPinky.addAnimation(Consts.Animation.PINKY_UP, pinkyTop);
+        icPinky.addAnimation(Consts.Animation.EDIBLE, phantomEdible);
+        icPinky.addAnimation(Consts.Animation.EDIBLE_ENDING, edibleEnding);
         imgCollections.put(Consts.ImgCollection.PINKY, icPinky);
         
         //Animação Inky:
@@ -489,6 +522,8 @@ public class Stage extends KeyAdapter {
         icInky.addAnimation(Consts.Animation.INKY_LEFT, inkyLeft);
         icInky.addAnimation(Consts.Animation.INKY_RIGHT, inkyRight);
         icInky.addAnimation(Consts.Animation.INKY_UP, inkyTop);
+        icInky.addAnimation(Consts.Animation.EDIBLE, phantomEdible);
+        icInky.addAnimation(Consts.Animation.EDIBLE_ENDING, edibleEnding);
         imgCollections.put(Consts.ImgCollection.INKY, icInky);
         
         //Animação Clyde:
@@ -526,33 +561,9 @@ public class Stage extends KeyAdapter {
         icClyde.addAnimation(Consts.Animation.CLYDE_LEFT, clydeLeft);
         icClyde.addAnimation(Consts.Animation.CLYDE_RIGHT, clydeRight);
         icClyde.addAnimation(Consts.Animation.CLYDE_UP, clydeTop);
+        icClyde.addAnimation(Consts.Animation.EDIBLE, phantomEdible);
+        icClyde.addAnimation(Consts.Animation.EDIBLE_ENDING, edibleEnding);
         imgCollections.put(Consts.ImgCollection.CLYDE, icClyde);
-        
-        //Animação fantasma comestível:
-        sprite.newImage(Consts.Sprite.PHANTOM_BLUE_0, 4, 7);
-        sprite.newImage(Consts.Sprite.PHANTOM_BLUE_1, 5, 7);
-        sprite.newImage(Consts.Sprite.PHANTOM_WHITE_0, 6, 7);
-        sprite.newImage(Consts.Sprite.PHANTOM_WHITE_1, 7, 7);
-        
-        Animation phantomEdible = new Animation(Consts.ANIMATION_DELAY);
-        phantomEdible.addImage(sprite.getImage(Consts.Sprite.PHANTOM_BLUE_0));
-        phantomEdible.addImage(sprite.getImage(Consts.Sprite.PHANTOM_BLUE_1));
-        animations.put(Consts.Animation.EDIBLE, phantomEdible);
-        
-        Animation edibleEnding = new Animation(Consts.ANIMATION_DELAY);
-        edibleEnding.addImage(sprite.getImage(Consts.Sprite.PHANTOM_BLUE_0));
-        edibleEnding.addImage(sprite.getImage(Consts.Sprite.PHANTOM_WHITE_1));
-        edibleEnding.addImage(sprite.getImage(Consts.Sprite.PHANTOM_BLUE_1));
-        edibleEnding.addImage(sprite.getImage(Consts.Sprite.PHANTOM_WHITE_0));
-        animations.put(Consts.Animation.EDIBLE_ENDING, edibleEnding);
-        
-        ImageCollection icEdible = new ImageCollection();
-        icEdible.addAnimation(Consts.Animation.EDIBLE, phantomEdible);
-        imgCollections.put(Consts.ImgCollection.EDIBLE, icEdible);
-        
-        ImageCollection icEdibleEnding = new ImageCollection();
-        icEdibleEnding.addAnimation(Consts.Animation.EDIBLE_ENDING, edibleEnding);
-        imgCollections.put(Consts.ImgCollection.EDIBLE_ENDING, icEdibleEnding);
     }
     
     @Override
@@ -580,9 +591,27 @@ public class Stage extends KeyAdapter {
 
     public void overlapListener(Element e) {
         if(e instanceof Items) {
-            if(((Items) e).getName().compareTo("Dots") != 0) {
-                audio.setNext("sound/pacman_eatfruit.wav");
-                audio.start(false, false);
+            Items item = (Items) e;
+            
+            switch(item.getName()) {
+                case "PacDot":
+                break;
+                case "PowerPellet":
+                    for(Phantom p : phantoms) {
+                        p.setState(Phantom.State.EDIBLE);
+                    }
+                    audioBackground.setNext("sound"+ File.separator + "pacman_intermission.wav");
+                    audioBackground.start(false, true);
+                break;
+                default:
+                    audio.setNext("sound"+ File.separator + "pacman_eatfruit.wav");
+                    audio.start(false, false);
+                break;
+            }
+        } else if(e instanceof Phantom) {
+            Phantom p = (Phantom) e;
+            if(p.getState() != Phantom.State.DEADLY) {
+                Phantom.increasePhantonCounter();
             }
         }
     }

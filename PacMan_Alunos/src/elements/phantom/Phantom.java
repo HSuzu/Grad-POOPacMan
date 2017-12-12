@@ -4,6 +4,8 @@ import control.WorldMap;
 import elements.Element;
 import java.awt.Graphics;
 import java.io.Serializable;
+import java.util.Timer;
+import java.util.TimerTask;
 import javax.swing.ImageIcon;
 import utils.Consts;
 import utils.Drawing;
@@ -13,7 +15,8 @@ import utils.Position;
 public abstract class Phantom extends Element implements Serializable {
     public static enum State {
         DEADLY,
-        EDIBLE
+        EDIBLE,
+        ENDING_EDIBLE
     }
     
     public static final int STOP = 0;
@@ -21,16 +24,28 @@ public abstract class Phantom extends Element implements Serializable {
     public static final int MOVE_RIGHT = 2;
     public static final int MOVE_UP = 3;
     public static final int MOVE_DOWN = 4;
+        
+    protected static int phantomCounter = 0;
+    public static void increasePhantonCounter() {
+        phantomCounter++;
+    }
+    
+    @Override
+    public int getScore() {
+        return (int) (this.score * Math.pow(2, phantomCounter));
+    }
     
     private int nextMovDirection = MOVE_LEFT;
     private int movDirection = MOVE_LEFT;
-    private State state;
+    transient protected State state;
+    
+    transient private Timer edibleTimer;
     
     protected static WorldMap wm;
     
     public Phantom(String imageName, int value) {
         super(imageName);
-        
+                
         this.isTransposable = false;
         this.score = value;
         state = State.DEADLY;
@@ -49,7 +64,44 @@ public abstract class Phantom extends Element implements Serializable {
         
     }
     
+    public State getState() {
+        return state;
+    }
+    
     public void setState(State state) {
+        if(null != state)
+            switch (state) {
+            case DEADLY:
+                this.isTransposable = false;
+                break;
+            case EDIBLE:
+                this.isTransposable = true;
+                if(this.state == State.DEADLY) {
+                    phantomCounter = 0;
+                    
+                    edibleTimer = new Timer();
+                    
+                    edibleTimer.schedule(new TimerTask() {
+                        int i = 0;
+                        @Override
+                        public void run() {
+                            if(i++ == 0) {
+                                setState(State.ENDING_EDIBLE);
+                            } else {
+                                setState(State.DEADLY);
+                                edibleTimer.cancel();
+                            }
+                        }
+                        
+                    }, 5000, 3000);
+                }   break;
+            case ENDING_EDIBLE:
+                this.isTransposable = true;
+                break;
+            default:
+                break;
+        }
+
         this.state = state;
     }
     
