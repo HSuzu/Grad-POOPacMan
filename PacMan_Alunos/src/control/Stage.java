@@ -752,7 +752,7 @@ public class Stage extends KeyAdapter {
     }
     
     public void createStrawberry() {
-        Fruit strawberry = new Fruit(sprite.getImage(Consts.Sprite.CHERRY), "Strawberry", 300, Consts.FRUIT_LIFE);
+        Fruit strawberry = new Fruit(sprite.getImage(Consts.Sprite.STRAWBERRY), "Strawberry", 300, Consts.FRUIT_LIFE);
         strawberry.setPosition(5.0, 8.0);
         fruits.add(strawberry);
         elem.add(strawberry);
