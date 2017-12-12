@@ -19,29 +19,12 @@
         </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-<<<<<<< HEAD
         <group>
-            <file>file:/home/suzukawa/Files/Grad/POO/Grad-POOPacMan/PacMan_Alunos/src/control/Stage.java</file>
-            <file>file:/home/suzukawa/Files/Grad/POO/Grad-POOPacMan/PacMan_Alunos/src/elements/Element.java</file>
-            <file>file:/home/suzukawa/Files/Grad/POO/Grad-POOPacMan/PacMan_Alunos/src/utils/Consts.java</file>
-            <file>file:/home/suzukawa/Files/Grad/POO/Grad-POOPacMan/PacMan_Alunos/src/elements/PacMan.java</file>
-            <file>file:/home/suzukawa/Files/Grad/POO/Grad-POOPacMan/PacMan_Alunos/src/utils/AudioControl.java</file>
+            <file>file:/home/suzukawa/Files/Grad/POO/Grad-POOPacMan/PacMan_Alunos/src/control/Screen.java</file>
+            <file>file:/home/suzukawa/Files/Grad/POO/Grad-POOPacMan/PacMan_Alunos/src/utils/Drawing.java</file>
+            <file>file:/home/suzukawa/Files/Grad/POO/Grad-POOPacMan/PacMan_Alunos/src/control/Main.java</file>
+            <file>file:/home/suzukawa/Files/Grad/POO/Grad-POOPacMan/PacMan_Alunos/src/control/WorldMap.java</file>
             <file>file:/home/suzukawa/Files/Grad/POO/Grad-POOPacMan/PacMan_Alunos/src/control/GameScreen.java</file>
-            <file>file:/home/suzukawa/Files/Grad/POO/Grad-POOPacMan/PacMan_Alunos/src/control/GameController.java</file>
         </group>
-=======
-<<<<<<< HEAD
-        <group>
-            <file>file:/home/aribeiro/USP/PacMan/PacMan_Alunos/src/control/GameController.java</file>
-            <file>file:/home/aribeiro/USP/PacMan/PacMan_Alunos/src/control/Stage.java</file>
-            <file>file:/home/aribeiro/USP/PacMan/PacMan_Alunos/src/elements/phanton/Phantom.java</file>
-            <file>file:/home/aribeiro/USP/PacMan/PacMan_Alunos/src/utils/Position.java</file>
-            <file>file:/home/aribeiro/USP/PacMan/PacMan_Alunos/src/utils/Consts.java</file>
-            <file>file:/home/aribeiro/USP/PacMan/PacMan_Alunos/src/elements/phanton/Blinky.java</file>
-        </group>
-=======
-        <group/>
->>>>>>> 9a8712c6932d64eef39ad755ad2d574d9c312f80
->>>>>>> e154b84a916f76086b6ed6197a25d9270851e8bc
     </open-files>
 </project-private>

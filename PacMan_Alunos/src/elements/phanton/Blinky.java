@@ -1,12 +1,13 @@
 package elements.phanton;
 
 import control.WorldMap;
+import java.io.Serializable;
 import java.util.ArrayList;
 import utils.Position;
 import javax.swing.ImageIcon;
 import utils.Consts;
 
-public class Blinky extends Phantom {
+public class Blinky extends Phantom implements Serializable {
     private float hysteresisCoef;
     
     public Blinky(String imageName, int value) {
@@ -28,10 +29,7 @@ public class Blinky extends Phantom {
     public void navigation() {
        Position desiredPos = wm.getPacManPosition();
         
-       System.out.println("DesiredPos: "+desiredPos.toString());
-       
        if(this.pos == desiredPos) {
-           System.out.println("Peguei");
            return;
        }
        
@@ -42,19 +40,15 @@ public class Blinky extends Phantom {
             hysteresisCoef = 1.0f;
             if(desiredPos.getX() > this.pos.getX() && ((direction & WorldMap.RIGHT) == WorldMap.RIGHT)) {
                this.setNextMovDirection(MOVE_RIGHT);
-               System.out.println("r");
             }
             else if(desiredPos.getX() < this.pos.getX() && ((direction & WorldMap.LEFT) == WorldMap.LEFT)) {
                 this.setNextMovDirection(MOVE_LEFT);
-                System.out.println("l");
             }
             else if(desiredPos.getY() > this.pos.getY() && ((direction & WorldMap.DOWN) == WorldMap.DOWN)) {
                 this.setNextMovDirection(MOVE_DOWN);
-                System.out.println("d");
             }
             else if(desiredPos.getY() < this.pos.getY() && ((direction & WorldMap.UP) == WorldMap.UP)) {
                 this.setNextMovDirection(MOVE_UP);
-                System.out.println("u");
             }
        }
        //Aleatório:
@@ -65,19 +59,14 @@ public class Blinky extends Phantom {
            
            if((possibleDirection & direction) == WorldMap.DOWN) {
                this.setNextMovDirection(MOVE_DOWN);
-               System.out.println("D");
            } else if((possibleDirection & direction) == WorldMap.LEFT) {
                this.setNextMovDirection(MOVE_LEFT);
-               System.out.println("L");
            } else if((possibleDirection & direction) == WorldMap.RIGHT) {
                this.setNextMovDirection(MOVE_RIGHT);
-               System.out.println("R");
            } else if((possibleDirection & direction) == WorldMap.UP) {
                this.setNextMovDirection(MOVE_UP);;
-               System.out.println("U");
            } else {
                this.setNextMovDirection(MOVE_UP);
-               System.out.println("ELSE");
            }
        }
        

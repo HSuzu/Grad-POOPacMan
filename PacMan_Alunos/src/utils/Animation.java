@@ -1,13 +1,14 @@
 package utils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.List;
 import java.util.TimerTask;
 import javax.swing.ImageIcon;
 
-public class Animation {
-    private Timer timer;
+public class Animation implements Serializable {
+    transient private Timer timer;
     private final long animationDelay;
     
     private final List<ImageIcon> images;
