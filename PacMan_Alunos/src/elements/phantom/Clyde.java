@@ -37,10 +37,8 @@ public class Clyde extends Phantom {
     }
 
     private void followPos(Position desiredPos) {
-       System.out.println("DesiredPos: "+desiredPos.toString());
        
        if(this.pos == desiredPos) {
-           System.out.println("Peguei");
            return;
        }
        
@@ -51,19 +49,15 @@ public class Clyde extends Phantom {
             hysteresisCoef = 1.0f;
             if(desiredPos.getX() > this.pos.getX() && ((freeSides & WorldMap.RIGHT) == WorldMap.RIGHT)) {
                this.setNextMovDirection(MOVE_RIGHT);
-               System.out.println("r");
             }
             else if(desiredPos.getX() < this.pos.getX() && ((freeSides & WorldMap.LEFT) == WorldMap.LEFT)) {
                 this.setNextMovDirection(MOVE_LEFT);
-                System.out.println("l");
             }
             else if(desiredPos.getY() > this.pos.getY() && ((freeSides & WorldMap.DOWN) == WorldMap.DOWN)) {
                 this.setNextMovDirection(MOVE_DOWN);
-                System.out.println("d");
             }
             else if(desiredPos.getY() < this.pos.getY() && ((freeSides & WorldMap.UP) == WorldMap.UP)) {
                 this.setNextMovDirection(MOVE_UP);
-                System.out.println("u");
             }
        }
        //Aleatório:
@@ -128,6 +122,12 @@ public class Clyde extends Phantom {
 
     @Override
     protected ImageIcon getImage(int movDirection) {
+        if(this.state == State.EDIBLE) {
+            return collection.getImage(Consts.Animation.EDIBLE);
+        } else if(this.state == State.ENDING_EDIBLE) {
+            return collection.getImage(Consts.Animation.EDIBLE_ENDING);
+        }
+        
         switch(movDirection) {
             case Phantom.MOVE_LEFT:
                 return this.collection.getImage(Consts.Animation.CLYDE_LEFT);

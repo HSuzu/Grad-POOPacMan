@@ -86,6 +86,12 @@ public class Blinky extends Phantom implements Serializable {
 
     @Override
     protected ImageIcon getImage(int movDirection) {
+        if(this.state == State.EDIBLE) {
+            return collection.getImage(Consts.Animation.EDIBLE);
+        } else if(this.state == State.ENDING_EDIBLE) {
+            return collection.getImage(Consts.Animation.EDIBLE_ENDING);
+        }
+
         switch(movDirection) {
             case Phantom.MOVE_LEFT:
                 return this.collection.getImage(Consts.Animation.BLINKY_LEFT);
