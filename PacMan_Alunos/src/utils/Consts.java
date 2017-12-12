@@ -23,6 +23,11 @@ public class Consts {
     public static final int DELAY = 20;
     public static final int ANIMATION_DELAY = 50;
     
+
+    public static final int CHERRY_TIME = 50000;
+    public static final int STRAWBERRY_TIME = 75000;
+    public static final int FRUIT_LIFE = 15000;
+
     public static class Timer {
         public static final int POWERPELLET_EFFECT = 4000;
         public static final int POWERPELLET_EFFECT_ENDIND = 3000;

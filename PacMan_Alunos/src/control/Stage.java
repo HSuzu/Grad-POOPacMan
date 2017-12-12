@@ -30,9 +30,14 @@ import utils.Consts;
 import utils.ImageCollection;
 import utils.Position;
 import utils.Sprite;
+import java.util.Timer;
+import java.util.TimerTask;
+import utils.Drawing;
 
 public class Stage extends KeyAdapter {
     private BackgroundElement bkElem;
+    private Timer timerCherry;
+    private Timer timerStrawberry;
     
     AudioControl audio;
     AudioControl audioBackground;
@@ -132,9 +137,6 @@ public class Stage extends KeyAdapter {
         phantoms.add(clyde);
         
         fruits = new ArrayList<>();
-        Fruit cherry = new Fruit(sprite.getImage(Consts.Sprite.CHERRY), "Cherry", 100, 5000);
-        cherry.setPosition(10.0, 10.0);
-        fruits.add(cherry);
                         
         pacDots = new ArrayList<>();
         powerPellets = new ArrayList<>();
@@ -193,7 +195,29 @@ public class Stage extends KeyAdapter {
                 }
             }
         }
-
+        
+        try {
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("fonts/emulogic.ttf")));
+            font = new Font("emulogic", Font.PLAIN, 18);
+        } catch (IOException | FontFormatException ex) {
+            System.out.println(ex.getMessage());
+        }
+        
+        timerCherry = new Timer();
+                timerCherry.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    createCherry();
+                }
+            }, Consts.CHERRY_TIME);
+        timerStrawberry = new Timer();
+            timerStrawberry.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                createStrawberry();
+            }
+        }, Consts.STRAWBERRY_TIME);
     }
     
     public ArrayList<Element> getAllElements() {
@@ -201,8 +225,8 @@ public class Stage extends KeyAdapter {
         elem.add(pacman);
         elem.addAll(phantoms);
         elem.addAll(pacDots);
-        elem.addAll(powerPellets);
         elem.addAll(fruits);
+        elem.addAll(powerPellets);
         elem.addAll(walls);
         return elem;
     }
@@ -715,6 +739,43 @@ public class Stage extends KeyAdapter {
                     System.out.println(ex.getMessage());
                 }
             }
+        }
+    }
+        
+    public void createCherry() {
+        Fruit cherry = new Fruit(sprite.getImage(Consts.Sprite.CHERRY), "Cherry", 100, Consts.FRUIT_LIFE);
+        cherry.setPosition(3.0, 6.0);
+        fruits.add(cherry);
+        elem.add(cherry);
+        setTimer(timerCherry, Consts.CHERRY_TIME, "Cherry");
+        System.out.println("Cereja");
+    }
+    
+    public void createStrawberry() {
+        Fruit strawberry = new Fruit(sprite.getImage(Consts.Sprite.CHERRY), "Strawberry", 300, Consts.FRUIT_LIFE);
+        strawberry.setPosition(5.0, 8.0);
+        fruits.add(strawberry);
+        elem.add(strawberry);
+        setTimer(timerStrawberry, Consts.STRAWBERRY_TIME, "Strawberry");
+    }
+    
+    public void setTimer(Timer timer, int time, String fruit) {
+        timer = new Timer();
+        if("Strawberry".equals(fruit)) {
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    createStrawberry();
+                }
+            }, time);
+        }
+        else if("Cherry".equals(fruit)) {
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    createCherry();
+                }
+            }, time);
         }
     }
 }
