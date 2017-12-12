@@ -148,41 +148,39 @@ public abstract class Phantom extends Element implements Serializable {
         if(state == State.EDIBLE) {
             runAway();
         }
+        else if(movDirection == nextMovDirection) {
+            navigation();
+        }
         else {
-            if(movDirection == nextMovDirection) {
-                navigation();
+            if(pos.isRoundPosition(3.0*Consts.WALK_STEP)) {
+                pos.roundPosition();
+                movDirection = nextMovDirection;
             }
-            else {
-                if(pos.isRoundPosition(3.0*Consts.WALK_STEP)) {
-                    pos.roundPosition();
-                    movDirection = nextMovDirection;
-                }
-            } 
+        } 
 
-            switch (movDirection) {
-                case MOVE_LEFT:
-                    imageIcon = getImage(MOVE_LEFT);
-                    this.moveLeft();
-                    this.collection.startAnimation();
-                    break;
-                case MOVE_RIGHT:
-                    imageIcon = getImage(MOVE_RIGHT);
-                    this.moveRight();
-                    this.collection.startAnimation();
-                    break;
-                case MOVE_UP:
-                    imageIcon = getImage(MOVE_UP);
-                    this.moveUp();
-                    this.collection.startAnimation();
-                    break;
-                case MOVE_DOWN:
-                    imageIcon = getImage(MOVE_DOWN);
-                    this.moveDown();
-                    this.collection.startAnimation();
-                    break;
-                default:
-                    break;
-            } 
-        }    
-    }
+        switch (movDirection) {
+            case MOVE_LEFT:
+                imageIcon = getImage(MOVE_LEFT);
+                this.moveLeft();
+                this.collection.startAnimation();
+                break;
+            case MOVE_RIGHT:
+                imageIcon = getImage(MOVE_RIGHT);
+                this.moveRight();
+                this.collection.startAnimation();
+                break;
+            case MOVE_UP:
+                imageIcon = getImage(MOVE_UP);
+                this.moveUp();
+                this.collection.startAnimation();
+                break;
+            case MOVE_DOWN:
+                imageIcon = getImage(MOVE_DOWN);
+                this.moveDown();
+                this.collection.startAnimation();
+                break;
+            default:
+                break;
+        } 
+    }    
 }
