@@ -34,12 +34,9 @@ public class AudioControl implements LineListener {
     }
     
     public void start(boolean forceStart, boolean repeat) {
-        if(running) {
-            stop();
-        }
+        this.repeat = repeat;
         if(running == false || forceStart) {
             running = true;
-            this.repeat = repeat;
 
             try {
                 audioStream = AudioSystem.getAudioInputStream(new File(nextFile));

@@ -68,6 +68,10 @@ public abstract class Phantom extends Element implements Serializable {
         return state;
     }
     
+    public int getMovDirection() {
+        return movDirection;
+    }
+    
     public void setState(State state) {
         if(null != state)
             switch (state) {
@@ -113,7 +117,7 @@ public abstract class Phantom extends Element implements Serializable {
     
     abstract protected void navigation();
 
-    abstract protected ImageIcon getImage(int movDirection);
+    abstract public ImageIcon getImage(int movDirection);
     
     protected void runAway() {
         Position avoidPos = wm.getPacManPosition();
@@ -145,44 +149,43 @@ public abstract class Phantom extends Element implements Serializable {
     }
     
     public void move() {
-        if(state == State.EDIBLE) {
-            runAway();
-        }
-        else {
-            if(movDirection == nextMovDirection) {
+        if(movDirection == nextMovDirection) {
+            if(state != State.DEADLY) {
+                runAway();
+            } else {
                 navigation();
             }
-            else {
-                if(pos.isRoundPosition(3.0*Consts.WALK_STEP)) {
-                    pos.roundPosition();
-                    movDirection = nextMovDirection;
-                }
-            } 
+        }
+        else {
+            if(pos.isRoundPosition(3.0*Consts.WALK_STEP)) {
+                pos.roundPosition();
+                movDirection = nextMovDirection;
+            }
+        } 
 
-            switch (movDirection) {
-                case MOVE_LEFT:
-                    imageIcon = getImage(MOVE_LEFT);
-                    this.moveLeft();
-                    this.collection.startAnimation();
-                    break;
-                case MOVE_RIGHT:
-                    imageIcon = getImage(MOVE_RIGHT);
-                    this.moveRight();
-                    this.collection.startAnimation();
-                    break;
-                case MOVE_UP:
-                    imageIcon = getImage(MOVE_UP);
-                    this.moveUp();
-                    this.collection.startAnimation();
-                    break;
-                case MOVE_DOWN:
-                    imageIcon = getImage(MOVE_DOWN);
-                    this.moveDown();
-                    this.collection.startAnimation();
-                    break;
-                default:
-                    break;
-            } 
-        }    
-    }
+        switch (movDirection) {
+            case MOVE_LEFT:
+                imageIcon = getImage(MOVE_LEFT);
+                this.moveLeft();
+                this.collection.startAnimation();
+                break;
+            case MOVE_RIGHT:
+                imageIcon = getImage(MOVE_RIGHT);
+                this.moveRight();
+                this.collection.startAnimation();
+                break;
+            case MOVE_UP:
+                imageIcon = getImage(MOVE_UP);
+                this.moveUp();
+                this.collection.startAnimation();
+                break;
+            case MOVE_DOWN:
+                imageIcon = getImage(MOVE_DOWN);
+                this.moveDown();
+                this.collection.startAnimation();
+                break;
+            default:
+                break;
+        } 
+    }    
 }
