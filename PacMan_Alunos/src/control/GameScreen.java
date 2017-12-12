@@ -57,6 +57,8 @@ public class GameScreen extends javax.swing.JFrame implements KeyListener {
         /*Criamos um contexto grafico*/
         Graphics g2 = g.create(getInsets().right, getInsets().top, getWidth() - getInsets().left, getHeight() - getInsets().bottom);
 
+        stage.iterationListener();
+        elemArray = stage.getAllElements();
         if(stage.getState() != State.GAME_OVER) {
             stage.drawMap(g2);
 

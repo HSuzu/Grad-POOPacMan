@@ -35,45 +35,45 @@ public class WorldMap implements Serializable {
     
     public void loadWorldMap(WorldMap map) {
         this.saveFile = map.saveFile;
-        loadFile(saveFile);
+        try {
+            loadFile(saveFile);
+        } catch(IOException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
     
-    public void loadFile(String file) {
+    public void loadFile(String file) throws IOException {
         saveFile = file;
         FileReader reader = null;
         BufferedReader buff = null;
         
-        try {
-            reader = new FileReader(file);
-            buff = new BufferedReader(reader);
-            
-            int x = 0;
-            int y = 0;
-            int c;
-            while((c = buff.read()) != -1) {
-                if(x >= Consts.NUM_CELLS_X && (char)c != '\n') {
-                    buff.readLine();
-                }
-                if((char)c == '\n' || x >= Consts.NUM_CELLS_X) {
-                    x = 0;
-                    y++;
-                    
-                    if(y >= Consts.NUM_CELLS_Y) {
-                        break;
-                    } else {
-                        continue;
-                    }
-                }
-                
-                map[x][y] = (char) c;
-                x++;
+        reader = new FileReader(file);
+        buff = new BufferedReader(reader);
+
+        int x = 0;
+        int y = 0;
+        int c;
+        while((c = buff.read()) != -1) {
+            if(x >= Consts.NUM_CELLS_X && (char)c != '\n') {
+                buff.readLine();
             }
-            
-            buff.close();
-            reader.close();
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
+            if((char)c == '\n' || x >= Consts.NUM_CELLS_X) {
+                x = 0;
+                y++;
+
+                if(y >= Consts.NUM_CELLS_Y) {
+                    break;
+                } else {
+                    continue;
+                }
+            }
+
+            map[x][y] = (char) c;
+            x++;
         }
+
+        buff.close();
+        reader.close();
     }
     
     public byte freePath(int x, int y) {

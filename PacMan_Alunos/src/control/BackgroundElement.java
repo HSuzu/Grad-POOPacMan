@@ -2,6 +2,7 @@ package control;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.io.IOException;
 import utils.Consts;
 
 public class BackgroundElement {
@@ -10,7 +11,11 @@ public class BackgroundElement {
     public BackgroundElement() {
         map = WorldMap.getInstance();
         
-        map.loadFile("maps/default");
+        try {
+            map.loadFile("maps/default");
+        } catch(IOException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
     
     public void drawBackground(Graphics g) {

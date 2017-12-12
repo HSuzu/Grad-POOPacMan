@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.font.TextAttribute;
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -27,6 +28,7 @@ import utils.Animation;
 import utils.AudioControl;
 import utils.Consts;
 import utils.ImageCollection;
+import utils.Position;
 import utils.Sprite;
 
 public class Stage extends KeyAdapter {
@@ -54,14 +56,43 @@ public class Stage extends KeyAdapter {
     public enum State {
         GAME_ON,
         GAME_OVER,
-        PAUSE
+        DYING_PAUSE
     }
     
     private State state = State.GAME_ON;
     
+    private byte stage = 1;
+    
     public State getState() {
         return state;
     }
+    public void setState(State state) {
+        this.state = state;
+        
+        if(state == State.DYING_PAUSE) {
+            audioBackground.setNext("sound" + File.separator + "pacman_death.wav");
+            audioBackground.start(false, false);
+
+            bkAudioTimer = new Timer();
+            bkAudioTimer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    audioBackground.stop();
+                    
+                    for(Phantom p : phantoms) {
+                        p.resetPosition();
+                    }
+                    
+                    if(pacman.getNumLifes() <= 0) {
+                        setState(State.GAME_OVER);
+                    } else {
+                        setState(State.GAME_ON);
+                    }
+                }
+            }, 3000);
+
+        }
+    };
         
     public Stage() {
         loadImages();
@@ -101,7 +132,7 @@ public class Stage extends KeyAdapter {
         phantoms.add(clyde);
         
         fruits = new ArrayList<>();
-        Fruit cherry = new Fruit(sprite.getImage(Consts.Sprite.CHERRY), "Cherry", 100, 20000);
+        Fruit cherry = new Fruit(sprite.getImage(Consts.Sprite.CHERRY), "Cherry", 100, 5000);
         cherry.setPosition(10.0, 10.0);
         fruits.add(cherry);
                         
@@ -109,21 +140,32 @@ public class Stage extends KeyAdapter {
         powerPellets = new ArrayList<>();
         walls = new ArrayList<>();
         
+        updateMapElements();
+
         elem = new ArrayList<>();
-        elem.add(pacman);
-        elem.addAll(phantoms);
-        elem.addAll(pacDots);
-        elem.addAll(powerPellets);
-        elem.addAll(fruits);
-        elem.addAll(walls);
         
+        try {
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("fonts/emulogic.ttf")));
+            font = new Font("emulogic", Font.PLAIN, 18);
+        } catch (IOException | FontFormatException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+    
+    private void updateMapElements() {
         char[][] map = WorldMap.getInstance().getMap();
+        
+        powerPellets.clear();
+        pacDots.clear();
+        walls.clear();
         
         int i, j;
         for(i = 0; i < Consts.NUM_CELLS_X; i++) {
             for(j = 0; j < Consts.NUM_CELLS_Y; j++) {
                 switch(map[i][j]) {
                     case 'p': {
+                        pacman.setDefaultPosition(new Position(i, j));
                         pacman.setPosition(i, j);
                     } break;
                     case 'o': {
@@ -151,14 +193,7 @@ public class Stage extends KeyAdapter {
                 }
             }
         }
-        
-        try {
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("fonts/emulogic.ttf")));
-            font = new Font("emulogic", Font.PLAIN, 18);
-        } catch (IOException | FontFormatException ex) {
-            System.out.println(ex.getMessage());
-        }
+
     }
     
     public ArrayList<Element> getAllElements() {
@@ -198,6 +233,7 @@ public class Stage extends KeyAdapter {
             try {
                 stream = new ObjectOutputStream(f);
 
+                f.write(stage);
                 stream.writeObject(WorldMap.getInstance());
                 stream.writeObject(pacman);
                 stream.writeObject(phantoms);
@@ -213,9 +249,10 @@ public class Stage extends KeyAdapter {
     
     public void loadStage(String file) throws FileNotFoundException {
         ObjectInputStream stream = null;
-        
+        FileInputStream f = null;
         try {
-            stream = new ObjectInputStream(new FileInputStream(file));
+            f = new FileInputStream(file);
+            stream = new ObjectInputStream(f);
 
             phantoms.clear();
             fruits.clear();
@@ -223,6 +260,7 @@ public class Stage extends KeyAdapter {
             powerPellets.clear();
             walls.clear();
             
+            stage = (byte) f.read();
             WorldMap.getInstance().loadWorldMap((WorldMap) stream.readObject());
             pacman = (PacMan) stream.readObject();
             phantoms = (ArrayList) stream.readObject();
@@ -270,6 +308,11 @@ public class Stage extends KeyAdapter {
         word.addAttribute(TextAttribute.FONT, font);
         g.setColor(Color.green);
         g.drawString(word.getIterator(), (Consts.NUM_CELLS_X - 7)*Consts.CELL_SIZE, Consts.CELL_SIZE);
+        //Mostrar fase:
+        word = new AttributedString("Stage: "+stage);
+        word.addAttribute(TextAttribute.FONT, font);
+        g.setColor(Color.green);
+        g.drawString(word.getIterator(), (Consts.NUM_CELLS_X - 7)*Consts.CELL_SIZE, 2*Consts.CELL_SIZE);
     }
     
     public void drawGameOver(Graphics g) {
@@ -651,8 +694,26 @@ public class Stage extends KeyAdapter {
             Phantom p = (Phantom) e;
             if(p.getState() != Phantom.State.DEADLY) {
                 Phantom.increasePhantonCounter();
-            } else if(pacman.getNumLifes() == 0) {
-                state = State.GAME_OVER;
+            }
+        }
+    }
+    
+    public void iterationListener() {
+        if(pacDots.isEmpty() && powerPellets.isEmpty() && state == State.GAME_ON) {
+            if(stage < 3) {
+                try {
+                    WorldMap.getInstance().loadFile("maps" + File.separator + "stage" + stage);
+                    stage++;
+                
+                    updateMapElements();
+                    
+                    for(Phantom p : phantoms) {
+                        p.setState(Phantom.State.DEADLY);
+                    }
+
+                } catch(IOException ex) {
+                    System.out.println(ex.getMessage());
+                }
             }
         }
     }

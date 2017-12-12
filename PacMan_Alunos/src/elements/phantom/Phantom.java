@@ -73,6 +73,10 @@ public abstract class Phantom extends Element implements Serializable {
         return movDirection;
     }
     
+    public void resetPosition() {
+        pos.setPosition((int)(0.5*Consts.NUM_CELLS_X), (int)(0.5*Consts.NUM_CELLS_Y));
+    }
+    
     public void setState(State state) {
         if(null != state)
             switch (state) {

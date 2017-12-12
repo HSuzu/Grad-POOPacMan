@@ -11,6 +11,7 @@ import java.io.Serializable;
 import utils.Consts;
 import utils.Drawing;
 import utils.ImageCollection;
+import utils.Position;
 
 /**
  *
@@ -27,6 +28,12 @@ public class PacMan extends Element  implements Serializable {
     private int movDirection = STOP;
     private int numLifes = 3;
     private int lifeControl = 1;
+    
+    private Position defaultPosition = new Position(1,1);
+    
+    public void setDefaultPosition(Position pos) {
+        defaultPosition = pos;
+    }
     
     public PacMan(String imageName) {
         super(imageName);
@@ -61,7 +68,11 @@ public class PacMan extends Element  implements Serializable {
     }
     
     public void die() {
-        this.numLifes -= 1;
+        this.pos = defaultPosition;
+        
+        if(this.numLifes > 0) {
+            this.numLifes -= 1;
+        }
     }
     
     @Override

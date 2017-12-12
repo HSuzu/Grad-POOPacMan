@@ -70,7 +70,8 @@ public class GameController {
                     if(((Phantom) eTemp).state() == Phantom.State.DEADLY) {
                         // TODO
                         pacman.die();
-                        pacman.setPosition(7.0, 3.0);
+                        
+                        stage.setState(Stage.State.DYING_PAUSE);
                     } else {
                         pacman.winPoints(eTemp.getScore());
                         it.remove();
