@@ -57,9 +57,22 @@ public class Stage extends KeyAdapter {
         pacman.setPosition(0, 0);
         
         phantoms = new ArrayList<>();
-        Pinky blinky = new Pinky(sprite.getImage(Consts.Sprite.CHERRY), 100);
+        Blinky blinky = new Blinky(imgCollections.get(Consts.ImgCollection.BLINKY), Consts.Animation.BLINKY_RIGHT.ordinal(), 200);
         blinky.setPosition(11.0, 8.0);
         phantoms.add(blinky);
+        
+        Inky inky = new Inky(imgCollections.get(Consts.ImgCollection.INKY), Consts.Animation.INKY_RIGHT.ordinal(), 200);
+        inky.setPosition(5.0, 6.0);
+        phantoms.add(inky);
+        
+        Pinky pinky = new Pinky(imgCollections.get(Consts.ImgCollection.PINKY), Consts.Animation.PINKY_RIGHT.ordinal(), 200);
+        pinky.setPosition(3.0, 9.0);
+        phantoms.add(pinky);        
+        
+        Clyde clyde = new Clyde(imgCollections.get(Consts.ImgCollection.CLYDE), Consts.Animation.CLYDE_RIGHT.ordinal(), 200);
+        clyde.setPosition(2.0, 11.0);
+        phantoms.add(clyde);
+        
         fruits = new ArrayList<>();
         Fruit cherry = new Fruit(sprite.getImage(Consts.Sprite.CHERRY), "Cherry", 100, 20000);
         cherry.setPosition(10.0, 10.0);
@@ -265,14 +278,14 @@ public class Stage extends KeyAdapter {
         imgCollections.put(Consts.ImgCollection.PACMAN, icPacman);
         
         //Animação Blinky:
-        sprite.newImage(Consts.Sprite.BLINKY_BOTTOM_0, 6, 7);
-        sprite.newImage(Consts.Sprite.BLINKY_BOTTOM_1, 7, 7);
-        sprite.newImage(Consts.Sprite.BLINKY_LEFT_0 , 2, 7);
-        sprite.newImage(Consts.Sprite.BLINKY_LEFT_1 , 3, 7);
-        sprite.newImage(Consts.Sprite.BLINKY_RIGHT_0 , 0, 7);
-        sprite.newImage(Consts.Sprite.BLINKY_RIGHT_1 , 1, 7);
-        sprite.newImage(Consts.Sprite.BLINKY_TOP_0 , 4, 7);
-        sprite.newImage(Consts.Sprite.BLINKY_TOP_1 , 5, 7);
+        sprite.newImage(Consts.Sprite.BLINKY_BOTTOM_0, 6, 4);
+        sprite.newImage(Consts.Sprite.BLINKY_BOTTOM_1, 7, 4);
+        sprite.newImage(Consts.Sprite.BLINKY_LEFT_0 , 2, 4);
+        sprite.newImage(Consts.Sprite.BLINKY_LEFT_1 , 3, 4);
+        sprite.newImage(Consts.Sprite.BLINKY_RIGHT_0 , 0, 4);
+        sprite.newImage(Consts.Sprite.BLINKY_RIGHT_1 , 1, 4);
+        sprite.newImage(Consts.Sprite.BLINKY_TOP_0 , 4, 4);
+        sprite.newImage(Consts.Sprite.BLINKY_TOP_1 , 5, 4);
         
         Animation blinkyBottom = new Animation(Consts.ANIMATION_DELAY);
         blinkyBottom.addImage(sprite.getImage(Consts.Sprite.BLINKY_BOTTOM_0));
@@ -302,14 +315,14 @@ public class Stage extends KeyAdapter {
         imgCollections.put(Consts.ImgCollection.BLINKY, icBlinky);
 
         //Animação Pinky:
-        sprite.newImage(Consts.Sprite.PINKY_BOTTOM_0, 6, 8);
-        sprite.newImage(Consts.Sprite.PINKY_BOTTOM_1, 7, 8);
-        sprite.newImage(Consts.Sprite.PINKY_LEFT_0 , 2, 8);
-        sprite.newImage(Consts.Sprite.PINKY_LEFT_1 , 3, 8);
-        sprite.newImage(Consts.Sprite.PINKY_RIGHT_0 , 0, 8);
-        sprite.newImage(Consts.Sprite.PINKY_RIGHT_1 , 1, 8);
-        sprite.newImage(Consts.Sprite.PINKY_TOP_0 , 4, 8);
-        sprite.newImage(Consts.Sprite.PINKY_TOP_1 , 5, 8);
+        sprite.newImage(Consts.Sprite.PINKY_BOTTOM_0, 6, 5);
+        sprite.newImage(Consts.Sprite.PINKY_BOTTOM_1, 7, 5);
+        sprite.newImage(Consts.Sprite.PINKY_LEFT_0 , 2, 5);
+        sprite.newImage(Consts.Sprite.PINKY_LEFT_1 , 3, 5);
+        sprite.newImage(Consts.Sprite.PINKY_RIGHT_0 , 0, 5);
+        sprite.newImage(Consts.Sprite.PINKY_RIGHT_1 , 1, 5);
+        sprite.newImage(Consts.Sprite.PINKY_TOP_0 , 4, 5);
+        sprite.newImage(Consts.Sprite.PINKY_TOP_1 , 5, 5);
         
         Animation pinkyBottom = new Animation(Consts.ANIMATION_DELAY);
         pinkyBottom.addImage(sprite.getImage(Consts.Sprite.PINKY_BOTTOM_0));
@@ -339,14 +352,14 @@ public class Stage extends KeyAdapter {
         imgCollections.put(Consts.ImgCollection.PINKY, icPinky);
         
         //Animação Inky:
-        sprite.newImage(Consts.Sprite.INKY_BOTTOM_0, 6, 9);
-        sprite.newImage(Consts.Sprite.INKY_BOTTOM_1, 7, 9);
-        sprite.newImage(Consts.Sprite.INKY_LEFT_0 , 2, 9);
-        sprite.newImage(Consts.Sprite.INKY_LEFT_1 , 3, 9);
-        sprite.newImage(Consts.Sprite.INKY_RIGHT_0 , 0, 9);
-        sprite.newImage(Consts.Sprite.INKY_RIGHT_1 , 1, 9);
-        sprite.newImage(Consts.Sprite.INKY_TOP_0 , 4, 9);
-        sprite.newImage(Consts.Sprite.INKY_TOP_1 , 5, 9);
+        sprite.newImage(Consts.Sprite.INKY_BOTTOM_0, 6, 6);
+        sprite.newImage(Consts.Sprite.INKY_BOTTOM_1, 7, 6);
+        sprite.newImage(Consts.Sprite.INKY_LEFT_0 , 2, 6);
+        sprite.newImage(Consts.Sprite.INKY_LEFT_1 , 3, 6);
+        sprite.newImage(Consts.Sprite.INKY_RIGHT_0 , 0, 6);
+        sprite.newImage(Consts.Sprite.INKY_RIGHT_1 , 1, 6);
+        sprite.newImage(Consts.Sprite.INKY_TOP_0 , 4, 6);
+        sprite.newImage(Consts.Sprite.INKY_TOP_1 , 5, 6);
         
         Animation inkyBottom = new Animation(Consts.ANIMATION_DELAY);
         inkyBottom.addImage(sprite.getImage(Consts.Sprite.INKY_BOTTOM_0));
@@ -376,14 +389,14 @@ public class Stage extends KeyAdapter {
         imgCollections.put(Consts.ImgCollection.INKY, icInky);
         
         //Animação Clyde:
-        sprite.newImage(Consts.Sprite.CLYDE_BOTTOM_0, 6, 10);
-        sprite.newImage(Consts.Sprite.CLYDE_BOTTOM_1, 7, 10);
-        sprite.newImage(Consts.Sprite.CLYDE_LEFT_0 , 2, 10);
-        sprite.newImage(Consts.Sprite.CLYDE_LEFT_1 , 3, 10);
-        sprite.newImage(Consts.Sprite.CLYDE_RIGHT_0 , 0, 10);
-        sprite.newImage(Consts.Sprite.CLYDE_RIGHT_1 , 1, 10);
-        sprite.newImage(Consts.Sprite.CLYDE_TOP_0 , 4, 10);
-        sprite.newImage(Consts.Sprite.CLYDE_TOP_1 , 5, 10);
+        sprite.newImage(Consts.Sprite.CLYDE_BOTTOM_0, 6, 7);
+        sprite.newImage(Consts.Sprite.CLYDE_BOTTOM_1, 7, 7);
+        sprite.newImage(Consts.Sprite.CLYDE_LEFT_0 , 2, 7);
+        sprite.newImage(Consts.Sprite.CLYDE_LEFT_1 , 3, 7);
+        sprite.newImage(Consts.Sprite.CLYDE_RIGHT_0 , 0, 7);
+        sprite.newImage(Consts.Sprite.CLYDE_RIGHT_1 , 1, 7);
+        sprite.newImage(Consts.Sprite.CLYDE_TOP_0 , 4, 7);
+        sprite.newImage(Consts.Sprite.CLYDE_TOP_1 , 5, 7);
         
         Animation clydeBottom = new Animation(Consts.ANIMATION_DELAY);
         clydeBottom.addImage(sprite.getImage(Consts.Sprite.CLYDE_BOTTOM_0));
@@ -411,6 +424,32 @@ public class Stage extends KeyAdapter {
         icClyde.addAnimation(Consts.Animation.CLYDE_RIGHT, clydeRight);
         icClyde.addAnimation(Consts.Animation.CLYDE_UP, clydeTop);
         imgCollections.put(Consts.ImgCollection.CLYDE, icClyde);
+        
+        //Animação fantasma comestível:
+        sprite.newImage(Consts.Sprite.PHANTOM_BLUE_0, 4, 7);
+        sprite.newImage(Consts.Sprite.PHANTOM_BLUE_1, 5, 7);
+        sprite.newImage(Consts.Sprite.PHANTOM_WHITE_0, 6, 7);
+        sprite.newImage(Consts.Sprite.PHANTOM_WHITE_1, 7, 7);
+        
+        Animation phantomEdible = new Animation(Consts.ANIMATION_DELAY);
+        phantomEdible.addImage(sprite.getImage(Consts.Sprite.PHANTOM_BLUE_0));
+        phantomEdible.addImage(sprite.getImage(Consts.Sprite.PHANTOM_BLUE_1));
+        animations.put(Consts.Animation.EDIBLE, phantomEdible);
+        
+        Animation edibleEnding = new Animation(Consts.ANIMATION_DELAY);
+        edibleEnding.addImage(sprite.getImage(Consts.Sprite.PHANTOM_BLUE_0));
+        edibleEnding.addImage(sprite.getImage(Consts.Sprite.PHANTOM_WHITE_1));
+        edibleEnding.addImage(sprite.getImage(Consts.Sprite.PHANTOM_BLUE_1));
+        edibleEnding.addImage(sprite.getImage(Consts.Sprite.PHANTOM_WHITE_0));
+        animations.put(Consts.Animation.EDIBLE_ENDING, edibleEnding);
+        
+        ImageCollection icEdible = new ImageCollection();
+        icEdible.addAnimation(Consts.Animation.EDIBLE, phantomEdible);
+        imgCollections.put(Consts.ImgCollection.EDIBLE, icEdible);
+        
+        ImageCollection icEdibleEnding = new ImageCollection();
+        icEdibleEnding.addAnimation(Consts.Animation.EDIBLE_ENDING, edibleEnding);
+        imgCollections.put(Consts.ImgCollection.EDIBLE_ENDING, icEdibleEnding);
     }
     
     @Override

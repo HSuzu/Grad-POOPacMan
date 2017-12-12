@@ -44,6 +44,11 @@ public class Consts {
         POWER_PELLETS,
         PACDOTS,
 
+        PHANTOM_BLUE_0,
+        PHANTOM_BLUE_1,
+        PHANTOM_WHITE_0,
+        PHANTOM_WHITE_1,
+        
         CLYDE_BOTTOM_0,
         CLYDE_BOTTOM_1,
         CLYDE_LEFT_0,
@@ -87,6 +92,9 @@ public class Consts {
         PACMAN_UP,
         PACMAN_DOWN,
 
+        EDIBLE,
+        EDIBLE_ENDING,
+        
         CLYDE_DOWN,
         CLYDE_LEFT,
         CLYDE_RIGHT,
@@ -114,6 +122,8 @@ public class Consts {
         INKY,
         BLINKY,
         PINKY,
+        EDIBLE,
+        EDIBLE_ENDING,
         FRUIT,
         WALL
     }

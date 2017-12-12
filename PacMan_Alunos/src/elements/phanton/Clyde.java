@@ -8,6 +8,7 @@ package elements.phanton;
 import control.WorldMap;
 import static elements.phanton.Phantom.wm;
 import javax.swing.ImageIcon;
+import utils.ImageCollection;
 import utils.Position;
 
 /**
@@ -24,8 +25,8 @@ public class Clyde extends Phantom {
         hysteresisCoef = 1.0f;
     }
 
-    public Clyde(ImageIcon image, int value) {
-        super(image, value);
+    public Clyde(ImageCollection collection, int defaultImage, int value) {
+        super(collection, defaultImage, value);
         hysteresisCoef = 1.0f;
     }
     

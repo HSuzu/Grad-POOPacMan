@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import utils.Position;
 import javax.swing.ImageIcon;
 import utils.Consts;
+import utils.ImageCollection;
 
 public class Pinky extends Phantom {
     private float hysteresisCoef;
@@ -20,8 +21,8 @@ public class Pinky extends Phantom {
         hysteresisCoef = 1.0f;
     }
     
-    public Pinky(ImageIcon image, int value) {
-        super(image, value);
+    public Pinky(ImageCollection collection, int defaultImage, int value) {
+        super(collection, defaultImage, value);
         hysteresisCoef = 1.0f;
     }
     

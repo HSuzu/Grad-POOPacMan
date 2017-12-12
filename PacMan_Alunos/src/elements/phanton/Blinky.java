@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import utils.Position;
 import javax.swing.ImageIcon;
 import utils.Consts;
+import utils.ImageCollection;
 
 public class Blinky extends Phantom implements Serializable {
     private float hysteresisCoef;
@@ -15,8 +16,8 @@ public class Blinky extends Phantom implements Serializable {
         hysteresisCoef = 1.0f;
     }
     
-    public Blinky(ImageIcon image, int value) {
-        super(image, value);
+    public Blinky(ImageCollection collection, int defaultImage, int value) {
+        super(collection, defaultImage, value);
         hysteresisCoef = 1.0f;
     }
     

@@ -12,6 +12,7 @@ import static elements.phanton.Phantom.MOVE_LEFT;
 import static elements.phanton.Phantom.MOVE_RIGHT;
 import static elements.phanton.Phantom.MOVE_UP;
 import javax.swing.ImageIcon;
+import utils.ImageCollection;
 import utils.Position;
 
 /**
@@ -28,10 +29,11 @@ public class Inky extends Phantom {
         hysteresisCoef = 1.0f;
     }
     
-    public Inky(ImageIcon image, int value) {
-        super(image, value);
+    public Inky(ImageCollection collection, int defaultImage, int value) {
+        super(collection, defaultImage, value);
         hysteresisCoef = 1.0f;
     }
+    
     @Override
     public String name() {
         return "Inky";

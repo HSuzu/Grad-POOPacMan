@@ -7,6 +7,7 @@ import java.io.Serializable;
 import javax.swing.ImageIcon;
 import utils.Consts;
 import utils.Drawing;
+import utils.ImageCollection;
 
 public abstract class Phantom extends Element implements Serializable {
     public static enum State {
@@ -37,8 +38,8 @@ public abstract class Phantom extends Element implements Serializable {
         
     }
     
-    public Phantom(ImageIcon image, int value) {
-        super(image);
+    public Phantom(ImageCollection collection, int defaultImage, int value) {
+        super(collection, defaultImage);
         
         this.setScore(value);
         state = State.DEADLY;
