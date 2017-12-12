@@ -37,6 +37,16 @@ public class PacMan extends Element  implements Serializable {
         super(collection, defaultImage);
         this.isTransposable = false;
     }
+    
+    public void loadPacMan(PacMan newPacMan) {
+        nextMovDirection = newPacMan.nextMovDirection;
+        movDirection = newPacMan.movDirection;
+        numLifes = newPacMan.numLifes;
+        lifeControl = newPacMan.lifeControl;
+        
+        score = newPacMan.score;
+        pos = newPacMan.pos;
+    }
 
     public int getNumLifes() {
         return this.numLifes;

@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.TimerTask;
 import javax.swing.ImageIcon;
 
-public class Animation implements Serializable {
+public class Animation {
     transient private Timer timer;
     private final long animationDelay;
     
@@ -35,33 +35,7 @@ public class Animation implements Serializable {
     
     public void start() {
         if(isRunning == false && repeat != 0) {
-            isRunning = true;
-
-            currFrame = -1;
-            timer = new Timer();
-            timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                if(++currFrame >= images.size()) {
-                    if(repeat > 0) {
-                        repeat--;
-                    }
-                    
-                    if(repeat == 0) {
-                        currFrame = images.size()-1;
-                    } else {
-                        currFrame = 0;
-                    }
-
-                }
-
-                try {
-                    currImage.setImage(images.get(currFrame).getImage());
-                } catch(java.lang.IndexOutOfBoundsException err) {
-                    System.err.println("Empty animation.\n");
-                }
-            }
-        }, 0, animationDelay);
+            forceStart();
         }
     }
     
@@ -80,5 +54,39 @@ public class Animation implements Serializable {
     
     public void addImage(ImageIcon img) {
         images.add(img);
+    }
+    
+    public boolean isRunning() {
+        return this.isRunning;
+    }
+    
+    public void forceStart() {
+        isRunning = true;
+
+        currFrame = -1;
+        timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                if(++currFrame >= images.size()) {
+                    if(repeat > 0) {
+                        repeat--;
+                    }
+
+                    if(repeat == 0) {
+                        currFrame = images.size()-1;
+                    } else {
+                        currFrame = 0;
+                    }
+
+                }
+
+                try {
+                    currImage.setImage(images.get(currFrame).getImage());
+                } catch(java.lang.IndexOutOfBoundsException err) {
+                    System.err.println("Empty animation.\n");
+                }
+            }
+        }, 0, animationDelay);
     }
 }
