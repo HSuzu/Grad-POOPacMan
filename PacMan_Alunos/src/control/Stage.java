@@ -640,7 +640,7 @@ public class Stage extends KeyAdapter {
                         public void run() {
                             audioBackground.stop();
                         }
-                    }, 8500);
+                    }, Consts.Timer.POWERPELLET_EFFECT + Consts.Timer.POWERPELLET_EFFECT_ENDIND);
                 break;
                 default:
                     audio.setNext("sound"+ File.separator + "pacman_eatfruit.wav");

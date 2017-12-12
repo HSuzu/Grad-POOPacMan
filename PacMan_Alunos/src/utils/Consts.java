@@ -23,6 +23,11 @@ public class Consts {
     public static final int DELAY = 20;
     public static final int ANIMATION_DELAY = 50;
     
+    public static class Timer {
+        public static final int POWERPELLET_EFFECT = 4000;
+        public static final int POWERPELLET_EFFECT_ENDIND = 3000;
+    }
+    
     public static enum Sprite {
         //Para a escolha das imagens do PacMan:
         PACMAN_CLOSE,

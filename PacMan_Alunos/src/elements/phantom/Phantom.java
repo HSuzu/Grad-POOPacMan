@@ -97,7 +97,7 @@ public abstract class Phantom extends Element implements Serializable {
                             }
                         }
                         
-                    }, 5000, 3000);
+                    }, Consts.Timer.POWERPELLET_EFFECT, Consts.Timer.POWERPELLET_EFFECT_ENDIND);
                 }   break;
             case ENDING_EDIBLE:
                 this.isTransposable = true;
