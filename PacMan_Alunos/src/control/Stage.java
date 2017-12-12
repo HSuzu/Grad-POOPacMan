@@ -89,6 +89,9 @@ public class Stage extends KeyAdapter {
                         p.resetPosition();
                     }
                     
+                    pacman.resetPosition();
+                    pacman.setImage(sprite.getImage(Consts.Sprite.PACMAN_CLOSE));
+                    
                     if(pacman.getNumLifes() <= 0) {
                         setState(State.GAME_OVER);
                     } else {
@@ -472,8 +475,9 @@ public class Stage extends KeyAdapter {
         sprite.newImage(Consts.Sprite.PACMAN_DYING_9, 11, 0);
         sprite.newImage(Consts.Sprite.PACMAN_DYING_10, 12, 0);
         sprite.newImage(Consts.Sprite.PACMAN_DYING_11, 13, 0);
+        sprite.newImage(Consts.Sprite.PACMAN_DYING_12, 13, 1);
         
-        Animation dying = new Animation(Consts.ANIMATION_DELAY);
+        Animation dying = new Animation((long)(1.5*Consts.ANIMATION_DELAY), 1);
         dying.addImage(sprite.getImage(Consts.Sprite.PACMAN_DYING_1));
         dying.addImage(sprite.getImage(Consts.Sprite.PACMAN_DYING_2));
         dying.addImage(sprite.getImage(Consts.Sprite.PACMAN_DYING_3));
@@ -485,6 +489,9 @@ public class Stage extends KeyAdapter {
         dying.addImage(sprite.getImage(Consts.Sprite.PACMAN_DYING_9));
         dying.addImage(sprite.getImage(Consts.Sprite.PACMAN_DYING_10));
         dying.addImage(sprite.getImage(Consts.Sprite.PACMAN_DYING_11));
+        dying.addImage(sprite.getImage(Consts.Sprite.PACMAN_DYING_12));
+        dying.addImage(sprite.getImage(Consts.Sprite.PACMAN_DYING_11));
+        dying.addImage(sprite.getImage(Consts.Sprite.PACMAN_DYING_12));
         
         animations.put(Consts.Animation.PACMAN_DYING, dying);
         

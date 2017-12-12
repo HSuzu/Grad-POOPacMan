@@ -56,6 +56,7 @@ public class Consts {
         PACMAN_DYING_9,
         PACMAN_DYING_10,
         PACMAN_DYING_11,
+        PACMAN_DYING_12,
 
         CHERRY,
         STRAWBERRY,

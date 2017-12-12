@@ -68,12 +68,15 @@ public class PacMan extends Element  implements Serializable {
     }
     
     public void die() {
-        this.pos = defaultPosition;
         imageIcon = this.collection.getImage(Consts.Animation.PACMAN_DYING);
         
         if(this.numLifes > 0) {
             this.numLifes -= 1;
         }
+    }
+    
+    public void resetPosition() {
+        pos = defaultPosition;
     }
     
     @Override

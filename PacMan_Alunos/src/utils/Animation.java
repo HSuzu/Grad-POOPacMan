@@ -49,6 +49,7 @@ public class Animation {
     }
     
     public ImageIcon getAnimation() {
+        start();
         return currImage;
     }
     
