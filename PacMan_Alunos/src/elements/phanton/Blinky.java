@@ -84,7 +84,6 @@ public class Blinky extends Phantom {
                    break;
                case WorldMap.UP:
                    this.setNextMovDirection(MOVE_UP);
-                   ;
                    System.out.println("U");
                    break;
                default:
