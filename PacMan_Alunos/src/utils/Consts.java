@@ -21,7 +21,7 @@ public class Consts {
     public static final String PATH = File.separator+"imgs"+File.separator;
     
     public static final int DELAY = 20;
-    public static final int TIMER_FOGO = 40;
+    public static final int ANIMATION_DELAY = 50;
     
     public static enum Sprite {
         //Para a escolha das imagens do PacMan:
@@ -42,18 +42,78 @@ public class Consts {
         WALL_HORIZONTAL,
         
         POWER_PELLETS,
-        PACDOTS
+        PACDOTS,
+
+        CLYDE_BOTTOM_0,
+        CLYDE_BOTTOM_1,
+        CLYDE_LEFT_0,
+        CLYDE_LEFT_1,
+        CLYDE_RIGHT_0,
+        CLYDE_RIGHT_1,
+        CLYDE_TOP_0,
+        CLYDE_TOP_1,
+        
+        INKY_BOTTOM_0,
+        INKY_BOTTOM_1,
+        INKY_LEFT_0,
+        INKY_LEFT_1,
+        INKY_RIGHT_0,
+        INKY_RIGHT_1,
+        INKY_TOP_0,
+        INKY_TOP_1,
+        
+        PINKY_BOTTOM_0,
+        PINKY_BOTTOM_1,
+        PINKY_LEFT_0,
+        PINKY_LEFT_1,
+        PINKY_RIGHT_0,
+        PINKY_RIGHT_1,
+        PINKY_TOP_0,
+        PINKY_TOP_1,
+        
+        BLINKY_BOTTOM_0,
+        BLINKY_BOTTOM_1,
+        BLINKY_LEFT_0,
+        BLINKY_LEFT_1,
+        BLINKY_RIGHT_0,
+        BLINKY_RIGHT_1,
+        BLINKY_TOP_0,
+        BLINKY_TOP_1
     }
     
     public static enum Animation {
         PACMAN_LEFT,
         PACMAN_RIGHT,
         PACMAN_UP,
-        PACMAN_DOWN
+        PACMAN_DOWN,
+
+        CLYDE_DOWN,
+        CLYDE_LEFT,
+        CLYDE_RIGHT,
+        CLYDE_UP,
+        
+        INKY_DOWN,
+        INKY_LEFT,
+        INKY_RIGHT,
+        INKY_UP,
+        
+        PINKY_DOWN,
+        PINKY_LEFT,
+        PINKY_RIGHT,
+        PINKY_UP,
+        
+        BLINKY_DOWN,
+        BLINKY_LEFT,
+        BLINKY_RIGHT,
+        BLINKY_UP
     }
     
     public static enum ImgCollection {
         PACMAN,
+        CLYDE,
+        INKY,
+        BLINKY,
+        PINKY,
         FRUIT,
         WALL
     }

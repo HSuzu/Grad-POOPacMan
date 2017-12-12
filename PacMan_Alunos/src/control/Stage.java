@@ -323,7 +323,7 @@ public class Stage extends KeyAdapter {
         sprite.newImage(Consts.Sprite.PACMAN_BOTTOM_1, 0, 3);
         sprite.newImage(Consts.Sprite.PACMAN_CLOSE, 2, 0);
         
-        Animation anLeft = new Animation(50);
+        Animation anLeft = new Animation(Consts.ANIMATION_DELAY);
         anLeft.addImage(sprite.getImage(Consts.Sprite.PACMAN_LEFT_1));
         anLeft.addImage(sprite.getImage(Consts.Sprite.PACMAN_LEFT_0));
         anLeft.addImage(sprite.getImage(Consts.Sprite.PACMAN_CLOSE));
@@ -331,7 +331,7 @@ public class Stage extends KeyAdapter {
 
         animations.put(Consts.Animation.PACMAN_LEFT, anLeft);
         
-        Animation anRight = new Animation(50);
+        Animation anRight = new Animation(Consts.ANIMATION_DELAY);
         anRight.addImage(sprite.getImage(Consts.Sprite.PACMAN_RIGHT_1));
         anRight.addImage(sprite.getImage(Consts.Sprite.PACMAN_RIGHT_0));
         anRight.addImage(sprite.getImage(Consts.Sprite.PACMAN_CLOSE));
@@ -339,7 +339,7 @@ public class Stage extends KeyAdapter {
 
         animations.put(Consts.Animation.PACMAN_RIGHT, anRight);
         
-        Animation anTop = new Animation(50);
+        Animation anTop = new Animation(Consts.ANIMATION_DELAY);
         anTop.addImage(sprite.getImage(Consts.Sprite.PACMAN_TOP_1));
         anTop.addImage(sprite.getImage(Consts.Sprite.PACMAN_TOP_0));
         anTop.addImage(sprite.getImage(Consts.Sprite.PACMAN_CLOSE));
@@ -347,7 +347,7 @@ public class Stage extends KeyAdapter {
 
         animations.put(Consts.Animation.PACMAN_UP, anTop);
         
-        Animation anBottom = new Animation(50);
+        Animation anBottom = new Animation(Consts.ANIMATION_DELAY);
         anBottom.addImage(sprite.getImage(Consts.Sprite.PACMAN_BOTTOM_1));
         anBottom.addImage(sprite.getImage(Consts.Sprite.PACMAN_BOTTOM_0));
         anBottom.addImage(sprite.getImage(Consts.Sprite.PACMAN_CLOSE));
@@ -363,6 +363,153 @@ public class Stage extends KeyAdapter {
         
         imgCollections.put(Consts.ImgCollection.PACMAN, icPacman);
         
+        //Animação Blinky:
+        sprite.newImage(Consts.Sprite.BLINKY_BOTTOM_0, 6, 7);
+        sprite.newImage(Consts.Sprite.BLINKY_BOTTOM_1, 7, 7);
+        sprite.newImage(Consts.Sprite.BLINKY_LEFT_0 , 2, 7);
+        sprite.newImage(Consts.Sprite.BLINKY_LEFT_1 , 3, 7);
+        sprite.newImage(Consts.Sprite.BLINKY_RIGHT_0 , 0, 7);
+        sprite.newImage(Consts.Sprite.BLINKY_RIGHT_1 , 1, 7);
+        sprite.newImage(Consts.Sprite.BLINKY_TOP_0 , 4, 7);
+        sprite.newImage(Consts.Sprite.BLINKY_TOP_1 , 5, 7);
+        
+        Animation blinkyBottom = new Animation(Consts.ANIMATION_DELAY);
+        blinkyBottom.addImage(sprite.getImage(Consts.Sprite.BLINKY_BOTTOM_0));
+        blinkyBottom.addImage(sprite.getImage(Consts.Sprite.BLINKY_BOTTOM_1));
+        animations.put(Consts.Animation.BLINKY_DOWN, blinkyBottom);
+        
+        Animation blinkyLeft = new Animation(Consts.ANIMATION_DELAY);
+        blinkyLeft.addImage(sprite.getImage(Consts.Sprite.BLINKY_LEFT_0));
+        blinkyLeft.addImage(sprite.getImage(Consts.Sprite.BLINKY_LEFT_1));
+        animations.put(Consts.Animation.BLINKY_LEFT, blinkyLeft);
+        
+        Animation blinkyRight = new Animation(Consts.ANIMATION_DELAY);
+        blinkyRight.addImage(sprite.getImage(Consts.Sprite.BLINKY_RIGHT_0));
+        blinkyRight.addImage(sprite.getImage(Consts.Sprite.BLINKY_RIGHT_1));
+        animations.put(Consts.Animation.BLINKY_RIGHT, blinkyRight);
+        
+        Animation blinkyTop = new Animation(Consts.ANIMATION_DELAY);
+        blinkyTop.addImage(sprite.getImage(Consts.Sprite.BLINKY_TOP_0));
+        blinkyTop.addImage(sprite.getImage(Consts.Sprite.BLINKY_TOP_1));
+        animations.put(Consts.Animation.BLINKY_UP, blinkyTop);
+        
+        ImageCollection icBlinky = new ImageCollection();
+        icBlinky.addAnimation(Consts.Animation.BLINKY_DOWN, blinkyBottom);
+        icBlinky.addAnimation(Consts.Animation.BLINKY_LEFT, blinkyLeft);
+        icBlinky.addAnimation(Consts.Animation.BLINKY_RIGHT, blinkyRight);
+        icBlinky.addAnimation(Consts.Animation.BLINKY_UP, blinkyTop);
+        imgCollections.put(Consts.ImgCollection.BLINKY, icBlinky);
+
+        //Animação Pinky:
+        sprite.newImage(Consts.Sprite.PINKY_BOTTOM_0, 6, 8);
+        sprite.newImage(Consts.Sprite.PINKY_BOTTOM_1, 7, 8);
+        sprite.newImage(Consts.Sprite.PINKY_LEFT_0 , 2, 8);
+        sprite.newImage(Consts.Sprite.PINKY_LEFT_1 , 3, 8);
+        sprite.newImage(Consts.Sprite.PINKY_RIGHT_0 , 0, 8);
+        sprite.newImage(Consts.Sprite.PINKY_RIGHT_1 , 1, 8);
+        sprite.newImage(Consts.Sprite.PINKY_TOP_0 , 4, 8);
+        sprite.newImage(Consts.Sprite.PINKY_TOP_1 , 5, 8);
+        
+        Animation pinkyBottom = new Animation(Consts.ANIMATION_DELAY);
+        pinkyBottom.addImage(sprite.getImage(Consts.Sprite.PINKY_BOTTOM_0));
+        pinkyBottom.addImage(sprite.getImage(Consts.Sprite.PINKY_BOTTOM_1));
+        animations.put(Consts.Animation.PINKY_DOWN, pinkyBottom);
+        
+        Animation pinkyLeft = new Animation(Consts.ANIMATION_DELAY);
+        pinkyLeft.addImage(sprite.getImage(Consts.Sprite.PINKY_LEFT_0));
+        pinkyLeft.addImage(sprite.getImage(Consts.Sprite.PINKY_LEFT_1));
+        animations.put(Consts.Animation.PINKY_LEFT, pinkyLeft);
+        
+        Animation pinkyRight = new Animation(Consts.ANIMATION_DELAY);
+        pinkyRight.addImage(sprite.getImage(Consts.Sprite.PINKY_RIGHT_0));
+        pinkyRight.addImage(sprite.getImage(Consts.Sprite.PINKY_RIGHT_1));
+        animations.put(Consts.Animation.PINKY_RIGHT, pinkyRight);
+        
+        Animation pinkyTop = new Animation(Consts.ANIMATION_DELAY);
+        pinkyTop.addImage(sprite.getImage(Consts.Sprite.PINKY_TOP_0));
+        pinkyTop.addImage(sprite.getImage(Consts.Sprite.PINKY_TOP_1));
+        animations.put(Consts.Animation.PINKY_UP, pinkyTop);
+        
+        ImageCollection icPinky = new ImageCollection();
+        icPinky.addAnimation(Consts.Animation.PINKY_DOWN, pinkyBottom);
+        icPinky.addAnimation(Consts.Animation.PINKY_LEFT, pinkyLeft);
+        icPinky.addAnimation(Consts.Animation.PINKY_RIGHT, pinkyRight);
+        icPinky.addAnimation(Consts.Animation.PINKY_UP, pinkyTop);
+        imgCollections.put(Consts.ImgCollection.PINKY, icPinky);
+        
+        //Animação Inky:
+        sprite.newImage(Consts.Sprite.INKY_BOTTOM_0, 6, 9);
+        sprite.newImage(Consts.Sprite.INKY_BOTTOM_1, 7, 9);
+        sprite.newImage(Consts.Sprite.INKY_LEFT_0 , 2, 9);
+        sprite.newImage(Consts.Sprite.INKY_LEFT_1 , 3, 9);
+        sprite.newImage(Consts.Sprite.INKY_RIGHT_0 , 0, 9);
+        sprite.newImage(Consts.Sprite.INKY_RIGHT_1 , 1, 9);
+        sprite.newImage(Consts.Sprite.INKY_TOP_0 , 4, 9);
+        sprite.newImage(Consts.Sprite.INKY_TOP_1 , 5, 9);
+        
+        Animation inkyBottom = new Animation(Consts.ANIMATION_DELAY);
+        inkyBottom.addImage(sprite.getImage(Consts.Sprite.INKY_BOTTOM_0));
+        inkyBottom.addImage(sprite.getImage(Consts.Sprite.INKY_BOTTOM_1));
+        animations.put(Consts.Animation.INKY_DOWN, inkyBottom);
+        
+        Animation inkyLeft = new Animation(Consts.ANIMATION_DELAY);
+        inkyLeft.addImage(sprite.getImage(Consts.Sprite.INKY_LEFT_0));
+        inkyLeft.addImage(sprite.getImage(Consts.Sprite.INKY_LEFT_1));
+        animations.put(Consts.Animation.INKY_LEFT, inkyLeft);
+        
+        Animation inkyRight = new Animation(Consts.ANIMATION_DELAY);
+        inkyRight.addImage(sprite.getImage(Consts.Sprite.INKY_RIGHT_0));
+        inkyRight.addImage(sprite.getImage(Consts.Sprite.INKY_RIGHT_1));
+        animations.put(Consts.Animation.PINKY_RIGHT, pinkyRight);
+        
+        Animation inkyTop = new Animation(Consts.ANIMATION_DELAY);
+        inkyTop.addImage(sprite.getImage(Consts.Sprite.INKY_TOP_0));
+        inkyTop.addImage(sprite.getImage(Consts.Sprite.INKY_TOP_1));
+        animations.put(Consts.Animation.INKY_UP, inkyTop);
+        
+        ImageCollection icInky = new ImageCollection();
+        icInky.addAnimation(Consts.Animation.INKY_DOWN, inkyBottom);
+        icInky.addAnimation(Consts.Animation.INKY_LEFT, inkyLeft);
+        icInky.addAnimation(Consts.Animation.INKY_RIGHT, inkyRight);
+        icInky.addAnimation(Consts.Animation.INKY_UP, inkyTop);
+        imgCollections.put(Consts.ImgCollection.INKY, icInky);
+        
+        //Animação Clyde:
+        sprite.newImage(Consts.Sprite.CLYDE_BOTTOM_0, 6, 10);
+        sprite.newImage(Consts.Sprite.CLYDE_BOTTOM_1, 7, 10);
+        sprite.newImage(Consts.Sprite.CLYDE_LEFT_0 , 2, 10);
+        sprite.newImage(Consts.Sprite.CLYDE_LEFT_1 , 3, 10);
+        sprite.newImage(Consts.Sprite.CLYDE_RIGHT_0 , 0, 10);
+        sprite.newImage(Consts.Sprite.CLYDE_RIGHT_1 , 1, 10);
+        sprite.newImage(Consts.Sprite.CLYDE_TOP_0 , 4, 10);
+        sprite.newImage(Consts.Sprite.CLYDE_TOP_1 , 5, 10);
+        
+        Animation clydeBottom = new Animation(Consts.ANIMATION_DELAY);
+        clydeBottom.addImage(sprite.getImage(Consts.Sprite.CLYDE_BOTTOM_0));
+        clydeBottom.addImage(sprite.getImage(Consts.Sprite.CLYDE_BOTTOM_1));
+        animations.put(Consts.Animation.CLYDE_DOWN, clydeBottom);
+        
+        Animation clydeLeft = new Animation(Consts.ANIMATION_DELAY);
+        clydeLeft.addImage(sprite.getImage(Consts.Sprite.CLYDE_LEFT_0));
+        clydeLeft.addImage(sprite.getImage(Consts.Sprite.CLYDE_LEFT_1));
+        animations.put(Consts.Animation.CLYDE_LEFT, clydeLeft);
+        
+        Animation clydeRight = new Animation(Consts.ANIMATION_DELAY);
+        clydeRight.addImage(sprite.getImage(Consts.Sprite.CLYDE_RIGHT_0));
+        clydeRight.addImage(sprite.getImage(Consts.Sprite.CLYDE_RIGHT_1));
+        animations.put(Consts.Animation.CLYDE_RIGHT, clydeRight);
+        
+        Animation clydeTop = new Animation(Consts.ANIMATION_DELAY);
+        clydeTop.addImage(sprite.getImage(Consts.Sprite.CLYDE_TOP_0));
+        clydeTop.addImage(sprite.getImage(Consts.Sprite.CLYDE_TOP_1));
+        animations.put(Consts.Animation.CLYDE_UP, clydeTop);
+        
+        ImageCollection icClyde = new ImageCollection();
+        icClyde.addAnimation(Consts.Animation.CLYDE_DOWN, clydeBottom);
+        icClyde.addAnimation(Consts.Animation.CLYDE_LEFT, clydeLeft);
+        icClyde.addAnimation(Consts.Animation.CLYDE_RIGHT, clydeRight);
+        icClyde.addAnimation(Consts.Animation.CLYDE_UP, clydeTop);
+        imgCollections.put(Consts.ImgCollection.CLYDE, icClyde);
     }
     
     @Override
