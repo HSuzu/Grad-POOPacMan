@@ -24,7 +24,13 @@ public class Blinky extends Phantom implements Serializable {
     public String name() {
         return "Blinky";
     }
-
+    
+    protected void navigationAlgorithm(Position bPos, char map[][]) {
+        //Condição de erro:
+        
+    
+    }
+    
     @Override
     public void navigation() {
        Position desiredPos = wm.getPacManPosition();
@@ -57,26 +63,29 @@ public class Blinky extends Phantom implements Serializable {
            byte possibleDirection = (byte)Math.pow(2.0d, aux);
            hysteresisCoef = 0.20f;
            
-           if((possibleDirection & direction) == WorldMap.DOWN) {
-               this.setNextMovDirection(MOVE_DOWN);
-           } else if((possibleDirection & direction) == WorldMap.LEFT) {
-               this.setNextMovDirection(MOVE_LEFT);
-           } else if((possibleDirection & direction) == WorldMap.RIGHT) {
-               this.setNextMovDirection(MOVE_RIGHT);
-           } else if((possibleDirection & direction) == WorldMap.UP) {
-               this.setNextMovDirection(MOVE_UP);;
-           } else {
-               this.setNextMovDirection(MOVE_UP);
+           switch (possibleDirection & direction) {
+               case WorldMap.DOWN:
+                   this.setNextMovDirection(MOVE_DOWN);
+                   System.out.println("D");
+                   break;
+               case WorldMap.LEFT:
+                   this.setNextMovDirection(MOVE_LEFT);
+                   System.out.println("L");
+                   break;
+               case WorldMap.RIGHT:
+                   this.setNextMovDirection(MOVE_RIGHT);
+                   System.out.println("R");
+                   break;
+               case WorldMap.UP:
+                   this.setNextMovDirection(MOVE_UP);
+                   System.out.println("U");
+                   break;
+               default:
+                   this.setNextMovDirection(MOVE_UP);
+                   System.out.println("ELSE");
+                   break;
            }
        }
        
- 
     }
-    
-    protected void navigationAlgorithm(Position bPos, char map[][]) {
-        //Condição de erro:
-        
-    
-    }
-    
 }

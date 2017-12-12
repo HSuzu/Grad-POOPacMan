@@ -67,6 +67,7 @@ public class Position implements Serializable {
         return false;
     }
     
+    @Override
     public final String toString() {
         return "(" + x + ", " + y + ")";
     }
@@ -94,5 +95,8 @@ public class Position implements Serializable {
     }
     public boolean moveLeft(){
         return this.setPosition(this.getX()-Consts.WALK_STEP, this.getY());        
+    }
+    public double getDistanceTo(Position desiredPos) {
+        return Math.pow(Math.pow(this.x, 2)+Math.pow(desiredPos.getX(), 2), 0.5d);
     }
 }

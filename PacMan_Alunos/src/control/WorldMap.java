@@ -26,6 +26,7 @@ public class WorldMap {
     private static WorldMap worldMap = null;
     
     protected Position PacManPosition;
+    protected int PacManMovDirection;
     
     private WorldMap() {
         map = new char[Consts.NUM_CELLS_X][Consts.NUM_CELLS_Y];
@@ -117,5 +118,13 @@ public class WorldMap {
     
     public Position getPacManPosition() {
         return this.PacManPosition;
+    }
+    
+    public void setPacManDirection(int movDirection) {
+        this.PacManMovDirection = movDirection;
+    }
+    
+    public int getPacManDirection() {
+        return this.PacManMovDirection;
     }
 }

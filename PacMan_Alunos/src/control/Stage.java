@@ -57,7 +57,7 @@ public class Stage extends KeyAdapter {
         pacman.setPosition(0, 0);
         
         phantoms = new ArrayList<>();
-        Blinky blinky = new Blinky(sprite.getImage(Consts.Sprite.CHERRY), 100);
+        Pinky blinky = new Pinky(sprite.getImage(Consts.Sprite.CHERRY), 100);
         blinky.setPosition(11.0, 8.0);
         phantoms.add(blinky);
         fruits = new ArrayList<>();
