@@ -25,10 +25,12 @@ public class WorldMap implements Serializable {
     transient private static WorldMap worldMap = null;
     
     protected Position PacManPosition;
+    protected Position BlinkyPosition;
     protected int PacManMovDirection;
     
     private WorldMap() {
         map = new char[Consts.NUM_CELLS_X][Consts.NUM_CELLS_Y];
+        BlinkyPosition = null;
     }
     
     public void loadWorldMap(WorldMap map) {
@@ -138,5 +140,13 @@ public class WorldMap implements Serializable {
     
     public int getPacManDirection() {
         return this.PacManMovDirection;
+    }
+
+    public void setBlinkyPosition(Position pos) {
+        this.BlinkyPosition = pos;
+    }
+    
+    public Position getBlinkyPosition() {
+        return this.BlinkyPosition;
     }
 }

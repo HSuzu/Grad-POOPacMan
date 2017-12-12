@@ -4,6 +4,7 @@ import elements.Element;
 import elements.Items;
 import elements.PacMan;
 import elements.Wall;
+import elements.phantom.Blinky;
 import elements.phantom.Phantom;
 import java.awt.Graphics;
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ public class GameController {
             elemArray.get(i).autoDraw(g);
         }
     }
+    
     public void processAllElements(ArrayList<Element> e){
         if(e.isEmpty())
             return;
@@ -51,6 +53,10 @@ public class GameController {
         while(it.hasNext()) {
             eTemp = it.next();
             
+            if(eTemp instanceof Blinky) {
+                wm.setBlinkyPosition(eTemp.getPosition());
+            }
+            
             float err = 0.3f;
             if(eTemp instanceof Wall) {
                 err = 1.0f;
@@ -65,7 +71,6 @@ public class GameController {
                         // TODO
                         pacman.die();
                         pacman.setPosition(7.0, 3.0);
-                        eTemp.setPosition(1.0, 1.0);
                     } else {
                         pacman.winPoints(eTemp.getScore());
                         it.remove();
