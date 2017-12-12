@@ -85,25 +85,31 @@ public abstract class Phantom extends Element implements Serializable {
                 break;
             case EDIBLE:
                 this.isTransposable = true;
-                if(this.state == State.DEADLY) {
+                if(this.state != State.DEADLY) {
+                    if(edibleTimer != null) {
+                        edibleTimer.cancel();
+                        edibleTimer = null;
+                    }
+                } else {
                     phantomCounter = 0;
-                    
-                    edibleTimer = new Timer();
-                    
-                    edibleTimer.schedule(new TimerTask() {
-                        int i = 0;
-                        @Override
-                        public void run() {
-                            if(i++ == 0) {
-                                setState(State.ENDING_EDIBLE);
-                            } else {
-                                setState(State.DEADLY);
-                                edibleTimer.cancel();
-                            }
+                }
+
+                edibleTimer = new Timer();
+
+                edibleTimer.schedule(new TimerTask() {
+                    int i = 0;
+                    @Override
+                    public void run() {
+                        if(i++ == 0) {
+                            setState(State.ENDING_EDIBLE);
+                        } else {
+                            setState(State.DEADLY);
+                            edibleTimer.cancel();
                         }
-                        
-                    }, Consts.Timer.POWERPELLET_EFFECT, Consts.Timer.POWERPELLET_EFFECT_ENDIND);
-                }   break;
+                    }
+
+                }, Consts.Timer.POWERPELLET_EFFECT, Consts.Timer.POWERPELLET_EFFECT_ENDIND);
+                break;
             case ENDING_EDIBLE:
                 this.isTransposable = true;
                 break;

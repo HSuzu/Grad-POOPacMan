@@ -751,6 +751,10 @@ public class Stage extends KeyAdapter {
                     audioBackground.setNext("sound"+ File.separator + "pacman_intermission.wav");
                     audioBackground.start(false, true);
                     
+                    if(bkAudioTimer != null) {
+                        bkAudioTimer.cancel();
+                    }
+                    
                     bkAudioTimer = new Timer();
                     bkAudioTimer.schedule(new TimerTask() {
                         @Override
