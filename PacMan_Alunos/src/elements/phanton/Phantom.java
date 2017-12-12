@@ -3,6 +3,7 @@ package elements.phanton;
 import control.WorldMap;
 import elements.Element;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.io.Serializable;
 import javax.swing.ImageIcon;
 import utils.Consts;
@@ -60,6 +61,8 @@ public abstract class Phantom extends Element implements Serializable {
     
     abstract protected void navigation();
 
+    abstract protected ImageIcon getImage(int movDirection);
+    
     @Override
     public void autoDraw(Graphics g) {
         Drawing.draw(g, this.imageIcon, pos.getX(), pos.getY());
@@ -84,16 +87,24 @@ public abstract class Phantom extends Element implements Serializable {
         
         switch (movDirection) {
             case MOVE_LEFT:
+                imageIcon = getImage(MOVE_LEFT);
                 this.moveLeft();
+                this.collection.startAnimation();
                 break;
             case MOVE_RIGHT:
+                imageIcon = getImage(MOVE_RIGHT);
                 this.moveRight();
+                this.collection.startAnimation();
                 break;
             case MOVE_UP:
+                imageIcon = getImage(MOVE_UP);
                 this.moveUp();
+                this.collection.startAnimation();
                 break;
             case MOVE_DOWN:
+                imageIcon = getImage(MOVE_DOWN);
                 this.moveDown();
+                this.collection.startAnimation();
                 break;
             default:
                 break;

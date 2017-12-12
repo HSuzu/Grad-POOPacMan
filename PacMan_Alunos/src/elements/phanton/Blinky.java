@@ -1,6 +1,7 @@
 package elements.phanton;
 
 import control.WorldMap;
+import java.awt.Image;
 import java.io.Serializable;
 import java.util.ArrayList;
 import utils.Position;
@@ -67,26 +68,36 @@ public class Blinky extends Phantom implements Serializable {
            switch (possibleDirection & direction) {
                case WorldMap.DOWN:
                    this.setNextMovDirection(MOVE_DOWN);
-                   System.out.println("D");
                    break;
                case WorldMap.LEFT:
                    this.setNextMovDirection(MOVE_LEFT);
-                   System.out.println("L");
                    break;
                case WorldMap.RIGHT:
                    this.setNextMovDirection(MOVE_RIGHT);
-                   System.out.println("R");
                    break;
                case WorldMap.UP:
                    this.setNextMovDirection(MOVE_UP);
-                   System.out.println("U");
                    break;
                default:
                    this.setNextMovDirection(MOVE_UP);
-                   System.out.println("ELSE");
                    break;
            }
        }
        
+    }
+
+    @Override
+    protected ImageIcon getImage(int movDirection) {
+        switch(movDirection) {
+            case Phantom.MOVE_LEFT:
+                return this.collection.getImage(Consts.Animation.BLINKY_LEFT);
+            case Phantom.MOVE_RIGHT:
+                return this.collection.getImage(Consts.Animation.BLINKY_RIGHT);
+            case Phantom.MOVE_UP:
+                return this.collection.getImage(Consts.Animation.BLINKY_UP);
+            case Phantom.MOVE_DOWN:
+                return this.collection.getImage(Consts.Animation.BLINKY_DOWN);
+        }
+        return this.collection.getImage(Consts.Animation.BLINKY_UP);
     }
 }

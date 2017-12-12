@@ -7,8 +7,6 @@ package elements.phanton;
 
 import control.WorldMap;
 import elements.PacMan;
-import java.util.ArrayList;
-import utils.Position;
 import javax.swing.ImageIcon;
 import utils.Consts;
 import utils.ImageCollection;
@@ -91,5 +89,20 @@ public class Pinky extends Phantom {
             }
         }
     }
-    
+
+    @Override
+    protected ImageIcon getImage(int movDirection) {
+        switch(movDirection) {
+            case Phantom.MOVE_LEFT:
+                return this.collection.getImage(Consts.Animation.PINKY_LEFT);
+            case Phantom.MOVE_RIGHT:
+                return this.collection.getImage(Consts.Animation.PINKY_RIGHT);
+            case Phantom.MOVE_UP:
+                return this.collection.getImage(Consts.Animation.PINKY_UP);
+            case Phantom.MOVE_DOWN:
+                return this.collection.getImage(Consts.Animation.PINKY_DOWN);
+        }
+        return this.collection.getImage(Consts.Animation.PINKY_UP);
+
+    }
 }
