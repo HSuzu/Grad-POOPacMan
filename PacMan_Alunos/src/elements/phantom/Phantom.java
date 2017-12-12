@@ -2,6 +2,7 @@ package elements.phantom;
 
 import control.WorldMap;
 import elements.Element;
+import elements.PacMan;
 import java.awt.Graphics;
 import java.io.Serializable;
 import java.util.Timer;
@@ -116,21 +117,42 @@ public abstract class Phantom extends Element implements Serializable {
     abstract protected ImageIcon getImage(int movDirection);
     
     protected void runAway() {
-        Position avoidPos = wm.getPacManPosition();
+        int desiredDirection = wm.getPacManDirection();
         
-        byte freeSides = wm.freePath((int)Math.round(this.pos.getX()), (int)Math.round(this.pos.getY()));
+        byte direction = wm.freePath((int)Math.round(this.pos.getX()), (int)Math.round(this.pos.getY()));   
         
-        if(avoidPos.getX() > this.pos.getX() && ((freeSides & WorldMap.RIGHT) == WorldMap.RIGHT)) {
-           this.setNextMovDirection(MOVE_RIGHT);
+        Position desiredPos = wm.getPacManPosition();
+        if(desiredPos.getX() < this.pos.getX() && ((direction & WorldMap.RIGHT) == WorldMap.RIGHT)) {
+            this.setNextMovDirection(MOVE_RIGHT);
         }
-        else if(avoidPos.getX() < this.pos.getX() && ((freeSides & WorldMap.LEFT) == WorldMap.LEFT)) {
+        else if(desiredPos.getX() >= this.pos.getX() && ((direction & WorldMap.LEFT) == WorldMap.LEFT)) {
             this.setNextMovDirection(MOVE_LEFT);
         }
-        else if(avoidPos.getY() > this.pos.getY() && ((freeSides & WorldMap.DOWN) == WorldMap.DOWN)) {
+        else if(desiredPos.getY() <= this.pos.getY() && ((direction & WorldMap.DOWN) == WorldMap.DOWN)) {
             this.setNextMovDirection(MOVE_DOWN);
         }
-        else if(avoidPos.getY() < this.pos.getY() && ((freeSides & WorldMap.UP) == WorldMap.UP)) {
+        else if(desiredPos.getY() > this.pos.getY() && ((direction & WorldMap.UP) == WorldMap.UP)) {
             this.setNextMovDirection(MOVE_UP);
+        } else {
+            if(desiredDirection == PacMan.MOVE_LEFT && (direction & WorldMap.LEFT) == WorldMap.LEFT) {
+                this.setNextMovDirection(MOVE_LEFT);
+            } else if(desiredDirection == PacMan.MOVE_DOWN && (direction & WorldMap.DOWN) == WorldMap.DOWN) {
+                this.setNextMovDirection(MOVE_DOWN);
+            } else if(desiredDirection == PacMan.MOVE_UP && (direction & WorldMap.UP) == WorldMap.UP) {
+                this.setNextMovDirection(MOVE_UP);
+            } else if(desiredDirection == PacMan.MOVE_RIGHT && (direction & WorldMap.RIGHT) == WorldMap.RIGHT) {
+                this.setNextMovDirection(MOVE_RIGHT);
+            } else {
+                if((direction & WorldMap.LEFT) == WorldMap.LEFT) {
+                    this.setNextMovDirection(MOVE_LEFT);
+                } else if((direction & WorldMap.DOWN) == WorldMap.DOWN) {
+                    this.setNextMovDirection(MOVE_DOWN);
+                } else if((direction & WorldMap.UP) == WorldMap.UP) {
+                    this.setNextMovDirection(MOVE_UP);;
+                } else {
+                    this.setNextMovDirection(MOVE_RIGHT);
+                }
+            }
         }
     }
 
@@ -145,7 +167,7 @@ public abstract class Phantom extends Element implements Serializable {
     }
     
     public void move() {
-        if(state == State.EDIBLE) {
+        if(state != State.DEADLY && movDirection == nextMovDirection) {
             runAway();
         }
         else if(movDirection == nextMovDirection) {
