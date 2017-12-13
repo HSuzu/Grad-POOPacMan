@@ -14,15 +14,24 @@ import utils.Position;
 
 public class Pinky extends Phantom {
     private float hysteresisCoef;
+    private int counterStep;
+    private byte path;
+    private byte oldDirection;
     
     public Pinky(String imageName, int value) {
         super(imageName, value);
         hysteresisCoef = 1.0f;
+        counterStep = 0;
+        path = 0;
+        oldDirection = 0;
     }
     
     public Pinky(ImageCollection collection, int defaultImage, int value) {
         super(collection, defaultImage, value);
         hysteresisCoef = 1.0f;
+        counterStep = 0;
+        path = 0;
+        oldDirection = 0;
     }
     
     @Override
@@ -34,44 +43,64 @@ public class Pinky extends Phantom {
     protected void navigation() {
         int desiredDirection = wm.getPacManDirection();
         
-        byte direction = wm.freePath((int)Math.round(this.pos.getX()), (int)Math.round(this.pos.getY()));
+        byte freeSides = wm.freePath((int)Math.round(this.pos.getX()), (int)Math.round(this.pos.getY()));
         
         //Tomada de decisão:
-        if(/*Math.random()*100 <= 98.0f*hysteresisCoef*/true) {
+        if(Math.random()*100 <= 98.0f*hysteresisCoef) {
             hysteresisCoef = 1.0f;
-            if(desiredDirection == PacMan.MOVE_LEFT && (direction & WorldMap.LEFT) == WorldMap.LEFT) {
+            counterStep = 0;
+            if(desiredDirection == PacMan.MOVE_LEFT && (freeSides & WorldMap.LEFT) == WorldMap.LEFT) {
                 this.setNextMovDirection(MOVE_LEFT);
-            } else if(desiredDirection == PacMan.MOVE_DOWN && (direction & WorldMap.DOWN) == WorldMap.DOWN) {
+            } else if(desiredDirection == PacMan.MOVE_DOWN && (freeSides & WorldMap.DOWN) == WorldMap.DOWN) {
                 this.setNextMovDirection(MOVE_DOWN);
-            } else if(desiredDirection == PacMan.MOVE_UP && (direction & WorldMap.UP) == WorldMap.UP) {
+            } else if(desiredDirection == PacMan.MOVE_UP && (freeSides & WorldMap.UP) == WorldMap.UP) {
                 this.setNextMovDirection(MOVE_UP);
-            } else if(desiredDirection == PacMan.MOVE_RIGHT && (direction & WorldMap.RIGHT) == WorldMap.RIGHT) {
+            } else if(desiredDirection == PacMan.MOVE_RIGHT && (freeSides & WorldMap.RIGHT) == WorldMap.RIGHT) {
                 this.setNextMovDirection(MOVE_RIGHT);
             } else {
                 Position desiredPos = wm.getPacManPosition();
-                if(desiredPos.getX() > this.pos.getX() && ((direction & WorldMap.RIGHT) == WorldMap.RIGHT)) {
+                if(desiredPos.getX() > this.pos.getX() && ((freeSides & WorldMap.RIGHT) == WorldMap.RIGHT)) {
                     this.setNextMovDirection(MOVE_RIGHT);
                 }
-                else if(desiredPos.getX() < this.pos.getX() && ((direction & WorldMap.LEFT) == WorldMap.LEFT)) {
+                else if(desiredPos.getX() < this.pos.getX() && ((freeSides & WorldMap.LEFT) == WorldMap.LEFT)) {
                     this.setNextMovDirection(MOVE_LEFT);
                 }
-                else if(desiredPos.getY() > this.pos.getY() && ((direction & WorldMap.DOWN) == WorldMap.DOWN)) {
+                else if(desiredPos.getY() > this.pos.getY() && ((freeSides & WorldMap.DOWN) == WorldMap.DOWN)) {
                     this.setNextMovDirection(MOVE_DOWN);
                 }
-                else if(desiredPos.getY() < this.pos.getY() && ((direction & WorldMap.UP) == WorldMap.UP)) {
+                else if(desiredPos.getY() < this.pos.getY() && ((freeSides & WorldMap.UP) == WorldMap.UP)) {
                     this.setNextMovDirection(MOVE_UP);
                 }
             }
         }
         else {
-            hysteresisCoef = 0.2f;
-            byte newPath = wm.freePath((int)Math.round(this.pos.getX()), (int)Math.round(this.pos.getY()));
-
-            direction = (byte) ((byte)(Math.random()*16) & newPath);
-            while(direction == 0) {
-                direction = (byte) ((byte)(16*Math.random()) & newPath);
+            byte direction;
+            if(path == freeSides && counterStep < Consts.PHANTOMS_NUM_STEPS) {
+                counterStep++;
+                direction = oldDirection;
+            } else if(path != freeSides) {
+                path = freeSides;
+                if(oldDirection == (oldDirection & freeSides)) {
+                    direction = oldDirection;
+                }
+                else {
+                    direction = (byte) ((byte)(Math.random()*16) & path);
+                    while(direction == 0) {
+                        direction = (byte) ((byte)(16*Math.random()) & path);
+                    }
+                    oldDirection = direction;
+                    counterStep = 0;
+                }
+                
+            } else {
+                counterStep = 0;
+                direction = (byte) ((byte)(Math.random()*16) & path);
+                while(direction == 0) {
+                    direction = (byte) ((byte)(16*Math.random()) & path);
+                }
+                oldDirection = direction;
             }
-            
+    
             if((direction & WorldMap.DOWN) != 0) {
                 this.setNextMovDirection(MOVE_DOWN);
             } else if((direction & WorldMap.LEFT) != 0) {

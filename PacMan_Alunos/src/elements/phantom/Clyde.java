@@ -18,17 +18,24 @@ import utils.Position;
  */
 public class Clyde extends Phantom {
     private float hysteresisCoef;
-    private byte freeSides;
-    private int direction;
+    private int counterStep;
+    private byte path;
+    private byte oldDirection;
     
     public Clyde(String imageName, int value) {
         super(imageName, value);
         hysteresisCoef = 1.0f;
+        counterStep = 0;
+        path = 0;
+        oldDirection = 0;
     }
 
     public Clyde(ImageCollection collection, int defaultImage, int value) {
         super(collection, defaultImage, value);
         hysteresisCoef = 1.0f;
+        counterStep = 0;
+        path = 0;
+        oldDirection = 0;
     }
     
     @Override
@@ -42,43 +49,43 @@ public class Clyde extends Phantom {
            return;
        }
        
-       freeSides = wm.freePath((int)Math.round(this.pos.getX()), (int)Math.round(this.pos.getY()));
+       path = wm.freePath((int)Math.round(this.pos.getX()), (int)Math.round(this.pos.getY()));
        
        
        //Tomada de decisão:
        if(Math.random()*100 <= 98.0f*hysteresisCoef) {
             hysteresisCoef = 1.0f;
-            if(desiredPos.getX() > this.pos.getX() && ((freeSides & WorldMap.RIGHT) == WorldMap.RIGHT)) {
+            if(desiredPos.getX() > this.pos.getX() && ((path & WorldMap.RIGHT) == WorldMap.RIGHT)) {
                this.setNextMovDirection(MOVE_RIGHT);
             }
-            else if(desiredPos.getX() < this.pos.getX() && ((freeSides & WorldMap.LEFT) == WorldMap.LEFT)) {
+            else if(desiredPos.getX() < this.pos.getX() && ((path & WorldMap.LEFT) == WorldMap.LEFT)) {
                 this.setNextMovDirection(MOVE_LEFT);
             }
-            else if(desiredPos.getY() > this.pos.getY() && ((freeSides & WorldMap.DOWN) == WorldMap.DOWN)) {
+            else if(desiredPos.getY() > this.pos.getY() && ((path & WorldMap.DOWN) == WorldMap.DOWN)) {
                 this.setNextMovDirection(MOVE_DOWN);
             }
-            else if(desiredPos.getY() < this.pos.getY() && ((freeSides & WorldMap.UP) == WorldMap.UP)) {
+            else if(desiredPos.getY() < this.pos.getY() && ((path & WorldMap.UP) == WorldMap.UP)) {
                 this.setNextMovDirection(MOVE_UP);
             }
        }
        //Aleatório:
        else {
             byte newPath = wm.freePath((int)Math.round(this.pos.getX()), (int)Math.round(this.pos.getY()));
-            if(freeSides != newPath) {
-                freeSides = newPath;
+            if(path != newPath) {
+                path = newPath;
             }
-            direction = (byte) ((byte)(Math.random()*16) & freeSides);
-            while(direction == 0) {
-                direction = (byte) ((byte)(16*Math.random()) & freeSides);
+            oldDirection = (byte) ((byte)(Math.random()*16) & path);
+            while(oldDirection == 0) {
+                oldDirection = (byte) ((byte)(16*Math.random()) & path);
             }
             
-            if((direction & WorldMap.DOWN) != 0) {
+            if((oldDirection & WorldMap.DOWN) != 0) {
                 this.setNextMovDirection(MOVE_DOWN);
-            } else if((direction & WorldMap.LEFT) != 0) {
+            } else if((oldDirection & WorldMap.LEFT) != 0) {
                 this.setNextMovDirection(MOVE_LEFT);
-            } else if((direction & WorldMap.RIGHT) != 0) {
+            } else if((oldDirection & WorldMap.RIGHT) != 0) {
                 this.setNextMovDirection(MOVE_RIGHT);                
-            } else if((direction & WorldMap.UP) != 0) {
+            } else if((oldDirection & WorldMap.UP) != 0) {
                 this.setNextMovDirection(MOVE_UP);  
             }
        }
@@ -92,23 +99,23 @@ public class Clyde extends Phantom {
         }
         else {
             byte newPath = wm.freePath((int)Math.round(this.pos.getX()), (int)Math.round(this.pos.getY()));
-            if(freeSides != newPath) {
-                freeSides = newPath;
-                direction = (byte) ((byte)(16*Math.random()) & freeSides);
-                while(direction == 0) {
-                    direction = (byte) ((byte)(16*Math.random()) & freeSides);
+            if(path != newPath) {
+                path = newPath;
+                oldDirection = (byte) ((byte)(16*Math.random()) & path);
+                while(oldDirection == 0) {
+                    oldDirection = (byte) ((byte)(16*Math.random()) & path);
                 }
             }
-            if((direction & WorldMap.DOWN) != 0) {
+            if((oldDirection & WorldMap.DOWN) != 0) {
                 this.setNextMovDirection(MOVE_DOWN);
                 
-            } else if((direction & WorldMap.LEFT) != 0) {
+            } else if((oldDirection & WorldMap.LEFT) != 0) {
                 this.setNextMovDirection(MOVE_LEFT);
                 
-            } else if((direction & WorldMap.RIGHT) != 0) {
+            } else if((oldDirection & WorldMap.RIGHT) != 0) {
                 this.setNextMovDirection(MOVE_RIGHT);
                 
-            } else if((direction & WorldMap.UP) != 0) {
+            } else if((oldDirection & WorldMap.UP) != 0) {
                 this.setNextMovDirection(MOVE_UP);  
                 
             }
