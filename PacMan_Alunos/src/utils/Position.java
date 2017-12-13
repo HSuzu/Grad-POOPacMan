@@ -101,7 +101,7 @@ public class Position implements Serializable {
         return this.setPosition(this.getX()-Consts.WALK_STEP, this.getY());        
     }
     public double getDistanceTo(Position desiredPos) {
-        return Math.pow(Math.pow(this.getX() - desiredPos.getX(), 2)+Math.pow(this.getY() - desiredPos.getX(), 2), 0.5d);
+        return Math.sqrt(Math.pow(this.getX() - desiredPos.getX(), 2)+Math.pow(this.getY() - desiredPos.getY(), 2));
     }
     
     public boolean isNear(Position desiredPos, double err) {

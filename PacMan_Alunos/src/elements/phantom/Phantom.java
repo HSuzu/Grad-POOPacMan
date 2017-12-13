@@ -368,8 +368,6 @@ public abstract class Phantom extends Element implements Serializable {
        int desiredX = (int)Math.round(desiredPos.getX());
        int desiredY = (int)Math.round(desiredPos.getY());
        
-       System.out.println("posx: "+posx+" posy: "+posy+" desiredX: "+desiredX+"desiredY: "+desiredY);
-       
        if(desiredX >= posx && this.forbiddenDirection != MOVE_RIGHT) {
             this.setNextMovDirection(MOVE_RIGHT);
             this.forbiddenDirection = MOVE_LEFT;
@@ -399,7 +397,7 @@ public abstract class Phantom extends Element implements Serializable {
     
     public void move() {
         if(state == State.EYE) {
-            if(pos.isNear(defaultPosition, 1.0)) {
+            if(pos.isNear(defaultPosition, 1.5)) {
                 state = State.DEADLY;
             }
         }
