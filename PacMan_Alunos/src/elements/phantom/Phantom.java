@@ -356,7 +356,38 @@ public abstract class Phantom extends Element implements Serializable {
             this.forbiddenDirection = MOVE_DOWN;           
        }
     }
-        
+    
+    public void goToPos(Position desiredPos) {
+       if(this.pos == desiredPos) {
+           return;
+       }  
+      
+       int posx = (int)Math.round(this.pos.getX());
+       int posy = (int)Math.round(this.pos.getY());
+       
+       int desiredX = (int)Math.round(desiredPos.getX());
+       int desiredY = (int)Math.round(desiredPos.getY());
+       
+       System.out.println("posx: "+posx+" posy: "+posy+" desiredX: "+desiredX+"desiredY: "+desiredY);
+       
+       if(desiredX >= posx && this.forbiddenDirection != MOVE_RIGHT) {
+            this.setNextMovDirection(MOVE_RIGHT);
+            this.forbiddenDirection = MOVE_LEFT;
+       }
+       else if(desiredY >= posy && this.forbiddenDirection != MOVE_DOWN) {
+            this.setNextMovDirection(MOVE_DOWN);
+            this.forbiddenDirection = MOVE_UP;
+       }
+       else if(desiredX < posx && this.forbiddenDirection != MOVE_LEFT) {
+            this.setNextMovDirection(MOVE_LEFT);
+            this.forbiddenDirection = MOVE_RIGHT;
+       }
+       else if(desiredY < posy && this.forbiddenDirection != MOVE_UP) {
+            this.setNextMovDirection(MOVE_UP);   
+            this.forbiddenDirection = MOVE_DOWN;
+       }
+    }
+    
     @Override
     public void autoDraw(Graphics g) {
         Drawing.draw(g, this.imageIcon, pos.getX(), pos.getY());
@@ -379,7 +410,7 @@ public abstract class Phantom extends Element implements Serializable {
                     navigation();
                 break;
                 case EYE:
-                    followPos(defaultPosition);
+                    goToPos(defaultPosition);
                 break;
                 case EDIBLE:
                 case ENDING_EDIBLE:

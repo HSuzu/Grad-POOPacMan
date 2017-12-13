@@ -6,6 +6,7 @@ import elements.PacMan;
 import elements.Wall;
 import elements.phantom.Blinky;
 import elements.phantom.Phantom;
+import elements.phantom.Phantom.State;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -61,7 +62,7 @@ public class GameController {
             } else if(eTemp instanceof Phantom) {
                 Phantom p = (Phantom) eTemp;
                 p.move();
-                if (!isValidPosition(e, p)) {
+                if (!isValidPosition(e, p) && p.getState() != State.EYE) {
                     p.backToLastPosition();
                     p.setForbiddenDirection(p.getMovDirection());
                 }
