@@ -34,6 +34,7 @@ public class Stage extends KeyAdapter {
     AudioControl audio;
     Timer bkAudioTimer;
     
+    // lista de elementos
     private PacMan pacman;
     private ArrayList<Phantom> phantoms;
     private ArrayList<Fruit> fruits;
@@ -43,6 +44,7 @@ public class Stage extends KeyAdapter {
     
     ArrayList<Element> elem;
     
+    // lista de animações/imagens
     protected Sprite sprite;
     private HashMap<Consts.Animation, Animation> animations;
     private HashMap<Consts.ImgCollection, ImageCollection> imgCollections;
@@ -66,24 +68,30 @@ public class Stage extends KeyAdapter {
         this.state = state;
         
         if(state == State.DYING_PAUSE) {
+            // musica de fundo
             bkElem.audioBackground.setNext("sound" + File.separator + "pacman_death2.wav");
             bkElem.audioBackground.start(false, false);
             
+            // ativa timer para desativar audio
             bkAudioTimer = new Timer();
             bkAudioTimer.schedule(new TimerTask() {
                 @Override
                 public void run() {
                     bkElem.audioBackground.stop();
 
+                    // reseta fantasmas
                     for(Phantom p : phantoms) {
                         p.setPosition(Consts.MID_FIELD_X, Consts.MID_FIELD_Y);
                         p.reset();
                     }
 
+                    // reseta pacman
                     pacman.reset();
                     
+                    // seta a imagem do pacman
                     pacman.setImage(sprite.getImage(Consts.Sprite.PACMAN_CLOSE));
                     
+                    // reseta a animação do pacman
                     animations.get(Consts.Animation.PACMAN_DYING).resetAnimation();
                     
                     if(pacman.getNumLifes() <= 0) {
@@ -98,19 +106,24 @@ public class Stage extends KeyAdapter {
     };
         
     public Stage() {
+        // carrega sprint
         loadImages();
         
+        // liga audio
         try {
             audio = new AudioControl();
         } catch (LineUnavailableException ex) {
             System.out.println(ex.getMessage());
         }
 
+        // cria background
         bkElem = new BackgroundElement();
         
+        // cria pacman
         pacman = new PacMan(imgCollections.get(Consts.ImgCollection.PACMAN), Consts.Animation.PACMAN_RIGHT.ordinal());
         pacman.setPosition(0, 0);
         
+        // cria fantasmas
         phantoms = new ArrayList<>();
         Blinky blinky = new Blinky(imgCollections.get(Consts.ImgCollection.BLINKY), Consts.Animation.BLINKY_RIGHT.ordinal(), 200);
         phantoms.add(blinky);
@@ -130,10 +143,13 @@ public class Stage extends KeyAdapter {
         powerPellets = new ArrayList<>();
         walls = new ArrayList<>();
         
+        // adiciona os elementos do mapa nas listas
         updateMapElements();
 
         elem = new ArrayList<>();
         
+        
+        // carrega fonte
         try {
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("fonts/emulogic.ttf")));
@@ -142,6 +158,7 @@ public class Stage extends KeyAdapter {
             System.out.println(ex.getMessage());
         }
 
+        // inicializa o timer de aparecimento das frutas
         timerCherry = new Timer();
                 timerCherry.schedule(new TimerTask() {
                 @Override
@@ -160,12 +177,15 @@ public class Stage extends KeyAdapter {
     }
     
     private void updateMapElements() {
+        // mapa
         char[][] map = WorldMap.getInstance().getMap();
         
+        // limpa a slistas
         powerPellets.clear();
         pacDots.clear();
         walls.clear();
         
+        // adiciona os elementos de acordo
         int i, j;
         for(i = 0; i < Consts.NUM_CELLS_X; i++) {
             for(j = 0; j < Consts.NUM_CELLS_Y; j++) {
@@ -198,14 +218,6 @@ public class Stage extends KeyAdapter {
                     break;
                 }
             }
-        }
-        
-        try {
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("fonts/emulogic.ttf")));
-            font = new Font("emulogic", Font.PLAIN, 18);
-        } catch (IOException | FontFormatException ex) {
-            System.out.println(ex.getMessage());
         }
     }
     

@@ -9,19 +9,25 @@ import utils.AudioControl;
 import utils.Consts;
 
 public class BackgroundElement {
+    // MAP
     private WorldMap map;
+    // estado atual
     private byte stage = 1;
+    // audio
     AudioControl audioBackground;
     
     public BackgroundElement() {
+        // instancia do singleton
         map = WorldMap.getInstance();
         
+        // carrega o arquivo de mapa
         try {
             map.loadFile("maps/default");
         } catch(IOException ex) {
             System.out.println(ex.getMessage());
         }
 
+        // inicializa o sistema de audio
         try {
             audioBackground = new AudioControl();
         } catch (LineUnavailableException ex) {
@@ -30,6 +36,7 @@ public class BackgroundElement {
     }
     
     public void loadNextStage() throws IOException {
+        // carrega um novo mapa de acordo com o estado atual
         WorldMap.getInstance().loadFile("maps" + File.separator + "stage" + stage);
         stage++;
     }
@@ -47,6 +54,7 @@ public class BackgroundElement {
     }
     
     public void drawBackground(Graphics g) {
+        // desenha o fundo preto
         g.setColor(Color.BLACK);
 
         int height = Consts.NUM_CELLS_Y;

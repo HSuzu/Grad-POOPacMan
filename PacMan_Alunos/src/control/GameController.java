@@ -38,12 +38,15 @@ public class GameController {
         Element eTemp;
         Iterator<Element> it = e.iterator();
 
+        // primeiro elemento da lista
         PacMan pacman = (PacMan) it.next();
         pacman.move();
         
+        // seta as posições no worldMap
         wm.setPacManPosition(pacman.getPosition());
         wm.setPacManDirection(pacman.getMovimentDirection());
         
+        // checa colisão do pacman
         if (!isValidPosition(e, pacman)) {
             pacman.backToLastPosition();
             pacman.setMovDirection(PacMan.STOP);
@@ -53,13 +56,17 @@ public class GameController {
             eTemp = it.next();
             
             if(eTemp instanceof Blinky) {
+                // seta posição no world map
                 wm.setBlinkyPosition(eTemp.getPosition());
             }
             
+            // erro da colisão
             float err = 0.3f;
             if(eTemp instanceof Wall) {
+                // incrementa o erro no caso de parede para evitar overlap
                 err = 1.0f;
             } else if(eTemp instanceof Phantom) {
+                // move fantasma e checa colisão
                 Phantom p = (Phantom) eTemp;
                 p.move();
                 if (!isValidPosition(e, p) && p.getState() != State.EYE) {
@@ -73,16 +80,18 @@ public class GameController {
                 if(eTemp instanceof Phantom) {
                     Phantom p = (Phantom) eTemp;
                     if(p.state() == Phantom.State.DEADLY) {
-                        // TODO
                         pacman.die();
                         
                         stage.setState(Stage.State.DYING_PAUSE);
+                        
+                        // fantasma comestível
                     } else if(p.state() == Phantom.State.EDIBLE || p.state() == Phantom.State.ENDING_EDIBLE) {
                         pacman.winPoints(p.getScore());
                         
                         p.setState(Phantom.State.EYE);
                     }
                 } else {
+                    // itens
                     if(eTemp.isMortal()) {
                         pacman.winPoints(eTemp.getScore());
                         it.remove();

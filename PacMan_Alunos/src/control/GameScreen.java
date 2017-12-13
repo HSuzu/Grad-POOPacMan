@@ -58,18 +58,25 @@ public class GameScreen extends javax.swing.JFrame implements KeyListener {
         /*Criamos um contexto grafico*/
         Graphics g2 = g.create(getInsets().right, getInsets().top, getWidth() - getInsets().left, getHeight() - getInsets().bottom);
 
+        // pega elementos do stage
         elemArray = stage.getAllElements();
+        // desenha a tela de game over
         if(stage.getState() == State.GAME_OVER) {
             stage.drawGameOver(g2);
+            
+            // desenha telas de fase
         } else if(stage.getState() == State.TRANSITION) {
             stage.drawString(g2, stage.getTransitionTxt(), Color.WHITE);
         } else {
+            // desenha o mapa
             stage.drawMap(g2);
 
+            // checa colisão etc apenas no game on
             if(stage.getState() == State.GAME_ON) {
                 this.controller.processAllElements(elemArray);
             }
             
+            // desenha elementos mesmo em transições
             this.controller.drawAllElements(elemArray, g2);
 
             stage.drawHeader(g2);
@@ -82,7 +89,7 @@ public class GameScreen extends javax.swing.JFrame implements KeyListener {
             getBufferStrategy().show();
         }
 
-        this.setTitle("PacMan" + elemArray.get(0).getStringPosition());
+        this.setTitle("PacMan");
         
     }
     
@@ -134,12 +141,12 @@ public class GameScreen extends javax.swing.JFrame implements KeyListener {
     @Override
     public void keyPressed(KeyEvent ke) {
         switch(ke.getKeyCode()) {
-            case KeyEvent.VK_S:
+            case KeyEvent.VK_S: // save
                 if(ke.isControlDown()) {
                     stage.saveStage("savefile.sav");
                 }
             break;
-            case KeyEvent.VK_L:
+            case KeyEvent.VK_L: // load
                 if(ke.isControlDown()) {
                     try {
                         stage.loadStage("savefile.sav");
