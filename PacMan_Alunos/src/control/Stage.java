@@ -1,10 +1,6 @@
 package control;
 
-import elements.phantom.Blinky;
-import elements.phantom.Pinky;
-import elements.phantom.Phantom;
-import elements.phantom.Inky;
-import elements.phantom.Clyde;
+import elements.phantom.*;
 import elements.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -21,11 +17,7 @@ import java.text.AttributedString;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.sound.sampled.LineUnavailableException;
-import utils.Animation;
-import utils.AudioControl;
-import utils.Consts;
-import utils.ImageCollection;
-import utils.Position;
+import utils.*;
 import utils.Sprite;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -161,8 +153,17 @@ public class Stage extends KeyAdapter {
         } catch (IOException | FontFormatException ex) {
             System.out.println(ex.getMessage());
         }
-        
-        timerStrawberry.schedule(new TimerTask() {
+
+        timerCherry = new Timer();
+                timerCherry.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    createCherry();
+                }
+            }, Consts.CHERRY_TIME);
+
+        timerStrawberry = new Timer();
+            timerStrawberry.schedule(new TimerTask() {
             @Override
             public void run() {
                 createStrawberry();
@@ -218,21 +219,6 @@ public class Stage extends KeyAdapter {
         } catch (IOException | FontFormatException ex) {
             System.out.println(ex.getMessage());
         }
-        
-        timerCherry = new Timer();
-                timerCherry.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    createCherry();
-                }
-            }, Consts.CHERRY_TIME);
-        timerStrawberry = new Timer();
-            timerStrawberry.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                createStrawberry();
-            }
-        }, Consts.STRAWBERRY_TIME);
     }
     
     public ArrayList<Element> getAllElements() {
@@ -568,6 +554,12 @@ public class Stage extends KeyAdapter {
         edibleEnding.addImage(sprite.getImage(Consts.Sprite.PHANTOM_WHITE_0));
         animations.put(Consts.Animation.EDIBLE_ENDING, edibleEnding);
         
+        // Phanton eye
+        sprite.newImage(Consts.Sprite.PHANTOM_EYE_RIGHT, 8, 5);
+        sprite.newImage(Consts.Sprite.PHANTOM_EYE_LEFT, 9, 5);
+        sprite.newImage(Consts.Sprite.PHANTOM_EYE_UP, 10, 5);
+        sprite.newImage(Consts.Sprite.PHANTOM_EYE_DOWN, 11, 5);
+        
         //Animação Blinky:
         sprite.newImage(Consts.Sprite.BLINKY_BOTTOM_0, 6, 4);
         sprite.newImage(Consts.Sprite.BLINKY_BOTTOM_1, 7, 4);
@@ -605,6 +597,10 @@ public class Stage extends KeyAdapter {
         icBlinky.addAnimation(Consts.Animation.BLINKY_UP, blinkyTop);
         icBlinky.addAnimation(Consts.Animation.EDIBLE, phantomEdible);
         icBlinky.addAnimation(Consts.Animation.EDIBLE_ENDING, edibleEnding);
+        icBlinky.addImage(Consts.Sprite.PHANTOM_EYE_DOWN, sprite.getImage(Consts.Sprite.PHANTOM_EYE_DOWN));
+        icBlinky.addImage(Consts.Sprite.PHANTOM_EYE_UP, sprite.getImage(Consts.Sprite.PHANTOM_EYE_UP));
+        icBlinky.addImage(Consts.Sprite.PHANTOM_EYE_LEFT, sprite.getImage(Consts.Sprite.PHANTOM_EYE_LEFT));
+        icBlinky.addImage(Consts.Sprite.PHANTOM_EYE_RIGHT, sprite.getImage(Consts.Sprite.PHANTOM_EYE_RIGHT));
         imgCollections.put(Consts.ImgCollection.BLINKY, icBlinky);
 
         //Animação Pinky:
@@ -644,6 +640,10 @@ public class Stage extends KeyAdapter {
         icPinky.addAnimation(Consts.Animation.PINKY_UP, pinkyTop);
         icPinky.addAnimation(Consts.Animation.EDIBLE, phantomEdible);
         icPinky.addAnimation(Consts.Animation.EDIBLE_ENDING, edibleEnding);
+        icPinky.addImage(Consts.Sprite.PHANTOM_EYE_DOWN, sprite.getImage(Consts.Sprite.PHANTOM_EYE_DOWN));
+        icPinky.addImage(Consts.Sprite.PHANTOM_EYE_UP, sprite.getImage(Consts.Sprite.PHANTOM_EYE_UP));
+        icPinky.addImage(Consts.Sprite.PHANTOM_EYE_LEFT, sprite.getImage(Consts.Sprite.PHANTOM_EYE_LEFT));
+        icPinky.addImage(Consts.Sprite.PHANTOM_EYE_RIGHT, sprite.getImage(Consts.Sprite.PHANTOM_EYE_RIGHT));
         imgCollections.put(Consts.ImgCollection.PINKY, icPinky);
         
         //Animação Inky:
@@ -683,6 +683,10 @@ public class Stage extends KeyAdapter {
         icInky.addAnimation(Consts.Animation.INKY_UP, inkyTop);
         icInky.addAnimation(Consts.Animation.EDIBLE, phantomEdible);
         icInky.addAnimation(Consts.Animation.EDIBLE_ENDING, edibleEnding);
+        icInky.addImage(Consts.Sprite.PHANTOM_EYE_DOWN, sprite.getImage(Consts.Sprite.PHANTOM_EYE_DOWN));
+        icInky.addImage(Consts.Sprite.PHANTOM_EYE_UP, sprite.getImage(Consts.Sprite.PHANTOM_EYE_UP));
+        icInky.addImage(Consts.Sprite.PHANTOM_EYE_LEFT, sprite.getImage(Consts.Sprite.PHANTOM_EYE_LEFT));
+        icInky.addImage(Consts.Sprite.PHANTOM_EYE_RIGHT, sprite.getImage(Consts.Sprite.PHANTOM_EYE_RIGHT));
         imgCollections.put(Consts.ImgCollection.INKY, icInky);
         
         //Animação Clyde:
@@ -722,6 +726,10 @@ public class Stage extends KeyAdapter {
         icClyde.addAnimation(Consts.Animation.CLYDE_UP, clydeTop);
         icClyde.addAnimation(Consts.Animation.EDIBLE, phantomEdible);
         icClyde.addAnimation(Consts.Animation.EDIBLE_ENDING, edibleEnding);
+        icClyde.addImage(Consts.Sprite.PHANTOM_EYE_DOWN, sprite.getImage(Consts.Sprite.PHANTOM_EYE_DOWN));
+        icClyde.addImage(Consts.Sprite.PHANTOM_EYE_UP, sprite.getImage(Consts.Sprite.PHANTOM_EYE_UP));
+        icClyde.addImage(Consts.Sprite.PHANTOM_EYE_LEFT, sprite.getImage(Consts.Sprite.PHANTOM_EYE_LEFT));
+        icClyde.addImage(Consts.Sprite.PHANTOM_EYE_RIGHT, sprite.getImage(Consts.Sprite.PHANTOM_EYE_RIGHT));
         imgCollections.put(Consts.ImgCollection.CLYDE, icClyde);
     }
     
@@ -856,14 +864,12 @@ public class Stage extends KeyAdapter {
     public void createCherry() {
         Fruit cherry = new Fruit(sprite.getImage(Consts.Sprite.CHERRY), "Cherry", 100, Consts.FRUIT_LIFE);
         fruits.add(cherry);
-        elem.add(cherry);
         setTimer(timerCherry, Consts.CHERRY_TIME, "Cherry");
     }
     
     public void createStrawberry() {
         Fruit strawberry = new Fruit(sprite.getImage(Consts.Sprite.STRAWBERRY), "Strawberry", 300, Consts.FRUIT_LIFE);
         fruits.add(strawberry);
-        elem.add(strawberry);
         setTimer(timerStrawberry, Consts.STRAWBERRY_TIME, "Strawberry");
     }
     

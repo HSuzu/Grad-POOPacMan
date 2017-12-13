@@ -49,6 +49,12 @@ public class ImageCollection {
         
         return animations.get(key.ordinal()).getAnimation();
     }
+
+    public ImageIcon getImage(Consts.Sprite key) {
+        lastKey = key.ordinal();
+        
+        return staticImages.get(key.ordinal());
+    }
     
     public void stopAnimation() {
         Animation curr = animations.get(lastKey);

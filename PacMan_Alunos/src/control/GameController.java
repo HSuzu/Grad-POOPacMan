@@ -67,18 +67,20 @@ public class GameController {
             if(pacman.overlap(eTemp, err)) {
                 stage.overlapListener(eTemp);
                 if(eTemp instanceof Phantom) {
-                    if(((Phantom) eTemp).state() == Phantom.State.DEADLY) {
+                    Phantom p = (Phantom) eTemp;
+                    if(p.state() == Phantom.State.DEADLY) {
                         // TODO
                         pacman.die();
                         
                         stage.setState(Stage.State.DYING_PAUSE);
-                    } else {
-                        pacman.winPoints(eTemp.getScore());
-                        it.remove();
-                        stage.removeElement(eTemp);
+                        return;
+                    } else if(p.state() == Phantom.State.EDIBLE || p.state() == Phantom.State.ENDING_EDIBLE) {
+                        pacman.winPoints(p.getScore());
+                        
+                        p.setState(Phantom.State.EYE);
                     }
                 } else {
-                    if(eTemp.isTransposable()) {
+                    if(eTemp.isMortal()) {
                         pacman.winPoints(eTemp.getScore());
                         it.remove();
                         stage.removeElement(eTemp);

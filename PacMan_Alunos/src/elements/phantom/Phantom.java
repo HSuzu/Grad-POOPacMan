@@ -121,8 +121,12 @@ public abstract class Phantom extends Element implements Serializable {
                 this.isTransposable = true;
                 break;
             case EYE:
+                edibleTimer.cancel();;
+                edibleTimer = null;
                 this.isMortal = false;
                 this.isTransposable = true;
+                
+                // TODO
             break;
             default:
                 break;
