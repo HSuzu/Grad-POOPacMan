@@ -52,19 +52,26 @@ public class Fruit extends Items implements Serializable{
     }
     
     public Fruit(String imageName, String name, int value, int time) {
-      super(imageName, name, value);
-      this.time = time;
-      
-      choosePosition();
-      setTimer();
+        super(imageName, name, value);
+        this.time = time;
+
+        choosePosition();
+        setTimer();
+
+        this.isMortal = true;
+        this.isTransposable = true;
     }
 
     public Fruit(ImageIcon image, String name, int value, int time) {
-      super(image, name, value);
-      this.time = time;
+        super(image, name, value);
+        this.time = time;
 
-      choosePosition();
-      setTimer();
+        choosePosition();
+        setTimer();
+        
+        this.isMortal = true;
+        this.isTransposable = true;
+
     }
     
     public int getTime() {

@@ -22,6 +22,9 @@ public class Items extends Element implements Serializable {
         this.name = name;
         
         this.setScore(value);
+
+        this.isMortal = true;
+        this.isTransposable = true;
     }
     
     public Items(ImageIcon image, String name, int value) {
@@ -29,6 +32,9 @@ public class Items extends Element implements Serializable {
         
         this.setScore(value);
         this.name = name;
+
+        this.isMortal = true;
+        this.isTransposable = true;
     }
     
     public String getName() {

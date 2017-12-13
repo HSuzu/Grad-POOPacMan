@@ -53,13 +53,11 @@ public class GameScreen extends javax.swing.JFrame implements KeyListener {
     
     @Override
     public void paint(Graphics gOld) {
-        elemArray = stage.getAllElements();
         Graphics g = getBufferStrategy().getDrawGraphics();
 
         /*Criamos um contexto grafico*/
         Graphics g2 = g.create(getInsets().right, getInsets().top, getWidth() - getInsets().left, getHeight() - getInsets().bottom);
 
-        stage.iterationListener();
         elemArray = stage.getAllElements();
         if(stage.getState() == State.GAME_OVER) {
             stage.drawGameOver(g2);
@@ -71,10 +69,12 @@ public class GameScreen extends javax.swing.JFrame implements KeyListener {
             if(stage.getState() == State.GAME_ON) {
                 this.controller.processAllElements(elemArray);
             }
+            
             this.controller.drawAllElements(elemArray, g2);
 
             stage.drawHeader(g2);
         }
+        stage.iterationListener();
 
         g.dispose();
         g2.dispose();

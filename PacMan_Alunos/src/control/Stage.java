@@ -36,7 +36,7 @@ public class Stage extends KeyAdapter {
     private Timer timerCherry;
     private Timer timerStrawberry;
     private Timer timerTransition;
-    private String transitionTxt = "";
+    private String transitionTxt = "Phase 1";
     
     private int chompSoundOn = 0;
     
@@ -60,13 +60,14 @@ public class Stage extends KeyAdapter {
     private Font font;
     
     public enum State {
+        INIT,
         GAME_ON,
         GAME_OVER,
         DYING_PAUSE,
         TRANSITION
     }
     
-    private State state = State.GAME_ON;
+    private State state = State.INIT;
     
     private byte stage = 1;
     
@@ -93,6 +94,8 @@ public class Stage extends KeyAdapter {
                     
                     pacman.resetPosition();
                     pacman.setImage(sprite.getImage(Consts.Sprite.PACMAN_CLOSE));
+                    
+                    animations.get(Consts.Animation.PACMAN_DYING).resetAnimation();
                     
                     if(pacman.getNumLifes() <= 0) {
                         setState(State.GAME_OVER);
@@ -792,38 +795,56 @@ public class Stage extends KeyAdapter {
     }
     
     public void iterationListener() {
-        if(pacDots.isEmpty() && powerPellets.isEmpty() && state == State.GAME_ON) {
-            try {
-                WorldMap.getInstance().loadFile("maps" + File.separator + "stage" + stage);
-                stage++;
+        switch(state) {
+            case GAME_ON:
+                if(pacDots.isEmpty() && powerPellets.isEmpty()) {
+                    try {
+                        WorldMap.getInstance().loadFile("maps" + File.separator + "stage" + stage);
+                        stage++;
 
-                updateMapElements();
+                        updateMapElements();
 
-                for(Phantom p : phantoms) {
-                    p.setState(Phantom.State.DEADLY);
-                    p.resetPosition();
+                        for(Phantom p : phantoms) {
+                            p.setState(Phantom.State.DEADLY);
+                            p.resetPosition();
+                        }
+
+                        state = State.TRANSITION;
+                        transitionTxt = "Phase " + stage;
+
+                        timerTransition = new Timer();
+
+                        timerTransition.schedule(new TimerTask() {
+                            @Override
+                            public void run() {
+                                state = State.GAME_ON;
+                            }
+                        }, 4000);
+
+
+                    } catch(IOException ex) {
+                        state = State.TRANSITION;
+                        transitionTxt = "You Win";
+
+                        System.out.println(ex.getMessage());
+                    }
                 }
-
+            break;
+            case INIT:
+                audioBackground.setNext("sound"+ File.separator + "pacman_beginning.wav");
+                audioBackground.start(false, false);
+                
                 state = State.TRANSITION;
-                transitionTxt = "Phase " + stage;
 
-                timerTransition = new Timer();
-
-                timerTransition.schedule(new TimerTask() {
+                bkAudioTimer = new Timer();
+                bkAudioTimer.schedule(new TimerTask() {
                     @Override
                     public void run() {
                         state = State.GAME_ON;
+                        audioBackground.stop();
                     }
-                }, 4000);
-
-
-            } catch(IOException ex) {
-                state = State.TRANSITION;
-                transitionTxt = "You Win";
-
-                System.out.println(ex.getMessage());
-            }
-            
+                }, 5000);
+            break;
         }
         
         if(chompSoundOn > 0) {

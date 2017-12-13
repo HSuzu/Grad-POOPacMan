@@ -15,6 +15,7 @@ public class Animation {
     
     private boolean isRunning;
     private int repeat;
+    private int defaultRepeat;
     
     private int currFrame;
     private final ImageIcon currImage;
@@ -23,6 +24,7 @@ public class Animation {
         this.animationDelay = animationDelay;
         this.isRunning = false;
         this.repeat = repeat;
+        this.defaultRepeat = repeat;
         
         this.images = new ArrayList<>();
 
@@ -61,6 +63,12 @@ public class Animation {
         return this.isRunning;
     }
     
+    public void resetAnimation() {
+        this.repeat = defaultRepeat;
+        this.isRunning = false;
+        currFrame = -1;
+    }
+    
     public void forceStart() {
         isRunning = true;
 
@@ -76,6 +84,7 @@ public class Animation {
 
                     if(repeat == 0) {
                         currFrame = images.size()-1;
+                        timer.cancel();
                     } else {
                         currFrame = 0;
                     }

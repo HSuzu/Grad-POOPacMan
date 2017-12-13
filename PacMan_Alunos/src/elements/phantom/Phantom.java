@@ -17,7 +17,8 @@ public abstract class Phantom extends Element implements Serializable {
     public static enum State {
         DEADLY,
         EDIBLE,
-        ENDING_EDIBLE
+        ENDING_EDIBLE,
+        EYE
     }
     
     public static final int STOP = 0;
@@ -81,9 +82,11 @@ public abstract class Phantom extends Element implements Serializable {
         if(null != state)
             switch (state) {
             case DEADLY:
+                this.isMortal = false;
                 this.isTransposable = true;
                 break;
             case EDIBLE:
+                this.isMortal = true;
                 this.isTransposable = true;
                 if(this.state != State.DEADLY) {
                     if(edibleTimer != null) {
@@ -111,8 +114,13 @@ public abstract class Phantom extends Element implements Serializable {
                 }, Consts.Timer.POWERPELLET_EFFECT, Consts.Timer.POWERPELLET_EFFECT_ENDIND);
                 break;
             case ENDING_EDIBLE:
+                this.isMortal = true;
                 this.isTransposable = true;
                 break;
+            case EYE:
+                this.isMortal = false;
+                this.isTransposable = true;
+            break;
             default:
                 break;
         }
