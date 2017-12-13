@@ -28,6 +28,11 @@ public abstract class Phantom extends Element implements Serializable {
     public static final int MOVE_DOWN = 4;
         
     protected static int phantomCounter = 0;
+    
+    private byte counterStep;
+    private byte path;
+    private byte oldDirection;
+    
     public static void increasePhantonCounter() {
         phantomCounter++;
     }
@@ -182,6 +187,94 @@ public abstract class Phantom extends Element implements Serializable {
         }
     }
 
+    public void increaseCounterStep() {
+        counterStep++;
+    }
+    
+    public void resetCounterStep() {
+        counterStep = 0;
+    }
+    
+    public byte getCounterStep() {
+        return counterStep;
+    }
+    
+    public void setPath(byte path) {
+        this.path = path;
+    }
+    
+    public byte getPath() {
+        return path;
+    }
+    
+    public void setOldDirection(byte value) {
+        this.oldDirection = value;
+    }
+    
+    public byte getOldDirection() {
+        return oldDirection;
+    }
+    
+    public void randomMove() {
+        byte direction;
+        byte freeSides = wm.freePath((int)Math.round(this.pos.getX()), (int)Math.round(this.pos.getY()));
+        if(this.getPath() == freeSides && this.getCounterStep() < Consts.PHANTOMS_NUM_STEPS) {
+            this.increaseCounterStep();
+            direction = this.getOldDirection();
+        } else if(this.getPath() != freeSides) {
+            this.setPath(freeSides);
+            if(this.getOldDirection() == (this.getOldDirection() & freeSides)) {
+                direction = this.getOldDirection();
+            }
+            else {
+                direction = (byte) ((byte)(Math.random()*16) & this.getPath());
+                while(direction == 0) {
+                    direction = (byte) ((byte)(16*Math.random()) & this.getPath());
+                }
+                this.setOldDirection(direction);
+                this.resetCounterStep();
+            }
+
+        } else {
+            this.resetCounterStep();;
+            direction = (byte) ((byte)(Math.random()*16) & this.getPath());
+            while(direction == 0) {
+                direction = (byte) ((byte)(16*Math.random()) & this.getPath());
+            }
+            this.setOldDirection(direction);
+        }
+
+        if((direction & WorldMap.DOWN) != 0) {
+            this.setNextMovDirection(MOVE_DOWN);
+        } else if((direction & WorldMap.LEFT) != 0) {
+            this.setNextMovDirection(MOVE_LEFT);
+        } else if((direction & WorldMap.RIGHT) != 0) {
+            this.setNextMovDirection(MOVE_RIGHT);                
+        } else if((direction & WorldMap.UP) != 0) {
+            this.setNextMovDirection(MOVE_UP);  
+        }
+    }
+    
+    public void followPos(Position desiredPos) {
+       if(this.pos == desiredPos) {
+           return;
+       }
+       
+       path = wm.freePath((int)Math.round(this.pos.getX()), (int)Math.round(this.pos.getY()));
+       
+       if(desiredPos.getX() > this.pos.getX() && ((path & WorldMap.RIGHT) == WorldMap.RIGHT)) {
+            this.setNextMovDirection(MOVE_RIGHT);
+       }
+       else if(desiredPos.getX() < this.pos.getX() && ((path & WorldMap.LEFT) == WorldMap.LEFT)) {
+            this.setNextMovDirection(MOVE_LEFT);
+       }
+       else if(desiredPos.getY() > this.pos.getY() && ((path & WorldMap.DOWN) == WorldMap.DOWN)) {
+            this.setNextMovDirection(MOVE_DOWN);
+       }
+       else if(desiredPos.getY() < this.pos.getY() && ((path & WorldMap.UP) == WorldMap.UP)) {
+            this.setNextMovDirection(MOVE_UP);
+       }
+    }
     
     @Override
     public void autoDraw(Graphics g) {
