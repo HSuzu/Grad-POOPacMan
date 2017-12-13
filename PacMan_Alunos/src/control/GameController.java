@@ -63,7 +63,7 @@ public class GameController {
                 p.move();
                 if (!isValidPosition(e, p)) {
                     p.backToLastPosition();
-                    p.setNextMovDirection(Phantom.STOP);
+                    p.setForbiddenDirection(p.getMovDirection());
                 }
             }
             
