@@ -397,7 +397,7 @@ public abstract class Phantom extends Element implements Serializable {
     
     public void move() {
         if(state == State.EYE) {
-            if(pos.isNear(defaultPosition, 1.5)) {
+            if(pos.isNear(defaultPosition, 1.5) && wm.isValidPosition(wm.getMap()[(int)pos.getX()][(int)pos.getY()])) {
                 state = State.DEADLY;
             }
         }

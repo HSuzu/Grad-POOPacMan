@@ -2,11 +2,16 @@ package control;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.io.File;
 import java.io.IOException;
+import javax.sound.sampled.LineUnavailableException;
+import utils.AudioControl;
 import utils.Consts;
 
 public class BackgroundElement {
     private WorldMap map;
+    private byte stage = 1;
+    AudioControl audioBackground;
     
     public BackgroundElement() {
         map = WorldMap.getInstance();
@@ -16,6 +21,29 @@ public class BackgroundElement {
         } catch(IOException ex) {
             System.out.println(ex.getMessage());
         }
+
+        try {
+            audioBackground = new AudioControl();
+        } catch (LineUnavailableException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+    
+    public void loadNextStage() throws IOException {
+        WorldMap.getInstance().loadFile("maps" + File.separator + "stage" + stage);
+        stage++;
+    }
+    
+    public byte getStage() {
+        return stage;
+    }
+    
+    public AudioControl getBkAudio() {
+        return audioBackground;
+    }
+    
+    public void setStage(byte stage) {
+        this.stage = stage;
     }
     
     public void drawBackground(Graphics g) {

@@ -32,7 +32,6 @@ public class Stage extends KeyAdapter {
     private int chompSoundOn = 0;
     
     AudioControl audio;
-    AudioControl audioBackground;
     Timer bkAudioTimer;
     
     private PacMan pacman;
@@ -60,8 +59,6 @@ public class Stage extends KeyAdapter {
     
     private State state = State.INIT;
     
-    private byte stage = 1;
-    
     public State getState() {
         return state;
     }
@@ -69,14 +66,14 @@ public class Stage extends KeyAdapter {
         this.state = state;
         
         if(state == State.DYING_PAUSE) {
-            audioBackground.setNext("sound" + File.separator + "pacman_death2.wav");
-            audioBackground.start(false, false);
+            bkElem.audioBackground.setNext("sound" + File.separator + "pacman_death2.wav");
+            bkElem.audioBackground.start(false, false);
             
             bkAudioTimer = new Timer();
             bkAudioTimer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    audioBackground.stop();
+                    bkElem.audioBackground.stop();
 
                     for(Phantom p : phantoms) {
                         p.setPosition(Consts.MID_FIELD_X, Consts.MID_FIELD_Y);
@@ -109,12 +106,6 @@ public class Stage extends KeyAdapter {
             System.out.println(ex.getMessage());
         }
 
-        try {
-            audioBackground = new AudioControl();
-        } catch (LineUnavailableException ex) {
-            System.out.println(ex.getMessage());
-        }
-        
         bkElem = new BackgroundElement();
         
         pacman = new PacMan(imgCollections.get(Consts.ImgCollection.PACMAN), Consts.Animation.PACMAN_RIGHT.ordinal());
@@ -255,7 +246,7 @@ public class Stage extends KeyAdapter {
             try {
                 stream = new ObjectOutputStream(f);
 
-                f.write(stage);
+                f.write(bkElem.getStage());
                 stream.writeObject(WorldMap.getInstance());
                 stream.writeObject(pacman);
                 stream.writeObject(phantoms);
@@ -282,7 +273,7 @@ public class Stage extends KeyAdapter {
             powerPellets.clear();
             walls.clear();
             
-            stage = (byte) f.read();
+            bkElem.setStage((byte) f.read());
             WorldMap.getInstance().loadWorldMap((WorldMap) stream.readObject());
             pacman = (PacMan) stream.readObject();
             phantoms = (ArrayList) stream.readObject();
@@ -331,7 +322,7 @@ public class Stage extends KeyAdapter {
         g.setColor(Color.green);
         g.drawString(word.getIterator(), (Consts.NUM_CELLS_X - 7)*Consts.CELL_SIZE, Consts.CELL_SIZE);
         //Mostrar fase:
-        word = new AttributedString("Stage: "+stage);
+        word = new AttributedString("Stage: "+ bkElem.getStage());
         word.addAttribute(TextAttribute.FONT, font);
         g.setColor(Color.green);
         g.drawString(word.getIterator(), (Consts.NUM_CELLS_X - 7)*Consts.CELL_SIZE, 2*Consts.CELL_SIZE);
@@ -772,8 +763,8 @@ public class Stage extends KeyAdapter {
                             p.setState(Phantom.State.EDIBLE);
                         }
                     }
-                    audioBackground.setNext("sound"+ File.separator + "pacman_intermission.wav");
-                    audioBackground.start(false, true);
+                    bkElem.audioBackground.setNext("sound"+ File.separator + "pacman_intermission.wav");
+                    bkElem.audioBackground.start(false, true);
                     
                     if(bkAudioTimer != null) {
                         bkAudioTimer.cancel();
@@ -783,7 +774,7 @@ public class Stage extends KeyAdapter {
                     bkAudioTimer.schedule(new TimerTask() {
                         @Override
                         public void run() {
-                            audioBackground.stop();
+                            bkElem.audioBackground.stop();
                         }
                     }, Consts.Timer.POWERPELLET_EFFECT + Consts.Timer.POWERPELLET_EFFECT_ENDIND);
                 break;
@@ -808,8 +799,7 @@ public class Stage extends KeyAdapter {
             case GAME_ON:
                 if(pacDots.isEmpty() && powerPellets.isEmpty()) {
                     try {
-                        WorldMap.getInstance().loadFile("maps" + File.separator + "stage" + stage);
-                        stage++;
+                        bkElem.loadNextStage();
 
                         updateMapElements();
 
@@ -819,10 +809,10 @@ public class Stage extends KeyAdapter {
                             p.reset();
                         }
                         
-                        audioBackground.stop();
+                        bkElem.audioBackground.stop();
 
                         state = State.TRANSITION;
-                        transitionTxt = "Phase " + stage;
+                        transitionTxt = "Phase " + bkElem.getStage();
 
                         timerTransition = new Timer();
 
@@ -843,8 +833,8 @@ public class Stage extends KeyAdapter {
                 }
             break;
             case INIT:
-                audioBackground.setNext("sound"+ File.separator + "pacman_beginning.wav");
-                audioBackground.start(false, false);
+                bkElem.audioBackground.setNext("sound"+ File.separator + "pacman_beginning.wav");
+                bkElem.audioBackground.start(false, false);
                 
                 state = State.TRANSITION;
 
@@ -853,7 +843,7 @@ public class Stage extends KeyAdapter {
                     @Override
                     public void run() {
                         state = State.GAME_ON;
-                        audioBackground.stop();
+                        bkElem.audioBackground.stop();
                     }
                 }, 5000);
             break;

@@ -124,7 +124,7 @@ public class WorldMap implements Serializable {
         return rtrn;
     }
     
-    private boolean isValidPosition(char c) {
+    public boolean isValidPosition(char c) {
         // free-space, pacDots, powerPallets
         return (c == ' ' || c == '.' || c == 'o');
     }
