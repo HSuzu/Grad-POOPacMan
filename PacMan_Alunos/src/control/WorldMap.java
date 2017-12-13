@@ -94,16 +94,32 @@ public class WorldMap implements Serializable {
             rtrn |= LEFT;
         }
         
+        if(x == 0 && isValidPosition(map[Consts.NUM_CELLS_X-1][y])) {
+            rtrn |= LEFT;
+        }
+                
+        if(x < Consts.NUM_CELLS_X - 1 && isValidPosition(map[x+1][y])) {
+            rtrn |= RIGHT;
+        }
+        
+        if(x == Consts.NUM_CELLS_X - 1 && isValidPosition(map[0][y])) {
+            rtrn |= RIGHT;
+        }
+        
         if(y > 0 && isValidPosition(map[x][y-1])) {
+            rtrn |= UP;
+        }
+        
+        if(y == 0 && isValidPosition(map[x][Consts.NUM_CELLS_Y-1])) {
             rtrn |= UP;
         }
         
         if(y < Consts.NUM_CELLS_Y-1 && isValidPosition(map[x][y+1])) {
             rtrn |= DOWN;
         }
-        
-        if(x < Consts.NUM_CELLS_X - 1 && isValidPosition(map[x+1][y])) {
-            rtrn |= RIGHT;
+
+        if(y == Consts.NUM_CELLS_Y - 1 && isValidPosition(map[x][0])) {
+            rtrn |= DOWN;
         }
         return rtrn;
     }

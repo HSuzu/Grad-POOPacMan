@@ -61,7 +61,6 @@ public abstract class Phantom extends Element implements Serializable {
         this.pos = defaultPosition;
         
         Phantom.wm = WorldMap.getInstance();
-        
     }
     
     public Phantom(ImageCollection collection, int defaultImage, int value) {
@@ -73,7 +72,6 @@ public abstract class Phantom extends Element implements Serializable {
         this.pos = defaultPosition;
 
         Phantom.wm = WorldMap.getInstance();
-        
     }
     
     public State getState() {
@@ -159,40 +157,69 @@ public abstract class Phantom extends Element implements Serializable {
     protected void runAway() {
         int desiredDirection = wm.getPacManDirection();
         
-        byte direction = wm.freePath((int)Math.round(this.pos.getX()), (int)Math.round(this.pos.getY()));   
-        
-        Position desiredPos = wm.getPacManPosition();
-        if(desiredPos.getX() < this.pos.getX() && ((direction & WorldMap.RIGHT) == WorldMap.RIGHT)) {
-            this.setNextMovDirection(MOVE_RIGHT);
-        }
-        else if(desiredPos.getX() >= this.pos.getX() && ((direction & WorldMap.LEFT) == WorldMap.LEFT)) {
-            this.setNextMovDirection(MOVE_LEFT);
-        }
-        else if(desiredPos.getY() <= this.pos.getY() && ((direction & WorldMap.DOWN) == WorldMap.DOWN)) {
-            this.setNextMovDirection(MOVE_DOWN);
-        }
-        else if(desiredPos.getY() > this.pos.getY() && ((direction & WorldMap.UP) == WorldMap.UP)) {
-            this.setNextMovDirection(MOVE_UP);
-        } else {
-            if(desiredDirection == PacMan.MOVE_LEFT && (direction & WorldMap.LEFT) == WorldMap.LEFT) {
+        byte direction = wm.freePath((int)Math.round(this.pos.getX()), (int)Math.round(this.pos.getY())); 
+        if((direction & WorldMap.RIGHT) == WorldMap.RIGHT && (direction & WorldMap.LEFT) == WorldMap.LEFT && this.getCounterStep() < 0.8*Consts.PHANTOMS_NUM_STEPS) {
+            if(this.getOldDirection() == WorldMap.RIGHT) {
                 this.setNextMovDirection(MOVE_LEFT);
-            } else if(desiredDirection == PacMan.MOVE_DOWN && (direction & WorldMap.DOWN) == WorldMap.DOWN) {
-                this.setNextMovDirection(MOVE_DOWN);
-            } else if(desiredDirection == PacMan.MOVE_UP && (direction & WorldMap.UP) == WorldMap.UP) {
-                this.setNextMovDirection(MOVE_UP);
-            } else if(desiredDirection == PacMan.MOVE_RIGHT && (direction & WorldMap.RIGHT) == WorldMap.RIGHT) {
+                this.increaseCounterStep();
+            }
+            else {
                 this.setNextMovDirection(MOVE_RIGHT);
-            } else {
-                if((direction & WorldMap.LEFT) == WorldMap.LEFT) {
-                    this.setNextMovDirection(MOVE_LEFT);
-                } else if((direction & WorldMap.DOWN) == WorldMap.DOWN) {
-                    this.setNextMovDirection(MOVE_DOWN);
-                } else if((direction & WorldMap.UP) == WorldMap.UP) {
-                    this.setNextMovDirection(MOVE_UP);;
+                this.increaseCounterStep();
+            }
+        }
+        else {
+        
+            if(this.getPath() == direction && this.getCounterStep() < 0.8*Consts.PHANTOMS_NUM_STEPS) {
+                this.increaseCounterStep();
+                direction = this.getOldDirection();
+            } else if(this.getPath() != direction) {
+                this.setPath(direction);
+                if(this.getOldDirection() == (this.getOldDirection() & direction)) {
+                    direction = this.getOldDirection();
                 } else {
+                    this.setOldDirection(direction);
+                    this.resetCounterStep();
+                }
+            } else {
+                this.setOldDirection(direction);
+                this.resetCounterStep();
+            }
+
+            Position desiredPos = wm.getPacManPosition();
+            if(desiredPos.getX() < this.pos.getX() && ((direction & WorldMap.RIGHT) == WorldMap.RIGHT)) {
+                this.setNextMovDirection(MOVE_RIGHT);
+            }
+            else if(desiredPos.getY() < this.pos.getY() && ((direction & WorldMap.DOWN) == WorldMap.DOWN)) {
+                this.setNextMovDirection(MOVE_DOWN);
+            }
+            else if(desiredPos.getX() > this.pos.getX() && ((direction & WorldMap.LEFT) == WorldMap.LEFT)) {
+                this.setNextMovDirection(MOVE_LEFT);
+            }
+            else if(desiredPos.getY() > this.pos.getY() && ((direction & WorldMap.UP) == WorldMap.UP)) {
+                this.setNextMovDirection(MOVE_UP);
+            } else {
+                if(desiredDirection == PacMan.MOVE_LEFT && (direction & WorldMap.LEFT) == WorldMap.LEFT) {
+                    this.setNextMovDirection(MOVE_LEFT);
+                } else if(desiredDirection == PacMan.MOVE_DOWN && (direction & WorldMap.DOWN) == WorldMap.DOWN) {
+                    this.setNextMovDirection(MOVE_DOWN);
+                } else if(desiredDirection == PacMan.MOVE_UP && (direction & WorldMap.UP) == WorldMap.UP) {
+                    this.setNextMovDirection(MOVE_UP);
+                } else if(desiredDirection == PacMan.MOVE_RIGHT && (direction & WorldMap.RIGHT) == WorldMap.RIGHT) {
                     this.setNextMovDirection(MOVE_RIGHT);
+                } else {
+                    if((direction & WorldMap.LEFT) == WorldMap.LEFT) {
+                        this.setNextMovDirection(MOVE_LEFT);
+                    } else if((direction & WorldMap.DOWN) == WorldMap.DOWN) {
+                        this.setNextMovDirection(MOVE_DOWN);
+                    } else if((direction & WorldMap.UP) == WorldMap.UP) {
+                        this.setNextMovDirection(MOVE_UP);;
+                    } else {
+                        this.setNextMovDirection(MOVE_RIGHT);
+                    }
                 }
             }
+
         }
     }
 
