@@ -34,7 +34,10 @@ public class GameController {
         if(e.isEmpty())
             return;
         
-        PacMan pacman = (PacMan)e.get(0);
+        Element eTemp;
+        Iterator<Element> it = e.iterator();
+
+        PacMan pacman = (PacMan) it.next();
         pacman.move();
         
         wm.setPacManPosition(pacman.getPosition());
@@ -43,12 +46,7 @@ public class GameController {
         if (!isValidPosition(e, pacman)) {
             pacman.backToLastPosition();
             pacman.setMovDirection(PacMan.STOP);
-            return;
         }
-        
-        Element eTemp;
-        Iterator<Element> it = e.iterator();
-        it.next(); // remove pacman
         
         while(it.hasNext()) {
             eTemp = it.next();
@@ -61,7 +59,12 @@ public class GameController {
             if(eTemp instanceof Wall) {
                 err = 1.0f;
             } else if(eTemp instanceof Phantom) {
-                ((Phantom) eTemp).move();
+                Phantom p = (Phantom) eTemp;
+                p.move();
+                if (!isValidPosition(e, p)) {
+                    p.backToLastPosition();
+                    p.setNextMovDirection(Phantom.STOP);
+                }
             }
             
             if(pacman.overlap(eTemp, err)) {
@@ -90,8 +93,11 @@ public class GameController {
     }
     public boolean isValidPosition(ArrayList<Element> elemArray, Element elem){
         Element elemAux;
-        for(int i = 1; i < elemArray.size(); i++){
+        for(int i = 0; i < elemArray.size(); i++){
             elemAux = elemArray.get(i);
+            if(elemAux == elem || elemAux instanceof PacMan) {
+                continue;
+            }
             if(!elemAux.isTransposable())
                 if(elemAux.overlap(elem, 1.0f))
                     return false;

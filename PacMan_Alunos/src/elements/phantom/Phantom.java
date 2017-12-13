@@ -32,7 +32,7 @@ public abstract class Phantom extends Element implements Serializable {
     private byte counterStep;
     private byte path;
     private byte oldDirection;
-    private final Position defaultPosition = new Position(0.5*Consts.NUM_CELLS_X, 0.5*Consts.NUM_CELLS_Y);
+    private Position defaultPosition = new Position((int)(0.5*Consts.NUM_CELLS_X), (int)(0.5*Consts.NUM_CELLS_Y));
     
     public static void increasePhantonCounter() {
         phantomCounter++;
@@ -46,7 +46,7 @@ public abstract class Phantom extends Element implements Serializable {
     private int nextMovDirection = MOVE_LEFT;
     private int movDirection = MOVE_LEFT;
     transient protected State state;
-    
+        
     transient private Timer edibleTimer = null;
     
     protected static WorldMap wm;
@@ -87,6 +87,16 @@ public abstract class Phantom extends Element implements Serializable {
         if(edibleTimer != null) {
             edibleTimer.cancel();
         }
+    }
+    
+    public void setDefaultPosition(double x, double y) {
+        defaultPosition.setPosition(x, y);
+        
+        setPosition(x,y);
+    }
+    
+    public void backToLastPosition() {
+        pos.comeBack();
     }
     
     public void setState(State state) {
