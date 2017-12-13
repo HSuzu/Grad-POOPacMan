@@ -9,6 +9,7 @@ public class Wall extends Element implements Serializable {
     public Wall(ImageIcon image) {
         super(image);
 
+        this.isMortal = false;
         this.isTransposable = false;
         this.imageIcon = image;
     }

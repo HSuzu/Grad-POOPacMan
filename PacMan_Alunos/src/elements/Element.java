@@ -132,4 +132,8 @@ public abstract class Element implements Serializable{
     public Position getPosition() {
         return this.pos;
     }
+
+    public boolean isMortal() {
+        return isMortal;
+    }
 }

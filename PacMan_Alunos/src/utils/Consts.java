@@ -74,6 +74,11 @@ public class Consts {
         PHANTOM_WHITE_0,
         PHANTOM_WHITE_1,
         
+        PHANTOM_EYE_LEFT,
+        PHANTOM_EYE_RIGHT,
+        PHANTOM_EYE_UP,
+        PHANTOM_EYE_DOWN,
+        
         CLYDE_BOTTOM_0,
         CLYDE_BOTTOM_1,
         CLYDE_LEFT_0,
