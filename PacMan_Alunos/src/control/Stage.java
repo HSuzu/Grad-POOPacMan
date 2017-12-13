@@ -38,6 +38,8 @@ public class Stage extends KeyAdapter {
     private Timer timerTransition;
     private String transitionTxt = "";
     
+    private int chompSoundOn = 0;
+    
     AudioControl audio;
     AudioControl audioBackground;
     Timer bkAudioTimer;
@@ -75,7 +77,7 @@ public class Stage extends KeyAdapter {
         this.state = state;
         
         if(state == State.DYING_PAUSE) {
-            audioBackground.setNext("sound" + File.separator + "pacman_death.wav");
+            audioBackground.setNext("sound" + File.separator + "pacman_death2.wav");
             audioBackground.start(false, false);
             
 
@@ -477,7 +479,7 @@ public class Stage extends KeyAdapter {
         sprite.newImage(Consts.Sprite.PACMAN_DYING_11, 13, 0);
         sprite.newImage(Consts.Sprite.PACMAN_DYING_12, 13, 1);
         
-        Animation dying = new Animation((long)(1.5*Consts.ANIMATION_DELAY), 1);
+        Animation dying = new Animation(120, 1);
         dying.addImage(sprite.getImage(Consts.Sprite.PACMAN_DYING_1));
         dying.addImage(sprite.getImage(Consts.Sprite.PACMAN_DYING_2));
         dying.addImage(sprite.getImage(Consts.Sprite.PACMAN_DYING_3));
@@ -750,6 +752,12 @@ public class Stage extends KeyAdapter {
             
             switch(item.getName()) {
                 case "PacDot":
+                    if(chompSoundOn <= 0) {
+                        chompSoundOn = 1;
+                        audio.setNext("sound"+ File.separator + "pacman_chomp2.wav");
+                        audio.start(false, true);
+                    }
+                    chompSoundOn = 20;
                 break;
                 case "PowerPellet":
                     for(Phantom p : phantoms) {
@@ -785,37 +793,43 @@ public class Stage extends KeyAdapter {
     
     public void iterationListener() {
         if(pacDots.isEmpty() && powerPellets.isEmpty() && state == State.GAME_ON) {
-            if(stage < 3) {
-                try {
-                    WorldMap.getInstance().loadFile("maps" + File.separator + "stage" + stage);
-                    stage++;
-                
-                    updateMapElements();
-                    
-                    for(Phantom p : phantoms) {
-                        p.setState(Phantom.State.DEADLY);
-                    }
-                    
-                    state = State.TRANSITION;
-                    transitionTxt = "Phase " + stage;
-                    
-                    timerTransition = new Timer();
-            
-                    timerTransition.schedule(new TimerTask() {
-                        @Override
-                        public void run() {
-                            state = State.GAME_ON;
-                        }
-                    }, 4000);
+            try {
+                WorldMap.getInstance().loadFile("maps" + File.separator + "stage" + stage);
+                stage++;
 
+                updateMapElements();
 
-                } catch(IOException ex) {
-                    state = State.TRANSITION;
-                    transitionTxt = "You Win";
-
-                    System.out.println(ex.getMessage());
+                for(Phantom p : phantoms) {
+                    p.setState(Phantom.State.DEADLY);
+                    p.resetPosition();
                 }
+
+                state = State.TRANSITION;
+                transitionTxt = "Phase " + stage;
+
+                timerTransition = new Timer();
+
+                timerTransition.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        state = State.GAME_ON;
+                    }
+                }, 4000);
+
+
+            } catch(IOException ex) {
+                state = State.TRANSITION;
+                transitionTxt = "You Win";
+
+                System.out.println(ex.getMessage());
             }
+            
+        }
+        
+        if(chompSoundOn > 0) {
+            chompSoundOn--;
+        } else {
+            audio.stop();
         }
     }
         
