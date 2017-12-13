@@ -50,6 +50,11 @@ public class Position implements Serializable {
         return true;
     }
     
+    public final void setPosition(Position pos) {
+        this.x = pos.x;
+        this.y = pos.y;
+    }
+    
     public final void roundPosition() {
         x = Math.round(x);
         y = Math.round(y);
@@ -97,6 +102,14 @@ public class Position implements Serializable {
         return this.setPosition(this.getX()-Consts.WALK_STEP, this.getY());        
     }
     public double getDistanceTo(Position desiredPos) {
-        return Math.pow(Math.pow(this.x, 2)+Math.pow(desiredPos.getX(), 2), 0.5d);
+        return Math.pow(Math.pow(this.getX() - desiredPos.getX(), 2)+Math.pow(this.getY() - desiredPos.getX(), 2), 0.5d);
+    }
+    
+    public boolean isNear(Position desiredPos, double err) {
+        if(getDistanceTo(desiredPos) < err) {
+            return true;
+        }
+        
+        return false;
     }
 }

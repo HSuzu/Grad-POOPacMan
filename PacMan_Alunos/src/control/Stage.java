@@ -66,18 +66,18 @@ public class Stage extends KeyAdapter {
             audioBackground.setNext("sound" + File.separator + "pacman_death2.wav");
             audioBackground.start(false, false);
             
-
             bkAudioTimer = new Timer();
             bkAudioTimer.schedule(new TimerTask() {
                 @Override
                 public void run() {
                     audioBackground.stop();
-                    
+
                     for(Phantom p : phantoms) {
-                        p.resetPosition();
+                        p.reset();
                     }
+
+                    pacman.reset();
                     
-                    pacman.resetPosition();
                     pacman.setImage(sprite.getImage(Consts.Sprite.PACMAN_CLOSE));
                     
                     animations.get(Consts.Animation.PACMAN_DYING).resetAnimation();
@@ -115,19 +115,15 @@ public class Stage extends KeyAdapter {
         
         phantoms = new ArrayList<>();
         Blinky blinky = new Blinky(imgCollections.get(Consts.ImgCollection.BLINKY), Consts.Animation.BLINKY_RIGHT.ordinal(), 200);
-        blinky.setPosition(11.0, 8.0);
         phantoms.add(blinky);
         
         Inky inky = new Inky(imgCollections.get(Consts.ImgCollection.INKY), Consts.Animation.INKY_RIGHT.ordinal(), 200);
-        inky.setPosition(5.0, 6.0);
         phantoms.add(inky);
         
         Pinky pinky = new Pinky(imgCollections.get(Consts.ImgCollection.PINKY), Consts.Animation.PINKY_RIGHT.ordinal(), 200);
-        pinky.setPosition(3.0, 9.0);
         phantoms.add(pinky);        
         
         Clyde clyde = new Clyde(imgCollections.get(Consts.ImgCollection.CLYDE), Consts.Animation.CLYDE_RIGHT.ordinal(), 200);
-        clyde.setPosition(2.0, 11.0);
         phantoms.add(clyde);
         
         fruits = new ArrayList<>();
@@ -765,7 +761,9 @@ public class Stage extends KeyAdapter {
                 break;
                 case "PowerPellet":
                     for(Phantom p : phantoms) {
-                        p.setState(Phantom.State.EDIBLE);
+                        if(p.state() != Phantom.State.EYE) {
+                            p.setState(Phantom.State.EDIBLE);
+                        }
                     }
                     audioBackground.setNext("sound"+ File.separator + "pacman_intermission.wav");
                     audioBackground.start(false, true);
@@ -789,8 +787,11 @@ public class Stage extends KeyAdapter {
             }
         } else if(e instanceof Phantom) {
             Phantom p = (Phantom) e;
-            if(p.getState() != Phantom.State.DEADLY) {
+            if(p.getState() == Phantom.State.EDIBLE || p.getState() == Phantom.State.ENDING_EDIBLE) {
                 Phantom.increasePhantonCounter();
+
+                audio.setNext("sound"+ File.separator + "pacman_eatghost.wav");
+                audio.start(true, false);
             }
         }
     }
@@ -807,8 +808,10 @@ public class Stage extends KeyAdapter {
 
                         for(Phantom p : phantoms) {
                             p.setState(Phantom.State.DEADLY);
-                            p.resetPosition();
+                            p.reset();
                         }
+                        
+                        audioBackground.stop();
 
                         state = State.TRANSITION;
                         transitionTxt = "Phase " + stage;

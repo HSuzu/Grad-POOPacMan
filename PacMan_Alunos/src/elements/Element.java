@@ -102,6 +102,10 @@ public abstract class Element implements Serializable{
     public boolean setPosition(double x, double y) {
         return pos.setPosition(x, y);
     }
+    
+    public void setPosition(Position pos) {
+        pos.setPosition(pos);
+    }
 
     public boolean isTransposable() {
         return isTransposable;

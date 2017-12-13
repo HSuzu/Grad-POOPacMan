@@ -66,12 +66,24 @@ public class Inky extends Phantom {
 
         switch(movDirection) {
             case Phantom.MOVE_LEFT:
+                if(this.state == State.EYE) {
+                    return this.collection.getImage(Consts.Sprite.PHANTOM_EYE_LEFT);
+                }
                 return this.collection.getImage(Consts.Animation.INKY_LEFT);
             case Phantom.MOVE_RIGHT:
+                if(this.state == State.EYE) {
+                    return this.collection.getImage(Consts.Sprite.PHANTOM_EYE_RIGHT);
+                }
                 return this.collection.getImage(Consts.Animation.INKY_RIGHT);
             case Phantom.MOVE_UP:
+                if(this.state == State.EYE) {
+                    return this.collection.getImage(Consts.Sprite.PHANTOM_EYE_UP);
+                }
                 return this.collection.getImage(Consts.Animation.INKY_UP);
             case Phantom.MOVE_DOWN:
+                if(this.state == State.EYE) {
+                    return this.collection.getImage(Consts.Sprite.PHANTOM_EYE_DOWN);
+                }
                 return this.collection.getImage(Consts.Animation.INKY_DOWN);
         }
         return this.collection.getImage(Consts.Animation.INKY_UP);

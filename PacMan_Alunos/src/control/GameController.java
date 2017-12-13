@@ -73,7 +73,6 @@ public class GameController {
                         pacman.die();
                         
                         stage.setState(Stage.State.DYING_PAUSE);
-                        return;
                     } else if(p.state() == Phantom.State.EDIBLE || p.state() == Phantom.State.ENDING_EDIBLE) {
                         pacman.winPoints(p.getScore());
                         

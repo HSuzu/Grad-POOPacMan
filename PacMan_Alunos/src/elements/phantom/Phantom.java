@@ -32,6 +32,7 @@ public abstract class Phantom extends Element implements Serializable {
     private byte counterStep;
     private byte path;
     private byte oldDirection;
+    private final Position defaultPosition = new Position(0.5*Consts.NUM_CELLS_X, 0.5*Consts.NUM_CELLS_Y);
     
     public static void increasePhantonCounter() {
         phantomCounter++;
@@ -46,7 +47,7 @@ public abstract class Phantom extends Element implements Serializable {
     private int movDirection = MOVE_LEFT;
     transient protected State state;
     
-    transient private Timer edibleTimer;
+    transient private Timer edibleTimer = null;
     
     protected static WorldMap wm;
     
@@ -56,6 +57,8 @@ public abstract class Phantom extends Element implements Serializable {
         this.isTransposable = false;
         this.score = value;
         state = State.DEADLY;
+        
+        this.pos = defaultPosition;
         
         Phantom.wm = WorldMap.getInstance();
         
@@ -67,6 +70,8 @@ public abstract class Phantom extends Element implements Serializable {
         this.score = value;
         state = State.DEADLY;
         
+        this.pos = defaultPosition;
+
         Phantom.wm = WorldMap.getInstance();
         
     }
@@ -79,8 +84,11 @@ public abstract class Phantom extends Element implements Serializable {
         return movDirection;
     }
     
-    public void resetPosition() {
-        pos.setPosition((int)(0.5*Consts.NUM_CELLS_X), (int)(0.5*Consts.NUM_CELLS_Y));
+    public void reset() {
+        pos.setPosition(defaultPosition);
+        if(edibleTimer != null) {
+            edibleTimer.cancel();
+        }
     }
     
     public void setState(State state) {
@@ -113,6 +121,7 @@ public abstract class Phantom extends Element implements Serializable {
                         } else {
                             setState(State.DEADLY);
                             edibleTimer.cancel();
+                            edibleTimer = null;
                         }
                     }
 
@@ -128,7 +137,7 @@ public abstract class Phantom extends Element implements Serializable {
                 this.isMortal = false;
                 this.isTransposable = true;
                 
-                // TODO
+                this.followPos(defaultPosition);
             break;
             default:
                 break;
@@ -260,7 +269,7 @@ public abstract class Phantom extends Element implements Serializable {
            return;
        }
        
-       path = wm.freePath((int)Math.round(this.pos.getX()), (int)Math.round(this.pos.getY()));
+       path = wm.freePath((int)Math.round(pos.getX()), (int)Math.round(pos.getY()));
        
        if(desiredPos.getX() > this.pos.getX() && ((path & WorldMap.RIGHT) == WorldMap.RIGHT)) {
             this.setNextMovDirection(MOVE_RIGHT);
@@ -275,7 +284,7 @@ public abstract class Phantom extends Element implements Serializable {
             this.setNextMovDirection(MOVE_UP);
        }
     }
-    
+        
     @Override
     public void autoDraw(Graphics g) {
         Drawing.draw(g, this.imageIcon, pos.getX(), pos.getY());
@@ -286,14 +295,26 @@ public abstract class Phantom extends Element implements Serializable {
     }
     
     public void move() {
-        if(movDirection == nextMovDirection) {
-            if(state != State.DEADLY) {
-                runAway();
-            } else {
-                navigation();
+        if(state == State.EYE) {
+            if(pos.isNear(defaultPosition, 1.0)) {
+                state = State.DEADLY;
             }
         }
-        else {
+        
+        if(movDirection == nextMovDirection) {
+            switch(state) {
+                case DEADLY:
+                    navigation();
+                break;
+                case EYE:
+                    followPos(defaultPosition);
+                break;
+                case EDIBLE:
+                case ENDING_EDIBLE:
+                    runAway();
+                break;
+            }
+        } else {
             if(pos.isRoundPosition(3.0*Consts.WALK_STEP)) {
                 pos.roundPosition();
                 movDirection = nextMovDirection;

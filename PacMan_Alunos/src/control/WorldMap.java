@@ -105,7 +105,6 @@ public class WorldMap implements Serializable {
         if(x < Consts.NUM_CELLS_X - 1 && isValidPosition(map[x+1][y])) {
             rtrn |= RIGHT;
         }
-        
         return rtrn;
     }
     

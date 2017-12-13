@@ -29,10 +29,12 @@ public class PacMan extends Element  implements Serializable {
     private int numLifes = 3;
     private int lifeControl = 1;
     
+    private boolean hasDied = false;
+    
     private Position defaultPosition = new Position(1,1);
     
     public void setDefaultPosition(Position pos) {
-        defaultPosition = pos;
+        defaultPosition.setPosition(pos);
     }
     
     public PacMan(String imageName) {
@@ -72,15 +74,21 @@ public class PacMan extends Element  implements Serializable {
     }
     
     public void die() {
-        imageIcon = this.collection.getImage(Consts.Animation.PACMAN_DYING);
-        
-        if(this.numLifes > 0) {
-            this.numLifes -= 1;
+        if(!hasDied) {
+            imageIcon = this.collection.getImage(Consts.Animation.PACMAN_DYING);
+
+            if(this.numLifes > 0) {
+                this.numLifes -= 1;
+            }
+            
+            hasDied = true;
         }
     }
     
-    public void resetPosition() {
-        pos = defaultPosition;
+    public void reset() {
+        pos.setPosition(defaultPosition);
+        
+        hasDied = false;
     }
     
     @Override
