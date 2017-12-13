@@ -21,17 +21,24 @@ import utils.Position;
  */
 public class Inky extends Phantom {
     private float hysteresisCoef;
-    private byte freeSides;
-    private byte direction;
+    private int counterStep;
+    private byte path;
+    private byte oldDirection;
     
     public Inky(String imageName, int value) {
         super(imageName, value);
         hysteresisCoef = 1.0f;
+        counterStep = 0;
+        path = 0;
+        oldDirection = 0;
     }
     
     public Inky(ImageCollection collection, int defaultImage, int value) {
         super(collection, defaultImage, value);
         hysteresisCoef = 1.0f;
+        counterStep = 0;
+        path = 0;
+        oldDirection = 0;
     }
     
     @Override
@@ -45,7 +52,7 @@ public class Inky extends Phantom {
            return;
        }
        
-       freeSides = wm.freePath((int)Math.round(this.pos.getX()), (int)Math.round(this.pos.getY()));
+       byte freeSides = wm.freePath((int)Math.round(this.pos.getX()), (int)Math.round(this.pos.getY()));
        
        
        //Tomada de decisão:
@@ -66,15 +73,33 @@ public class Inky extends Phantom {
        }
        //Aleatório:
        else {
-            byte newPath = wm.freePath((int)Math.round(this.pos.getX()), (int)Math.round(this.pos.getY()));
-            if(freeSides != newPath) {
-                freeSides = newPath;
+            byte direction;
+            if(path == freeSides && counterStep < Consts.PHANTOMS_NUM_STEPS) {
+                counterStep++;
+                direction = oldDirection;
+            } else if(path != freeSides) {
+                path = freeSides;
+                if(oldDirection == (oldDirection & freeSides)) {
+                    direction = oldDirection;
+                }
+                else {
+                    direction = (byte) ((byte)(Math.random()*16) & path);
+                    while(direction == 0) {
+                        direction = (byte) ((byte)(16*Math.random()) & path);
+                    }
+                    oldDirection = direction;
+                    counterStep = 0;
+                }
+                
+            } else {
+                counterStep = 0;
+                direction = (byte) ((byte)(Math.random()*16) & path);
+                while(direction == 0) {
+                    direction = (byte) ((byte)(16*Math.random()) & path);
+                }
+                oldDirection = direction;
             }
-            direction = (byte) ((byte)(Math.random()*16) & freeSides);
-            while(direction == 0) {
-                direction = (byte) ((byte)(16*Math.random()) & freeSides);
-            }
-            
+    
             if((direction & WorldMap.DOWN) != 0) {
                 this.setNextMovDirection(MOVE_DOWN);
             } else if((direction & WorldMap.LEFT) != 0) {
@@ -97,23 +122,23 @@ public class Inky extends Phantom {
         }
         else {
             byte newPath = wm.freePath((int)Math.round(this.pos.getX()), (int)Math.round(this.pos.getY()));
-            if(freeSides != newPath) {
-                freeSides = newPath;
-                direction = (byte) ((byte)(16*Math.random()) & freeSides);
-                while(direction == 0) {
-                    direction = (byte) ((byte)(16*Math.random()) & freeSides);
+            if(path != newPath) {
+                path = newPath;
+                path = (byte) ((byte)(16*Math.random()) & path);
+                while(oldDirection == 0) {
+                    oldDirection = (byte) ((byte)(16*Math.random()) & path);
                 }
             }
-            if((direction & WorldMap.DOWN) != 0) {
+            if((oldDirection & WorldMap.DOWN) != 0) {
                 this.setNextMovDirection(MOVE_DOWN);
                 
-            } else if((direction & WorldMap.LEFT) != 0) {
+            } else if((oldDirection & WorldMap.LEFT) != 0) {
                 this.setNextMovDirection(MOVE_LEFT);
                 
-            } else if((direction & WorldMap.RIGHT) != 0) {
+            } else if((oldDirection & WorldMap.RIGHT) != 0) {
                 this.setNextMovDirection(MOVE_RIGHT);
                 
-            } else if((direction & WorldMap.UP) != 0) {
+            } else if((oldDirection & WorldMap.UP) != 0) {
                 this.setNextMovDirection(MOVE_UP);  
                 
             }

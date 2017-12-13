@@ -13,13 +13,24 @@
             <url>src/control/Stage.java</url>
             <bookmark id="1">
                 <name/>
+<<<<<<< HEAD
+                <line>22</line>
+=======
                 <line>27</line>
+>>>>>>> a903c6a1fbd5dff19a23efe7dd8f5aff0f014853
                 <key/>
             </bookmark>
         </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
+            <file>file:/home/aribeiro/USP/PacMan/PacMan_Alunos/src/control/GameController.java</file>
+            <file>file:/home/aribeiro/USP/PacMan/PacMan_Alunos/src/control/Stage.java</file>
+            <file>file:/home/aribeiro/USP/PacMan/PacMan_Alunos/src/control/WorldMap.java</file>
+            <file>file:/home/aribeiro/USP/PacMan/PacMan_Alunos/src/elements/phantom/Phantom.java</file>
+            <file>file:/home/aribeiro/USP/PacMan/PacMan_Alunos/src/utils/Drawing.java</file>
+=======
             <file>file:/home/suzukawa/Files/Grad/POO/Grad-POOPacMan/PacMan_Alunos/src/control/Stage.java</file>
             <file>file:/home/suzukawa/Files/Grad/POO/Grad-POOPacMan/PacMan_Alunos/src/utils/ImageCollection.java</file>
             <file>file:/home/suzukawa/Files/Grad/POO/Grad-POOPacMan/PacMan_Alunos/src/elements/phantom/Phantom.java</file>
@@ -28,6 +39,7 @@
             <file>file:/home/suzukawa/Files/Grad/POO/Grad-POOPacMan/PacMan_Alunos/src/elements/PacMan.java</file>
             <file>file:/home/suzukawa/Files/Grad/POO/Grad-POOPacMan/PacMan_Alunos/src/utils/AudioControl.java</file>
             <file>file:/home/suzukawa/Files/Grad/POO/Grad-POOPacMan/PacMan_Alunos/src/control/GameScreen.java</file>
+>>>>>>> a903c6a1fbd5dff19a23efe7dd8f5aff0f014853
         </group>
     </open-files>
 </project-private>

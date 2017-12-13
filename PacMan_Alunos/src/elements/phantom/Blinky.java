@@ -9,26 +9,29 @@ import utils.ImageCollection;
 
 public class Blinky extends Phantom implements Serializable {
     private float hysteresisCoef;
+    private int counterStep;
+    private byte path;
+    private byte oldDirection;
     
     public Blinky(String imageName, int value) {
         super(imageName, value);
         hysteresisCoef = 1.0f;
+        counterStep = 0;
+        path = 0;
+        oldDirection = 0;
     }
     
     public Blinky(ImageCollection collection, int defaultImage, int value) {
         super(collection, defaultImage, value);
         hysteresisCoef = 1.0f;
+        counterStep = 0;
+        path = 0;
+        oldDirection = 0;
     }
     
     @Override
     public String name() {
         return "Blinky";
-    }
-    
-    protected void navigationAlgorithm(Position bPos, char map[][]) {
-        //Condição de erro:
-        
-    
     }
     
     @Override
@@ -45,6 +48,7 @@ public class Blinky extends Phantom implements Serializable {
        //Tomada de decisão:
        if(Math.random()*100 <= 98.0f*hysteresisCoef) {
             hysteresisCoef = 1.0f;
+            counterStep = 0;
             if(desiredPos.getX() > this.pos.getX() && ((freeSides & WorldMap.RIGHT) == WorldMap.RIGHT)) {
                this.setNextMovDirection(MOVE_RIGHT);
             }
@@ -57,14 +61,37 @@ public class Blinky extends Phantom implements Serializable {
             else if(desiredPos.getY() < this.pos.getY() && ((freeSides & WorldMap.UP) == WorldMap.UP)) {
                 this.setNextMovDirection(MOVE_UP);
             }
+            path = freeSides;
        }
        //Aleatório:
        else {
-            byte direction = (byte) ((byte)(Math.random()*16) & freeSides);
-            while(direction == 0) {
-                direction = (byte) ((byte)(16*Math.random()) & freeSides);
+            byte direction;
+            if(path == freeSides && counterStep < Consts.PHANTOMS_NUM_STEPS) {
+                counterStep++;
+                direction = oldDirection;
+            } else if(path != freeSides) {
+                path = freeSides;
+                if(oldDirection == (oldDirection & freeSides)) {
+                    direction = oldDirection;
+                }
+                else {
+                    direction = (byte) ((byte)(Math.random()*16) & path);
+                    while(direction == 0) {
+                        direction = (byte) ((byte)(16*Math.random()) & path);
+                    }
+                    oldDirection = direction;
+                    counterStep = 0;
+                }
+                
+            } else {
+                counterStep = 0;
+                direction = (byte) ((byte)(Math.random()*16) & path);
+                while(direction == 0) {
+                    direction = (byte) ((byte)(16*Math.random()) & path);
+                }
+                oldDirection = direction;
             }
-            
+    
             if((direction & WorldMap.DOWN) != 0) {
                 this.setNextMovDirection(MOVE_DOWN);
             } else if((direction & WorldMap.LEFT) != 0) {
