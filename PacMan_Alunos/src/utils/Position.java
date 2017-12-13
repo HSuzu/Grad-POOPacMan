@@ -51,8 +51,7 @@ public class Position implements Serializable {
     }
     
     public final void setPosition(Position pos) {
-        this.x = pos.x;
-        this.y = pos.y;
+        setPosition(pos.x, pos.y);
     }
     
     public final void roundPosition() {

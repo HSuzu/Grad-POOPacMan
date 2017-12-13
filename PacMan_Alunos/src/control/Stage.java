@@ -79,6 +79,7 @@ public class Stage extends KeyAdapter {
                     audioBackground.stop();
 
                     for(Phantom p : phantoms) {
+                        p.setPosition(Consts.MID_FIELD_X, Consts.MID_FIELD_Y);
                         p.reset();
                     }
 
@@ -813,6 +814,7 @@ public class Stage extends KeyAdapter {
                         updateMapElements();
 
                         for(Phantom p : phantoms) {
+                            p.setPosition(Consts.MID_FIELD_X, Consts.MID_FIELD_Y);
                             p.setState(Phantom.State.DEADLY);
                             p.reset();
                         }

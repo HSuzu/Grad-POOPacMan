@@ -26,13 +26,14 @@ public abstract class Phantom extends Element implements Serializable {
     public static final int MOVE_RIGHT = 2;
     public static final int MOVE_UP = 3;
     public static final int MOVE_DOWN = 4;
+    
+    private static final Position defaultPosition = new Position(Consts.MID_FIELD_X, Consts.MID_FIELD_Y);
         
     protected static int phantomCounter = 0;
     
     private byte counterStep;
     private byte path;
     private byte oldDirection;
-    private Position defaultPosition = new Position((int)(0.5*Consts.NUM_CELLS_X), (int)(0.5*Consts.NUM_CELLS_Y));
     
     public static void increasePhantonCounter() {
         phantomCounter++;
@@ -58,7 +59,7 @@ public abstract class Phantom extends Element implements Serializable {
         this.score = value;
         state = State.DEADLY;
         
-        this.pos = defaultPosition;
+        setPosition(Consts.MID_FIELD_X, Consts.MID_FIELD_Y);
         
         Phantom.wm = WorldMap.getInstance();
     }
@@ -69,7 +70,7 @@ public abstract class Phantom extends Element implements Serializable {
         this.score = value;
         state = State.DEADLY;
         
-        this.pos = defaultPosition;
+        setPosition(Consts.MID_FIELD_X, Consts.MID_FIELD_Y);
 
         Phantom.wm = WorldMap.getInstance();
     }
@@ -83,16 +84,9 @@ public abstract class Phantom extends Element implements Serializable {
     }
     
     public void reset() {
-        pos.setPosition(defaultPosition);
         if(edibleTimer != null) {
             edibleTimer.cancel();
         }
-    }
-    
-    public void setDefaultPosition(double x, double y) {
-        defaultPosition.setPosition(x, y);
-        
-        setPosition(x,y);
     }
     
     public void backToLastPosition() {
@@ -144,8 +138,6 @@ public abstract class Phantom extends Element implements Serializable {
                 edibleTimer = null;
                 this.isMortal = false;
                 this.isTransposable = true;
-                
-                this.followPos(defaultPosition);
             break;
             default:
                 break;

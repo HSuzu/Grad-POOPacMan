@@ -15,6 +15,9 @@ public class Consts {
     public static final int HEADER_SIZE = 2;
     public static final int SPRITE_CELL_SIZE = 48;
     
+    public static final int MID_FIELD_X = (int)(0.5*Consts.NUM_CELLS_X);
+    public static final int MID_FIELD_Y = (int)(0.5*Consts.NUM_CELLS_Y);
+    
     public static final int WALK_STEP_DEC_PLACES = 1;
     public static final double WALK_STEP = 0.1;
     

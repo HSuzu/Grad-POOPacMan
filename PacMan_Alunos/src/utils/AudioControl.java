@@ -36,7 +36,7 @@ public class AudioControl implements LineListener {
     public void start(boolean forceStart, boolean repeat) {
         this.repeat = repeat;
         if(running == false || forceStart) {
-//            stop();
+            stop();
             running = true;
 
             try {
@@ -53,6 +53,7 @@ public class AudioControl implements LineListener {
                 clip.start();
             } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
                 System.out.println(e.getMessage());
+                
             }
         }
     }
