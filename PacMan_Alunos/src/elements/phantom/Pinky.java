@@ -14,24 +14,21 @@ import utils.Position;
 
 public class Pinky extends Phantom {
     private float hysteresisCoef;
-    private int counterStep;
-    private byte path;
-    private byte oldDirection;
     
     public Pinky(String imageName, int value) {
         super(imageName, value);
         hysteresisCoef = 1.0f;
-        counterStep = 0;
-        path = 0;
-        oldDirection = 0;
+        this.resetCounterStep();
+        this.setPath((byte)0);
+        this.setOldDirection((byte)0);
     }
     
     public Pinky(ImageCollection collection, int defaultImage, int value) {
         super(collection, defaultImage, value);
         hysteresisCoef = 1.0f;
-        counterStep = 0;
-        path = 0;
-        oldDirection = 0;
+        this.resetCounterStep();
+        this.setPath((byte)0);
+        this.setOldDirection((byte)0);
     }
     
     @Override
@@ -48,7 +45,7 @@ public class Pinky extends Phantom {
         //Tomada de decisão:
         if(Math.random()*100 <= 98.0f*hysteresisCoef) {
             hysteresisCoef = 1.0f;
-            counterStep = 0;
+            this.resetCounterStep();
             if(desiredDirection == PacMan.MOVE_LEFT && (freeSides & WorldMap.LEFT) == WorldMap.LEFT) {
                 this.setNextMovDirection(MOVE_LEFT);
             } else if(desiredDirection == PacMan.MOVE_DOWN && (freeSides & WorldMap.DOWN) == WorldMap.DOWN) {
@@ -74,43 +71,8 @@ public class Pinky extends Phantom {
             }
         }
         else {
-            byte direction;
-            if(path == freeSides && counterStep < Consts.PHANTOMS_NUM_STEPS) {
-                counterStep++;
-                direction = oldDirection;
-            } else if(path != freeSides) {
-                path = freeSides;
-                if(oldDirection == (oldDirection & freeSides)) {
-                    direction = oldDirection;
-                }
-                else {
-                    direction = (byte) ((byte)(Math.random()*16) & path);
-                    while(direction == 0) {
-                        direction = (byte) ((byte)(16*Math.random()) & path);
-                    }
-                    oldDirection = direction;
-                    counterStep = 0;
-                }
-                
-            } else {
-                counterStep = 0;
-                direction = (byte) ((byte)(Math.random()*16) & path);
-                while(direction == 0) {
-                    direction = (byte) ((byte)(16*Math.random()) & path);
-                }
-                oldDirection = direction;
-            }
-    
-            if((direction & WorldMap.DOWN) != 0) {
-                this.setNextMovDirection(MOVE_DOWN);
-            } else if((direction & WorldMap.LEFT) != 0) {
-                this.setNextMovDirection(MOVE_LEFT);
-            } else if((direction & WorldMap.RIGHT) != 0) {
-                this.setNextMovDirection(MOVE_RIGHT);                
-            } else if((direction & WorldMap.UP) != 0) {
-                this.setNextMovDirection(MOVE_UP);  
-            }
-
+            hysteresisCoef = 0.2f;
+            this.randomMove();
         }
     }
 
